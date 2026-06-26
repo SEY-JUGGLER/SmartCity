@@ -5,7 +5,7 @@ namespace App\Filament\Resources\Agent\Pages;
 use App\Filament\Resources\Agent\AgentResource;
 use App\Models\Attribution;
 use Filament\Actions\EditAction;
-use Filament\Infolists\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Resources\Pages\ViewRecord;

@@ -11,6 +11,7 @@ use App\Filament\Resources\Signalements\Schemas\SignalementInfolist;
 use App\Models\Signalement;
 use App\Models\User;
 use App\Models\Attribution;
+use App\Services\AttributionService;
 
 use BackedEnum;
 use UnitEnum;
@@ -251,16 +252,22 @@ class SignalementResource extends Resource
                     ->icon(Heroicon::OutlinedUserPlus)
                     ->color('success')
                     ->visible(fn (Signalement $record) => ! $record->attribution)
-                    ->schema([
+                    ->schema(fn (Signalement $record): array => [
                         Select::make('agent_id')
-                            ->label('Agent disponible')
-                            ->options(
-                                User::where('role', 'AGENT')
-                                    ->where('actif', true)
-                                    ->where('disponible', true)
-                                    ->get()
-                                    ->mapWithKeys(fn ($u) => [$u->id => $u->prenom . ' ' . $u->name])
-                            )
+                            ->label('Agent disponible (trié par proximité)')
+                            ->options(function () use ($record): array {
+                                $ranked = (new AttributionService())->rankAgentsByDistance($record);
+                                return $ranked->mapWithKeys(function ($item): array {
+                                    $u    = $item['user'];
+                                    $dist = $item['distance_km'];
+                                    $lbl  = $u->prenom . ' ' . $u->name;
+                                    $lbl .= $dist !== null
+                                        ? ' — ' . number_format($dist, 1) . ' km'
+                                        : ' (position inconnue)';
+                                    return [$u->id => $lbl];
+                                })->toArray();
+                            })
+                            ->default(fn () => (new AttributionService())->findNearestAgent($record)?->id)
                             ->searchable()
                             ->required(),
                     ])
@@ -283,16 +290,22 @@ class SignalementResource extends Resource
                     ->icon(Heroicon::OutlinedArrowPath)
                     ->color('warning')
                     ->visible(fn (Signalement $record) => $record->attribution !== null && $record->statut !== 'terminer')
-                    ->schema([
+                    ->schema(fn (Signalement $record): array => [
                         Select::make('agent_id')
-                            ->label('Nouvel agent')
-                            ->options(
-                                User::where('role', 'AGENT')
-                                    ->where('actif', true)
-                                    ->where('disponible', true)
-                                    ->get()
-                                    ->mapWithKeys(fn ($u) => [$u->id => $u->prenom . ' ' . $u->name])
-                            )
+                            ->label('Nouvel agent (trié par proximité)')
+                            ->options(function () use ($record): array {
+                                $ranked = (new AttributionService())->rankAgentsByDistance($record);
+                                return $ranked->mapWithKeys(function ($item): array {
+                                    $u    = $item['user'];
+                                    $dist = $item['distance_km'];
+                                    $lbl  = $u->prenom . ' ' . $u->name;
+                                    $lbl .= $dist !== null
+                                        ? ' — ' . number_format($dist, 1) . ' km'
+                                        : ' (position inconnue)';
+                                    return [$u->id => $lbl];
+                                })->toArray();
+                            })
+                            ->default(fn () => (new AttributionService())->findNearestAgent($record)?->id)
                             ->searchable()
                             ->required(),
                     ])

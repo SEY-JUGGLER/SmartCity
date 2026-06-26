@@ -33,7 +33,9 @@ class CitoyenPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
                 'danger'  => Color::Rose,
             ])
-            ->brandName('SignalApp Citoyen')
+            ->brandName('SmartCity Citoyen')
+            ->brandLogo(asset('images/logo.png'))
+            ->brandLogoHeight('2.5rem')
             ->darkMode(true)
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth('full')

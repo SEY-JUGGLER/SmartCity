@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Citoyen;
 
+use App\Models\Evaluation;
 use App\Models\Signalement;
+use App\Services\ClassificationService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -23,12 +25,19 @@ class Dashboard extends Component
         $userId = Auth::id();
 
         return [
-            'total'       => Signalement::where('user_id', $userId)->count(),
-            'enAttente'   => Signalement::where('user_id', $userId)->where('statut', 'enAttente')->count(),
-            'enCours'     => Signalement::where('user_id', $userId)->where('statut', 'enCours')->count(),
-            'termines'    => Signalement::where('user_id', $userId)->where('statut', 'terminer')->count(),
-            'rejetes'     => Signalement::where('user_id', $userId)->where('statut', 'rejeter')->count(),
+            'total'      => Signalement::where('user_id', $userId)->count(),
+            'enAttente'  => Signalement::where('user_id', $userId)->where('statut', 'enAttente')->count(),
+            'enCours'    => Signalement::where('user_id', $userId)->where('statut', 'enCours')->count(),
+            'termines'   => Signalement::where('user_id', $userId)->where('statut', 'terminer')->count(),
+            'rejetes'    => Signalement::where('user_id', $userId)->where('statut', 'rejeter')->count(),
+            'evaluations'=> Evaluation::where('user_id', $userId)->count(),
         ];
+    }
+
+    #[Computed]
+    public function classification(): array
+    {
+        return ClassificationService::classifierCitoyen(Auth::id());
     }
 
     #[Computed]

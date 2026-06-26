@@ -10,9 +10,12 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/>
                             </svg>
                         </div>
-                        <div>
-                            <h1 class="text-lg font-bold text-slate-900 dark:text-white">SignalApp</h1>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Espace Citoyen</p>
+                        <div class="flex items-center gap-2">
+                            <img src="{{ asset('images/logo.png') }}" alt="SmartCity" class="h-8 w-auto">
+                            <div>
+                                <h1 class="text-lg font-bold text-slate-900 dark:text-white">SmartCity</h1>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Espace Citoyen</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -203,6 +206,32 @@
                             <div class="bg-emerald-500 h-2 rounded-full transition-all" style="width: {{ $this->stats['total'] > 0 ? ($this->stats['termines'] / $this->stats['total']) * 100 : 0 }}%"></div>
                         </div>
                     </div>
+                </div>
+
+                {{-- Ma classification --}}
+                @php
+                    $cl = $this->classification;
+                    $clColor = match($cl['color']) {
+                        'emerald' => ['bg' => 'bg-emerald-50 dark:bg-emerald-900/20', 'text' => 'text-emerald-700 dark:text-emerald-300', 'border' => 'border-emerald-200 dark:border-emerald-800'],
+                        'blue'    => ['bg' => 'bg-blue-50 dark:bg-blue-900/20',       'text' => 'text-blue-700 dark:text-blue-300',       'border' => 'border-blue-200 dark:border-blue-800'],
+                        'amber'   => ['bg' => 'bg-amber-50 dark:bg-amber-900/20',     'text' => 'text-amber-700 dark:text-amber-300',     'border' => 'border-amber-200 dark:border-amber-800'],
+                        'violet'  => ['bg' => 'bg-violet-50 dark:bg-violet-900/20',   'text' => 'text-violet-700 dark:text-violet-300',   'border' => 'border-violet-200 dark:border-violet-800'],
+                        'red'     => ['bg' => 'bg-red-50 dark:bg-red-900/20',         'text' => 'text-red-700 dark:text-red-300',         'border' => 'border-red-200 dark:border-red-800'],
+                        default   => ['bg' => 'bg-slate-50 dark:bg-slate-800/50',     'text' => 'text-slate-700 dark:text-slate-300',     'border' => 'border-slate-200 dark:border-slate-700'],
+                    };
+                @endphp
+                <div class="{{ $clColor['bg'] }} rounded-2xl p-5 border {{ $clColor['border'] }}">
+                    <h3 class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Ma classification</h3>
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">{{ $cl['emoji'] }}</span>
+                        <div>
+                            <p class="font-semibold {{ $clColor['text'] }} text-sm">{{ $cl['label'] }}</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{{ $cl['desc'] }}</p>
+                        </div>
+                    </div>
+                    <a href="{{ route('citoyen.classement') }}" class="mt-3 inline-flex items-center gap-1 text-xs {{ $clColor['text'] }} hover:underline">
+                        Voir le classement →
+                    </a>
                 </div>
 
                 {{-- Évolution --}}

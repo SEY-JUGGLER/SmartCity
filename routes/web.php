@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Livewire\Agent\ClassementPerformance;
 use App\Livewire\Agent\Dashboard as AgentDashboard;
 use App\Livewire\Agent\DetailMission;
 use App\Livewire\Agent\HistoriqueInterventions;
@@ -11,6 +12,7 @@ use App\Livewire\Agent\Notifications as AgentNotifications;
 use App\Livewire\Agent\Pointage;
 use App\Livewire\Agent\ProfilAgent;
 use App\Livewire\Agent\SupportRequests;
+use App\Livewire\Citoyen\ClassementEngagement;
 use App\Livewire\Citoyen\CreerSignalement;
 use App\Livewire\Citoyen\Dashboard as CitoyenDashboard;
 use App\Livewire\Citoyen\DetailSignalement;
@@ -52,6 +54,7 @@ Route::middleware(['auth', 'role:AGENT'])->prefix('agent')->name('agent.')->grou
     Route::get('/carte', NavigationCarte::class)->name('carte');
     Route::get('/notifications', AgentNotifications::class)->name('notifications');
     Route::get('/profil', ProfilAgent::class)->name('profil');
+    Route::get('/classement', ClassementPerformance::class)->name('classement');
 });
 
 Route::middleware(['auth', 'role:CITOYEN'])->prefix('citoyen')->name('citoyen.')->group(function () {
@@ -62,4 +65,5 @@ Route::middleware(['auth', 'role:CITOYEN'])->prefix('citoyen')->name('citoyen.')
     Route::get('/historique', Historique::class)->name('historique');
     Route::get('/notifications', CitoyenNotifications::class)->name('notifications');
     Route::get('/profil', CitoyenProfil::class)->name('profil');
+    Route::get('/classement', ClassementEngagement::class)->name('classement');
 });

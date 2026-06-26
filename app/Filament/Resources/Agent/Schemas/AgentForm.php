@@ -52,20 +52,19 @@ class AgentForm
                     ])->columns(2),
                 Section::make('Statut et disponibilité')
                     ->schema([
-                        Select::make('role')
-                            ->default('AGENT')
-                            ->options([
-                                'ADMIN' => 'Administrateur',
-                                'AGENT' => 'Agent',
-                                'CITOYEN' => 'Citoyen',
-                            ])
-                            ->disabled(),
+    
                         Toggle::make('actif')
                             ->label('Compte actif')
                             ->default(true),
                         Toggle::make('disponible')
                             ->label('Disponible pour missions')
                             ->default(false),
+                        Select::make('zone_id')
+                            ->label('Zone')
+                            ->relationship('zone', 'nomZone')
+                            ->searchable()
+                            ->preload()
+                            ->placeholder('—'),
                         Toggle::make('pointer')
                             ->label('Pointé présent')
                             ->default(false),

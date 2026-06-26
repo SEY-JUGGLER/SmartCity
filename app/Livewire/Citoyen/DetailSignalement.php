@@ -19,6 +19,7 @@ class DetailSignalement extends Component
     public string $commentaire = '';
     public bool $probleme_resolu = true;
     public bool $showEvalModal = false;
+    public bool $editing = false;
 
     public function mount(Signalement $signalement): void
     {
@@ -28,6 +29,25 @@ class DetailSignalement extends Component
         if ($this->record->user_id !== Auth::id()) {
             abort(403);
         }
+    }
+
+    public function openEvalModal(): void
+    {
+        $this->editing = false;
+        $this->note = null;
+        $this->commentaire = '';
+        $this->probleme_resolu = true;
+        $this->showEvalModal = true;
+    }
+
+    public function openEditModal(): void
+    {
+        $eval = $this->record->evaluation;
+        $this->editing = true;
+        $this->note = $eval->note;
+        $this->commentaire = $eval->commentaire ?? '';
+        $this->probleme_resolu = $eval->probleme_resolu;
+        $this->showEvalModal = true;
     }
 
     public function evaluer(): void
@@ -43,6 +63,19 @@ class DetailSignalement extends Component
         $this->record->refresh();
         $this->showEvalModal = false;
         $this->flashSuccess('Merci pour votre évaluation.');
+    }
+
+    public function modifierEvaluation(): void
+    {
+        $this->validate(['note' => 'required|integer|min:1|max:5']);
+        $this->record->evaluation->update([
+            'note' => $this->note,
+            'commentaire' => $this->commentaire ?: null,
+            'probleme_resolu' => $this->probleme_resolu,
+        ]);
+        $this->record->refresh();
+        $this->showEvalModal = false;
+        $this->flashSuccess('Évaluation modifiée avec succès.');
     }
 
     public function signalerNonResolu(): void

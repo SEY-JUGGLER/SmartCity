@@ -6,6 +6,7 @@ use App\Models\Attribution;
 use App\Models\Signalement;
 use App\Models\SupportRequest;
 use App\Models\Materiel;
+use App\Services\ClassificationService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -56,12 +57,18 @@ class Dashboard extends Component
         $signalementsIds = Attribution::where('agent_id', $agentId)->pluck('signalement_id');
 
         return [
-            'missionsEnCours' => Signalement::whereIn('id', $signalementsIds)->where('statut', 'enCours')->count(),
+            'missionsEnCours'   => Signalement::whereIn('id', $signalementsIds)->where('statut', 'enCours')->count(),
             'missionsTerminees' => Signalement::whereIn('id', $signalementsIds)->where('statut', 'terminer')->count(),
-            'totalMissions' => $signalementsIds->count(),
-            'supportEnAttente' => SupportRequest::where('agent_id', $agentId)->where('statut', 'en_attente')->count(),
-            'materielsAttribues' => Materiel::where('agent_id', $agentId)->count(),
+            'totalMissions'     => $signalementsIds->count(),
+            'supportEnAttente'  => SupportRequest::where('agent_id', $agentId)->where('statut', 'en_attente')->count(),
+            'materielsAttribues'=> Materiel::where('agent_id', $agentId)->count(),
         ];
+    }
+
+    #[Computed]
+    public function classification(): array
+    {
+        return ClassificationService::classifierAgent(Auth::id());
     }
 
     #[Computed]

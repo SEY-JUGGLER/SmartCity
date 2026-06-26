@@ -1,31 +1,19 @@
 <x-filament-widgets::widget>
-    <x-filament::section
-        class="overflow-hidden rounded-3xl border border-gray-200/60 dark:border-gray-800 bg-gradient-to-br from-white via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-950 shadow-xl"
-    >
+    <x-filament::section>
         <x-slot name="heading">
-            <div class="flex items-center justify-between w-full">
-                <div class="flex items-center gap-3">
-                    <div style="width:32px;height:32px" class="rounded-2xl bg-emerald-500/10 flex items-center justify-center">
-                        <x-heroicon-m-user-group style="width:16px;height:16px" class="text-emerald-500"/>
+            <div class="flex items-center justify-between w-full gap-3">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="flex items-center justify-center rounded-lg bg-emerald-500/10 flex-shrink-0" style="width:28px;height:28px">
+                        <x-heroicon-m-user-group style="width:14px;height:14px" class="text-emerald-500" />
                     </div>
-
-                    <div>
-                        <h2 class="text-lg font-bold text-gray-900 dark:text-white">
-                            Agents — Statut & Performances
-                        </h2>
-
-                        <p class="text-sm text-gray-500">
-                            Vue globale en temps réel des agents terrain
-                        </p>
+                    <div class="min-w-0">
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white leading-tight truncate">Agents — Statut & Performances</p>
+                        <p class="text-[10px] text-gray-400 leading-tight">Vue globale en temps réel</p>
                     </div>
                 </div>
-
-                <div class="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-
-                    <span class="text-sm font-medium text-emerald-600 dark:text-emerald-400">
-                        Temps réel
-                    </span>
+                <div class="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-[10px] font-medium text-emerald-600 dark:text-emerald-400">Temps réel</span>
                 </div>
             </div>
         </x-slot>
@@ -37,140 +25,106 @@
         @endphp
 
         {{-- KPI Cards --}}
-        <div class="grid grid-cols-2 xl:grid-cols-4 gap-2 mb-4">
+        <div class="grid grid-cols-4 gap-2 mb-4">
 
-            <div class="group rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-2.5 transition-all duration-150 hover:shadow-md">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-[11px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Disponibles</p>
-                        <p class="text-xl font-extrabold text-emerald-500">{{ $stats['disponibles'] }}</p>
+            @foreach([
+                ['Disponibles', $stats['disponibles'], 'text-emerald-500', 'bg-emerald-500/10', 'heroicon-m-check-circle'],
+                ['Occupés',     $stats['occupes'],     'text-amber-500',   'bg-amber-500/10',   'heroicon-m-briefcase'],
+                ['Absents',     $stats['absents'],     'text-red-500',     'bg-red-500/10',     'heroicon-m-x-circle'],
+                ['Inactifs',    $stats['inactifs'],    'text-slate-400',   'bg-slate-500/10',   'heroicon-m-moon'],
+            ] as [$label, $value, $textColor, $iconBg, $icon])
+            <div class="rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-2.5">
+                <div class="flex items-center justify-between gap-1">
+                    <div class="min-w-0">
+                        <p class="text-[10px] font-medium text-gray-400 uppercase tracking-wider truncate">{{ $label }}</p>
+                        <p class="text-xl font-black {{ $textColor }} leading-none mt-0.5">{{ $value }}</p>
                     </div>
-                    <div style="width:28px;height:28px" class="rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                        <x-heroicon-m-check-circle style="width:13px;height:13px" class="text-emerald-500" />
+                    <div class="flex items-center justify-center rounded-lg {{ $iconBg }} flex-shrink-0" style="width:26px;height:26px">
+                        <x-dynamic-component :component="$icon" style="width:12px;height:12px" class="{{ $textColor }}" />
                     </div>
                 </div>
             </div>
-
-            <div class="group rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-2.5 transition-all duration-150 hover:shadow-md">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-[11px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Occupés</p>
-                        <p class="text-xl font-extrabold text-amber-500">{{ $stats['occupes'] }}</p>
-                    </div>
-                    <div style="width:28px;height:28px" class="rounded-lg bg-amber-500/10 flex items-center justify-center">
-                        <x-heroicon-m-briefcase style="width:13px;height:13px" class="text-amber-500" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="group rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-2.5 transition-all duration-150 hover:shadow-md">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-[11px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Absents</p>
-                        <p class="text-xl font-extrabold text-red-500">{{ $stats['absents'] }}</p>
-                    </div>
-                    <div style="width:28px;height:28px" class="rounded-lg bg-red-500/10 flex items-center justify-center">
-                        <x-heroicon-m-x-circle style="width:13px;height:13px" class="text-red-500" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="group rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-2.5 transition-all duration-150 hover:shadow-md">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-[11px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Inactifs</p>
-                        <p class="text-xl font-extrabold text-slate-500">{{ $stats['inactifs'] }}</p>
-                    </div>
-                    <div style="width:28px;height:28px" class="rounded-lg bg-slate-500/10 flex items-center justify-center">
-                        <x-heroicon-m-moon style="width:13px;height:13px" class="text-slate-500" />
-                    </div>
-                </div>
-            </div>
+            @endforeach
 
         </div>
 
         {{-- Charts --}}
-        <div class="grid grid-cols-1 2xl:grid-cols-2 gap-4 items-start">
+        <div class="grid grid-cols-1 2xl:grid-cols-2 gap-4">
 
             {{-- Donut --}}
-            <div class="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 shadow-sm">
-
+            <div class="rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
                 <div class="flex items-center justify-between mb-3">
                     <div>
-                        <h3 class="text-base font-bold text-gray-900 dark:text-white">Répartition des agents</h3>
-                        <p class="text-xs text-gray-500">État actuel des équipes terrain</p>
+                        <h3 class="text-xs font-bold text-gray-900 dark:text-white">Répartition des agents</h3>
+                        <p class="text-[10px] text-gray-400">État actuel des équipes terrain</p>
                     </div>
-                    <div class="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-[11px] font-semibold text-gray-500">{{ $total }} agents</div>
+                    <span class="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-[10px] font-semibold text-gray-500">{{ $total }} agents</span>
                 </div>
 
-                <div wire:ignore class="relative h-60">
+                <div wire:ignore class="relative" style="height:220px;">
                     <canvas id="chart-agents-donut"></canvas>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2 mt-4">
-
+                <div class="grid grid-cols-2 gap-1.5 mt-3">
                     @foreach([
                         ['Disponibles', $stats['disponibles'], 'bg-emerald-500'],
-                        ['Occupés', $stats['occupes'], 'bg-amber-500'],
-                        ['Absents', $stats['absents'], 'bg-red-500'],
-                        ['Inactifs', $stats['inactifs'], 'bg-slate-500'],
+                        ['Occupés',     $stats['occupes'],     'bg-amber-500'],
+                        ['Absents',     $stats['absents'],     'bg-red-500'],
+                        ['Inactifs',    $stats['inactifs'],    'bg-slate-400'],
                     ] as [$label, $value, $color])
-
-                        <div class="flex items-center justify-between rounded-xl bg-gray-50 dark:bg-gray-800/60 px-3 py-2">
-                            <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full {{ $color }}"></span>
-                                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">{{ $label }}</span>
-                            </div>
-                            <span class="text-xs font-bold text-gray-900 dark:text-white">{{ $value }}</span>
+                    <div class="flex items-center justify-between rounded-lg bg-gray-50 dark:bg-gray-800/60 px-2.5 py-1.5">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <span class="w-2 h-2 rounded-full {{ $color }} flex-shrink-0"></span>
+                            <span class="text-[10px] font-medium text-gray-600 dark:text-gray-300 truncate">{{ $label }}</span>
                         </div>
-
+                        <span class="text-[10px] font-bold text-gray-900 dark:text-white ml-2 flex-shrink-0">{{ $value }}</span>
+                    </div>
                     @endforeach
-
                 </div>
-
             </div>
 
             {{-- Top Agents --}}
-            <div class="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 shadow-sm">
-
+            <div class="rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
                 <div class="flex items-center justify-between mb-3">
                     <div>
-                        <h3 class="text-base font-bold text-gray-900 dark:text-white">Top agents du mois</h3>
-                        <p class="text-xs text-gray-500">Classement basé sur les missions effectuées</p>
+                        <h3 class="text-xs font-bold text-gray-900 dark:text-white">Top agents du mois</h3>
+                        <p class="text-[10px] text-gray-400">Classé par missions effectuées</p>
                     </div>
-                    <div style="width:30px;height:30px" class="rounded-xl bg-primary-500/10 flex items-center justify-center">
-                        <x-heroicon-m-trophy style="width:14px;height:14px" class="text-primary-500"/>
+                    <div class="flex items-center justify-center rounded-lg bg-primary-500/10 flex-shrink-0" style="width:26px;height:26px">
+                        <x-heroicon-m-trophy style="width:12px;height:12px" class="text-primary-500" />
                     </div>
                 </div>
 
-                <div wire:ignore class="relative h-60 mb-4">
+                <div wire:ignore class="relative" style="height:220px;">
                     <canvas id="chart-agents-bar"></canvas>
                 </div>
 
-                <div class="space-y-2">
-
+                @if(count($top))
+                <div class="space-y-1.5 mt-3">
                     @foreach($top as $index => $agent)
-
-                        <div class="group flex items-center justify-between p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/60 hover:bg-primary-50 dark:hover:bg-primary-500/10 transition-all duration-200">
-                            <div class="flex items-center gap-3">
-                                <div style="width:30px;height:30px" class="rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 text-white flex items-center justify-center text-xs font-black shadow">
-                                    {{ $index + 1 }}
-                                </div>
-                                <div>
-                                    <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $agent['nom'] }}</p>
-                                    <p class="text-[11px] text-gray-500">Agent terrain</p>
-                                </div>
+                    <div class="flex items-center justify-between p-2 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-primary-50 dark:hover:bg-primary-500/10 transition-colors duration-150">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <div class="flex items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 text-white text-[10px] font-black flex-shrink-0" style="width:22px;height:22px">
+                                {{ $index + 1 }}
                             </div>
-                            <div class="text-right">
-                                <p class="text-lg font-black text-primary-500">{{ $agent['missions'] }}</p>
-                                <p class="text-[11px] text-gray-500">missions</p>
+                            <div class="min-w-0">
+                                <p class="text-xs font-semibold text-gray-900 dark:text-white truncate">{{ $agent['nom'] }}</p>
+                                <p class="text-[9px] text-gray-400">Agent terrain</p>
                             </div>
                         </div>
-
+                        <div class="text-right flex-shrink-0 ml-2">
+                            <p class="text-sm font-black text-primary-500 leading-none">{{ $agent['missions'] }}</p>
+                            <p class="text-[9px] text-gray-400">missions</p>
+                        </div>
+                    </div>
                     @endforeach
-
                 </div>
-
+                @else
+                <div class="flex flex-col items-center gap-1.5 py-6">
+                    <x-heroicon-o-inbox style="width:20px;height:20px" class="text-gray-300 dark:text-gray-600" />
+                    <p class="text-[10px] text-gray-400">Aucune mission ce mois</p>
+                </div>
+                @endif
             </div>
 
         </div>
@@ -186,9 +140,9 @@
                             return;
                         }
 
-                        var dark = document.documentElement.classList.contains('dark');
-                        var tick = dark ? '#94a3b8' : '#64748b';
-                        var grid = dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+                        var dark   = document.documentElement.classList.contains('dark');
+                        var tick   = dark ? '#94a3b8' : '#64748b';
+                        var grid   = dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
                         var cardBg = dark ? '#111827' : '#ffffff';
 
                         var tip = {
@@ -197,8 +151,8 @@
                             bodyColor: dark ? '#cbd5e1' : '#64748b',
                             borderColor: dark ? '#1e293b' : '#e2e8f0',
                             borderWidth: 1,
-                            padding: 12,
-                            cornerRadius: 14,
+                            padding: 10,
+                            cornerRadius: 12,
                             displayColors: true,
                         };
 
@@ -210,15 +164,15 @@
                                     labels: ['Disponibles', 'Occupés', 'Absents', 'Inactifs'],
                                     datasets: [{
                                         data: [{{ $stats['disponibles'] }}, {{ $stats['occupes'] }}, {{ $stats['absents'] }}, {{ $stats['inactifs'] }}],
-                                        backgroundColor: ['rgba(16,185,129,0.95)', 'rgba(245,158,11,0.95)', 'rgba(239,68,68,0.95)', 'rgba(100,116,139,0.95)'],
+                                        backgroundColor: ['rgba(16,185,129,0.95)', 'rgba(245,158,11,0.95)', 'rgba(239,68,68,0.95)', 'rgba(148,163,184,0.95)'],
                                         borderWidth: 0,
-                                        hoverOffset: 10,
+                                        hoverOffset: 8,
                                     }]
                                 },
                                 options: {
-                                    responsive: true, maintainAspectRatio: false, cutout: '82%',
+                                    responsive: true, maintainAspectRatio: false, cutout: '80%',
                                     plugins: { legend: { display: false }, tooltip: tip },
-                                    animation: { animateRotate: true, duration: 1000, easing: 'easeOutQuart' },
+                                    animation: { animateRotate: true, duration: 900, easing: 'easeOutQuart' },
                                 },
                                 plugins: [{
                                     id: 'centerText',
@@ -227,12 +181,12 @@
                                         ctx.save();
                                         var cx = chart.width / 2, cy = chart.height / 2;
                                         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                                        ctx.font = '800 38px Inter';
+                                        ctx.font = '800 34px Inter, sans-serif';
                                         ctx.fillStyle = dark ? '#fff' : '#0f172a';
-                                        ctx.fillText('{{ $total }}', cx, cy - 10);
-                                        ctx.font = '500 13px Inter';
+                                        ctx.fillText('{{ $total }}', cx, cy - 9);
+                                        ctx.font = '500 11px Inter, sans-serif';
                                         ctx.fillStyle = dark ? '#94a3b8' : '#64748b';
-                                        ctx.fillText('Agents actifs', cx, cy + 20);
+                                        ctx.fillText('agents actifs', cx, cy + 16);
                                         ctx.restore();
                                     }
                                 }]
@@ -249,18 +203,18 @@
                                     datasets: [{
                                         label: 'Missions',
                                         data: top.map(function(a) { return a.missions; }),
-                                        backgroundColor: ['rgba(59,130,246,0.95)', 'rgba(16,185,129,0.95)', 'rgba(245,158,11,0.95)', 'rgba(139,92,246,0.95)', 'rgba(6,182,212,0.95)'],
-                                        borderRadius: 12, borderSkipped: false, barThickness: 24,
+                                        backgroundColor: ['rgba(59,130,246,0.9)', 'rgba(16,185,129,0.9)', 'rgba(245,158,11,0.9)', 'rgba(139,92,246,0.9)', 'rgba(6,182,212,0.9)'],
+                                        borderRadius: 8, borderSkipped: false, barThickness: 20,
                                     }]
                                 },
                                 options: {
                                     responsive: true, maintainAspectRatio: false, indexAxis: 'y',
                                     plugins: { legend: { display: false }, tooltip: tip },
                                     scales: {
-                                        x: { beginAtZero: true, grid: { color: grid, drawBorder: false }, ticks: { color: tick, precision: 0, font: { size: 11 } }, border: { display: false } },
-                                        y: { grid: { display: false }, ticks: { color: tick, font: { size: 12, weight: '600' } }, border: { display: false } },
+                                        x: { beginAtZero: true, grid: { color: grid, drawBorder: false }, ticks: { color: tick, precision: 0, font: { size: 10 } }, border: { display: false } },
+                                        y: { grid: { display: false }, ticks: { color: tick, font: { size: 11, weight: '600' } }, border: { display: false } },
                                     },
-                                    animation: { duration: 1000, easing: 'easeOutQuart' },
+                                    animation: { duration: 900, easing: 'easeOutQuart' },
                                 },
                             });
                         }

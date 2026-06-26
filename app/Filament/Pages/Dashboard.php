@@ -25,6 +25,7 @@ class Dashboard extends BaseDashboard
             \App\Filament\Widgets\ActiviteRecenteWidget::class,
             \App\Filament\Widgets\AlertesSystemeWidget::class,
             \App\Filament\Widgets\PointageWidget::class,
+            \App\Filament\Widgets\ClassificationsWidget::class,
         ];
     }
 }

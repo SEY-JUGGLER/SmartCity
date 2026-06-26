@@ -34,7 +34,9 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
                 'danger'  => Color::Rose,
             ])
-            ->brandName('SignalApp')
+            ->brandName('SmartCity')
+            ->brandLogo(asset('images/logo.png'))
+            ->brandLogoHeight('2.5rem')
             ->darkMode(true)
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth('full')
@@ -43,7 +45,7 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make('Signalements')->icon('heroicon-o-exclamation-triangle'),
                 NavigationGroup::make('Utilisateurs')->icon('heroicon-o-users'),
                 NavigationGroup::make('Zones & Missions')->icon('heroicon-o-map'),
-                NavigationGroup::make('Rapports')->icon('heroicon-o-document-chart-bar')->collapsed(),
+                NavigationGroup::make('Rapports')->icon('heroicon-o-document-chart-bar'),
             ])
             ->globalSearch(true)
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])

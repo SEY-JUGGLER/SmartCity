@@ -123,7 +123,8 @@
     <!-- Header -->
     <div class="header">
         <div>
-            <div class="header-brand">SignalApp</div>
+            <img src="{{ public_path('images/logo.png') }}" alt="SmartCity" style="height: 32px; margin-bottom: 6px;">
+            <div class="header-brand">SmartCity</div>
             <div class="header-sub">Rapport d'activité — Ville intelligente</div>
         </div>
         <div class="header-meta">
@@ -267,7 +268,7 @@
 
     <!-- Footer -->
     <div class="footer">
-        <span>SignalApp — Système de gestion des signalements urbains</span>
+        <span>SmartCity — Système de gestion des signalements urbains</span>
         <span>Rapport #{{ $rapport->id }} — {{ optional($rapport->dateGeneration)->format('d/m/Y') }}</span>
     </div>
 

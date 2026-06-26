@@ -23,17 +23,17 @@ class DatabaseSeeder extends Seeder
         // ========== ZONES ==========
         $zones = [];
         $zoneData = [
-            ['nomZone' => 'Dakar-Plateau', 'superficie' => 45.2, 'nombreHabitant' => 35000],
-            ['nomZone' => 'Médina', 'superficie' => 22.5, 'nombreHabitant' => 85000],
-            ['nomZone' => 'Gueule Tapée', 'superficie' => 12.8, 'nombreHabitant' => 42000],
-            ['nomZone' => 'Fann-Point E', 'superficie' => 18.3, 'nombreHabitant' => 28000],
-            ['nomZone' => 'Grand Yoff', 'superficie' => 30.1, 'nombreHabitant' => 120000],
-            ['nomZone' => 'Pikine', 'superficie' => 55.0, 'nombreHabitant' => 250000],
-            ['nomZone' => 'Guediawaye', 'superficie' => 42.7, 'nombreHabitant' => 180000],
-            ['nomZone' => 'Rufisque', 'superficie' => 35.4, 'nombreHabitant' => 95000],
+            ['nomZone' => 'Dakar-Plateau', 'superficie' => 45.2, 'nombreHabitant' => 35000, 'latitude' => 14.6937, 'longitude' => -17.4441],
+            ['nomZone' => 'Médina', 'superficie' => 22.5, 'nombreHabitant' => 85000, 'latitude' => 14.6789, 'longitude' => -17.4378],
+            ['nomZone' => 'Gueule Tapée', 'superficie' => 12.8, 'nombreHabitant' => 42000, 'latitude' => 14.6652, 'longitude' => -17.4582],
+            ['nomZone' => 'Fann-Point E', 'superficie' => 18.3, 'nombreHabitant' => 28000, 'latitude' => 14.6830, 'longitude' => -17.4700],
+            ['nomZone' => 'Grand Yoff', 'superficie' => 30.1, 'nombreHabitant' => 120000, 'latitude' => 14.7300, 'longitude' => -17.4780],
+            ['nomZone' => 'Pikine', 'superficie' => 55.0, 'nombreHabitant' => 250000, 'latitude' => 14.7500, 'longitude' => -17.3900],
+            ['nomZone' => 'Guediawaye', 'superficie' => 42.7, 'nombreHabitant' => 180000, 'latitude' => 14.7800, 'longitude' => -17.4000],
+            ['nomZone' => 'Rufisque', 'superficie' => 35.4, 'nombreHabitant' => 95000, 'latitude' => 14.7200, 'longitude' => -17.2800],
         ];
         foreach ($zoneData as $z) {
-            $zones[] = Zone::firstOrCreate(['nomZone' => $z['nomZone']], $z);
+            $zones[] = Zone::updateOrCreate(['nomZone' => $z['nomZone']], $z);
         }
 
         // ========== CATÉGORIES ==========

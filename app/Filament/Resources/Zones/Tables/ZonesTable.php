@@ -48,6 +48,18 @@ class ZonesTable
                     ->state(fn ($record) => $record->users()->where('role', 'AGENT')->count())
                     ->badge()
                     ->color('info'),
+                TextColumn::make('latitude')
+                    ->label('Latitude')
+                    ->numeric(4)
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                TextColumn::make('longitude')
+                    ->label('Longitude')
+                    ->numeric(4)
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
             ])
             ->filters([
                 //

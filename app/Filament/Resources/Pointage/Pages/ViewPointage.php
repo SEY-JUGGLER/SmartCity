@@ -5,7 +5,7 @@ namespace App\Filament\Resources\Pointage\Pages;
 use App\Filament\Resources\Pointage\PointageResource;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\DateTimePicker;
@@ -81,25 +81,23 @@ class ViewPointage extends ViewRecord
         ];
     }
 
-    public function mount($record): void
+    protected function mutateFormDataBeforeFill(array $data): array
     {
-        // If we have a localisation record, we can show it
-        $derniereLocalisation = 'Non disponible';
-        $latestLocalisation = $record->localisations->latest()->first();
-        
-        if ($latestLocalisation) {
-            $latitude = $latestLocalisation->latitude ?? null;
-            $longitude = $latestLocalisation->longitude ?? null;
-            
-            if ($latitude !== null && $longitude !== null) {
-                $derniereLocalisation = $latitude . ', ' . $longitude;
-            }
-        }
-        
-        $this->form->fill([
-            'derniere_localisation' => $derniereLocalisation,
-        ]);
+        $loc  = $this->record->localisations()->latest('dateHeure')->first();
+        $zone = $this->record->zone;
 
-        parent::mount($record);
+        if ($loc?->latitude !== null && $loc?->longitude !== null) {
+            $data['derniere_localisation'] = number_format((float) $loc->latitude, 6)
+                . ', ' . number_format((float) $loc->longitude, 6)
+                . ' — GPS (temps réel)';
+        } elseif ($zone?->latitude !== null && $zone?->longitude !== null) {
+            $data['derniere_localisation'] = number_format((float) $zone->latitude, 6)
+                . ', ' . number_format((float) $zone->longitude, 6)
+                . ' — Zone : ' . $zone->nomZone;
+        } else {
+            $data['derniere_localisation'] = 'Non disponible';
+        }
+
+        return $data;
     }
 }

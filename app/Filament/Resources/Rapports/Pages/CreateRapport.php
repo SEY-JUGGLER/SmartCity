@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Rapports\Pages;
 
 use App\Filament\Resources\Rapports\RapportResource;
 use App\Models\Rapport;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateRapport extends CreateRecord
@@ -14,7 +15,6 @@ class CreateRapport extends CreateRecord
     {
         $data['user_id'] = auth()->id();
 
-        // Auto-calculer les stats si elles sont à zéro (formulaire non pré-rempli)
         if (empty($data['nbrSignalement']) || $data['nbrSignalement'] == 0) {
             $stats = Rapport::calculerStats($data['date_debut'] ?? null, $data['date_fin'] ?? null);
             $data  = array_merge($data, $stats);
@@ -23,8 +23,17 @@ class CreateRapport extends CreateRecord
         return $data;
     }
 
+    protected function afterCreate(): void
+    {
+        Notification::make()
+            ->title('Rapport cree avec succes')
+            ->body('Rapport #' . $this->getRecord()->id . ' du ' . ($this->getRecord()->dateGeneration?->format('d/m/Y') ?? '—'))
+            ->success()
+            ->send();
+    }
+
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('view', ['record' => $this->getRecord()]);
+        return $this->getResource()::getUrl('index');
     }
 }

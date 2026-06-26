@@ -7,6 +7,7 @@
         ['route' => 'agent.support', 'label' => 'Support'],
         ['route' => 'agent.materiels', 'label' => 'Matériels'],
         ['route' => 'agent.carte', 'label' => 'Carte'],
+        ['route' => 'agent.classement', 'label' => 'Classement'],
         ['route' => 'agent.notifications', 'label' => 'Notifications'],
         ['route' => 'agent.profil', 'label' => 'Profil'],
     ];
@@ -15,10 +16,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 gap-4">
             <a href="{{ route('agent.dashboard') }}" class="flex items-center gap-2 shrink-0">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg>
-                </div>
-                <span class="text-lg font-bold text-slate-900 dark:text-white hidden sm:inline">SignalApp Agent</span>
+                <img src="{{ asset('images/logo.png') }}" alt="SmartCity" class="h-8 w-auto">
+                <span class="text-lg font-bold text-slate-900 dark:text-white hidden sm:inline">SmartCity Agent</span>
             </a>
             <div class="flex items-center gap-1 overflow-x-auto text-xs sm:text-sm">
                 @foreach ($links as $link)

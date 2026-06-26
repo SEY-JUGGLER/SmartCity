@@ -36,15 +36,16 @@ class Rapport extends Model
             ->when($debut, fn($q) => $q->whereDate('created_at', '>=', $debut))
             ->when($fin,   fn($q) => $q->whereDate('created_at', '<=', $fin));
 
-        $total     = $query()->count() ?: 1;
+        $total     = $query()->count();
         $attente   = $query()->where('statut', 'enAttente')->count();
         $cours     = $query()->where('statut', 'enCours')->count();
         $termines  = $query()->where('statut', 'terminer')->count();
         $rejetes   = $query()->where('statut', 'rejeter')->count();
         $critiques = $query()->where('priorite', 'critique')->whereIn('statut', ['enAttente', 'enCours'])->count();
 
-        $tauxRes  = round(($termines / $total) * 100, 2);
-        $tauxRefus = round(($rejetes  / $total) * 100, 2);
+        $denom = max(1, $total);
+        $tauxRes  = round(($termines / $denom) * 100, 2);
+        $tauxRefus = round(($rejetes  / $denom) * 100, 2);
 
         $svc = app(AgentStatsService::class);
         $tempsMoyH = $svc->getTempsMoyenTraitement();

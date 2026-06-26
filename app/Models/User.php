@@ -2,11 +2,12 @@
 namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasName
 {
     use Notifiable;
 
@@ -26,6 +27,13 @@ class User extends Authenticatable implements FilamentUser
         'pointer'       => 'boolean',
         'heurePointage' => 'datetime',
     ];
+
+    /** Filament v5 — nom affiché dans le menu et l'avatar */
+    public function getFilamentName(): string
+    {
+        $full = trim(($this->prenom ?? '') . ' ' . ($this->name ?? ''));
+        return $full ?: ($this->email ?? 'Utilisateur');
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {

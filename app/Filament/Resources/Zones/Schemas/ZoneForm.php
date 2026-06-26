@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Zones\Schemas;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\View;
 
 class ZoneForm
 {
@@ -28,6 +29,23 @@ class ZoneForm
                         ->minValue(0)
                         ->default(0),
                 ])->columns(2),
+
+            Section::make('Coordonnées géographiques')
+                ->schema([
+                    TextInput::make('latitude')
+                        ->label('Latitude')
+                        ->numeric()
+                        ->step(0.0001)
+                        ->extraAttributes(['id' => 'zone-latitude']),
+                    TextInput::make('longitude')
+                        ->label('Longitude')
+                        ->numeric()
+                        ->step(0.0001)
+                        ->extraAttributes(['id' => 'zone-longitude']),
+                ])->columns(2),
+
+            View::make('filament.forms.components.zone-coordinates')
+                ->columnSpanFull(),
         ]);
     }
 }

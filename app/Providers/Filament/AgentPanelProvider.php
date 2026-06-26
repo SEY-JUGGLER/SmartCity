@@ -33,7 +33,9 @@ class AgentPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
                 'danger'  => Color::Rose,
             ])
-            ->brandName('SignalApp Agent')
+            ->brandName('SmartCity Agent')
+            ->brandLogo(asset('images/logo.png'))
+            ->brandLogoHeight('2.5rem')
             ->darkMode(true)
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth('screen-2xl')

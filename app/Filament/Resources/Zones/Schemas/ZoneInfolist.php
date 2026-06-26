@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Zones\Schemas;
 
-//use Filament\Infolists\Components\Section;
+//use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
@@ -22,6 +22,14 @@ class ZoneInfolist
                     TextEntry::make('nombreHabitant')
                         ->label('Nombre d\'habitants')
                         ->numeric(),
+                    TextEntry::make('latitude')
+                        ->label('Latitude')
+                        ->numeric(4)
+                        ->placeholder('—'),
+                    TextEntry::make('longitude')
+                        ->label('Longitude')
+                        ->numeric(4)
+                        ->placeholder('—'),
                     TextEntry::make('created_at')
                         ->label('Créée le')
                         ->dateTime('d/m/Y'),

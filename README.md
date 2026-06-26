@@ -20,7 +20,6 @@ Le projet est conçu avec une architecture moderne utilisant Laravel 12, Filamen
 # Objectifs du Projet
 
 ## Objectif Général
-
 Améliorer la gestion des problèmes urbains grâce à une plateforme numérique centralisée permettant une meilleure communication entre citoyens, agents terrain et administration.
 
 ---

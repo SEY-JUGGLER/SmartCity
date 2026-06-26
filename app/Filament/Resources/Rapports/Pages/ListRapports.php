@@ -38,12 +38,12 @@ class ListRapports extends ListRecords
                     ]));
 
                     Notification::make()
-                        ->title('Rapport généré avec succès')
-                        ->body('Le rapport du ' . today()->format('d/m/Y') . ' a été créé.')
+                        ->title('Rapport #' . $rapport->id . ' généré avec succès')
+                        ->body('Du ' . $rapport->date_debut?->format('d/m/Y') . ' au ' . $rapport->date_fin?->format('d/m/Y'))
                         ->success()
                         ->send();
 
-                    $this->redirect(RapportResource::getUrl('view', ['record' => $rapport]));
+                    $this->redirect(RapportResource::getUrl('index'));
                 }),
 
             CreateAction::make()

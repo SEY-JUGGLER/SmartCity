@@ -3,10 +3,9 @@
 namespace App\Filament\Resources\Admin\Schemas;
 
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,7 +35,7 @@ class AdminForm
                             ->required(fn($live) => !$live)
                             ->maxLength(255)
                             ->dehydrated(fn($state) => filled($state))
-                            ->dehydrateUsing(fn($state) => filled($state) ? Hash::make($state) : null)
+                            ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
                             ->visible(fn($live) => !$live),
                         TextInput::make('age')
                             ->numeric()
@@ -51,15 +50,7 @@ class AdminForm
                     ])->columns(2),
                 Section::make('Statut et disponibilité')
                     ->schema([
-                        Select::make('role')
-                            ->default('ADMIN')
-                            ->readonly()
-                            ->options([
-                                'ADMIN' => 'Administrateur',
-                                'AGENT' => 'Agent',
-                                'CITOYEN' => 'Citoyen',
-                            ])
-                            ->disabled(),
+    
                         Toggle::make('actif')
                             ->label('Compte actif')
                             ->default(true),

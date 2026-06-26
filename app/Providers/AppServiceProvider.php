@@ -16,10 +16,12 @@ class AppServiceProvider extends ServiceProvider
     {
         View::addNamespace('View', app_path('View'));
 
-        // Injecter Chart.js dans le panel Filament
+        // Injecter Leaflet + Chart.js dans le panel Filament
         FilamentView::registerRenderHook(
             PanelsRenderHook::HEAD_END,
-            fn(): string => '<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+            fn(): string => '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 /* Section headings */
 .fi-wi-widget .fi-section-header-heading { display:flex; align-items:center; gap:0.5rem; }

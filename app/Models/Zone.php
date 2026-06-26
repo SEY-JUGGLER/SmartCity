@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Zone extends Model
 {
-    protected $fillable = ['nomZone', 'superficie', 'nombreHabitant'];
+    protected $fillable = ['nomZone', 'superficie', 'nombreHabitant', 'latitude', 'longitude'];
 
     public function users()        { return $this->hasMany(User::class); }
     public function signalements() { return $this->hasMany(Signalement::class); }
