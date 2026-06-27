@@ -59,8 +59,25 @@ class MaterielResource extends Resource
                 ->label('Assigné à')
                 ->searchable()
                 ->nullable()
-                ->relationship('agent', 'prenom', fn ($q) => $q->where('role', 'AGENT'))
-                ->getOptionLabelFromRecordUsing(fn ($record) => $record->prenom . ' ' . $record->name),
+                ->options(fn () => \App\Models\User::where('role', 'AGENT')
+                    ->orderBy('prenom')
+                    ->get()
+                    ->mapWithKeys(fn ($u) => [$u->id => $u->prenom . ' ' . $u->name])
+                    ->toArray()
+                )
+                ->getSearchResultsUsing(fn (string $search) =>
+                    \App\Models\User::where('role', 'AGENT')
+                        ->where(fn ($q) => $q
+                            ->where('prenom', 'like', "%{$search}%")
+                            ->orWhere('name', 'like', "%{$search}%")
+                        )
+                        ->orderBy('prenom')
+                        ->limit(20)
+                        ->get()
+                        ->mapWithKeys(fn ($u) => [$u->id => $u->prenom . ' ' . $u->name])
+                        ->toArray()
+                )
+                ->getOptionLabelUsing(fn ($value) => optional(\App\Models\User::find($value))->prenom . ' ' . optional(\App\Models\User::find($value))->name),
 
             DatePicker::make('date_attribution')
                 ->label("Date d'attribution")

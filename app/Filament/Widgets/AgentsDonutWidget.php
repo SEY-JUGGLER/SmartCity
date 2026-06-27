@@ -10,7 +10,7 @@ class AgentsDonutWidget extends Widget
 {
     protected static ?int $sort = 4;
     protected static bool $isLazy = false;
-    protected int|string|array $columnSpan = ['md' => 2, 'xl' => 5];
+    protected int|string|array $columnSpan = ['default' => 'full'];
     protected string $view = 'filament.widgets.agents-donut';
     protected ?string $pollingInterval = '30s';
 

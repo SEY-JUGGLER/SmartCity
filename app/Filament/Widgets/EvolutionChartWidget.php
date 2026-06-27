@@ -10,7 +10,7 @@ class EvolutionChartWidget extends Widget
 {
     protected static ?int $sort = 3;
     protected static bool $isLazy = false;
-    protected int|string|array $columnSpan = ['md' => 4, 'xl' => 7];
+    protected int|string|array $columnSpan = ['default' => 'full'];
     protected string $view = 'filament.widgets.evolution-chart';
     protected ?string $pollingInterval = '60s';
 

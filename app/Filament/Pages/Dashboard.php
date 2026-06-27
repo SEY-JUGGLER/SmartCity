@@ -13,7 +13,10 @@ class Dashboard extends BaseDashboard
     protected static ?string $navigationLabel = 'Tableau de bord';
     protected static ?string $title = 'Tableau de bord';
 
-    protected static string | array $columns = ['md' => 6, 'xl' => 12];
+    public function getColumns(): int | array
+    {
+        return 1;
+    }
 
     public function getWidgets(): array
     {

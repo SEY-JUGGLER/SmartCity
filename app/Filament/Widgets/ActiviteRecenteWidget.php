@@ -9,7 +9,7 @@ class ActiviteRecenteWidget extends Widget
 {
     protected static ?int $sort = 5;
     protected static bool $isLazy = false;
-    protected int|string|array $columnSpan = ['md' => 4, 'xl' => 7];
+    protected int|string|array $columnSpan = ['default' => 'full'];
     protected string $view = 'filament.widgets.activite-recente';
     protected ?string $pollingInterval = '30s';
 

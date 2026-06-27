@@ -9,7 +9,7 @@ class ClassificationsWidget extends Widget
 {
     protected static ?int $sort = 8;
     protected static bool $isLazy = true;
-    protected int|string|array $columnSpan = 'full';
+    protected int|string|array $columnSpan = ['default' => 'full'];
     protected string $view = 'filament.widgets.classifications';
     protected ?string $pollingInterval = '60s';
 

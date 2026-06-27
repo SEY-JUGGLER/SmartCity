@@ -34,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
 .fi-wi-stats-overview-stat-description svg { width:16px !important; height:16px !important; }
 .fi-wi-stats-overview-stat-value { font-size:1.5rem !important; font-weight:800 !important; letter-spacing:-0.02em; }
 .fi-wi-stats-overview-stat-label { font-size:0.75rem !important; font-weight:500 !important; text-transform:uppercase; letter-spacing:0.05em; }
+
+
 </style>',
         );
 

@@ -3,12 +3,12 @@
         <x-slot name="heading">
             <div class="flex items-center justify-between w-full gap-3">
                 <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="flex items-center justify-center rounded-lg bg-primary-500/10 flex-shrink-0" style="width:28px;height:28px">
-                        <x-heroicon-m-chart-bar style="width:14px;height:14px" class="text-primary-500" />
+                    <div class="flex items-center justify-center rounded-xl bg-primary-500/10 flex-shrink-0" style="width:36px;height:36px">
+                        <x-heroicon-m-chart-bar style="width:18px;height:18px" class="text-primary-500" />
                     </div>
                     <div class="min-w-0">
-                        <p class="text-sm font-semibold text-gray-900 dark:text-white leading-tight truncate">Évolution des signalements</p>
-                        <p class="text-[10px] text-gray-400 leading-tight">30 derniers jours</p>
+                        <p class="text-sm font-bold text-gray-900 dark:text-white leading-tight truncate">Évolution des signalements</p>
+                        <p class="text-xs text-gray-400 leading-tight">30 derniers jours</p>
                     </div>
                 </div>
                 <div class="hidden sm:flex items-center gap-3 flex-shrink-0">
@@ -29,7 +29,7 @@
 
         @php $data = $this->getData(); @endphp
 
-        <div wire:ignore class="relative rounded-xl bg-gray-50/50 dark:bg-gray-900/30 overflow-hidden" style="height:190px;">
+        <div wire:ignore class="relative rounded-xl bg-gray-50/50 dark:bg-gray-900/30 overflow-hidden" style="height:280px;">
             <canvas id="evolutionChart-{{ $this->getId() }}" style="display:block;width:100%;height:100%;"></canvas>
         </div>
 

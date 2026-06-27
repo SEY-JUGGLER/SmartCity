@@ -11,7 +11,7 @@ class StatsPerformancesWidget extends BaseWidget
 {
     protected static ?int $sort = 2;
     protected static bool $isLazy = false;
-    protected int|string|array $columnSpan = 'full';
+    protected int|string|array $columnSpan = ['default' => 'full'];
     protected ?string $pollingInterval = '30s';
 
     protected function getStats(): array
