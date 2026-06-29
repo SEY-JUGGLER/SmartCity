@@ -7,6 +7,7 @@ use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::addNamespace('View', app_path('View'));
+
+        // Forcer le protocole HTTPS
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
 
         // Injecter Leaflet + Chart.js dans le panel Filament
         FilamentView::registerRenderHook(
@@ -41,4 +47,5 @@ class AppServiceProvider extends ServiceProvider
 
         \Carbon\Carbon::setLocale('fr');
     }
+    
 }

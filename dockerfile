@@ -1,6 +1,7 @@
 # =====================
 # STAGE 1 : FRONTEND
 # =====================
+# Stage frontend
 FROM node:22 AS frontend
 
 WORKDIR /app
