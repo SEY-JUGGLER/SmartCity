@@ -31,7 +31,7 @@ class EvolutionChartWidget extends Widget
 
         $countByJour = fn(string $statut) => Signalement::whereBetween('dateSignalement', [$start, $end])
             ->where('statut', $statut)
-            ->selectRaw('DATE(dateSignalement) as jour, COUNT(*) as total')
+            ->selectRaw('DATE("dateSignalement") as jour, COUNT(*) as total')
             ->groupBy('jour')
             ->pluck('total', 'jour')
             ->pipe($fill);

@@ -68,7 +68,7 @@ class ClassementsAdmin extends Page
                         ->where('a.agent_id', $agent->id)
                         ->where('s.statut', 'terminer')
                         ->whereNotNull('s.date_resolution')
-                        ->selectRaw('AVG(EXTRACT(EPOCH FROM (s.date_resolution - a.dateHeureAttribution)) / 3600) as avg_hours')
+                        ->selectRaw('AVG(EXTRACT(EPOCH FROM (s."date_resolution" - a."dateHeureAttribution")) / 3600) as avg_hours')
                         ->first();
                     $avgReaction = round((float) ($row->avg_hours ?? 0), 1);
                 } catch (\Throwable) {}
