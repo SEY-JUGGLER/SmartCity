@@ -90,9 +90,7 @@ class AgentStatsService
             return $this->zonesCritiquesCache;
         }
 
-        $this->zonesCritiquesCache = Zone::withCount([
-            'signalements as actifs_count' => fn ($q) => $q->whereIn('statut', ['enAttente', 'enCours']),
-        ])->having('actifs_count', '>', 5)->count();
+        $this->zonesCritiquesCache = Zone::whereHas('signalements', fn ($q) => $q->whereIn('statut', ['enAttente', 'enCours']), '>', 5)->count();
 
         return $this->zonesCritiquesCache;
     }

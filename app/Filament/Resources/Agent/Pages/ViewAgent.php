@@ -112,7 +112,7 @@ class ViewAgent extends ViewRecord
                                 ->whereHas('signalement', fn ($q) => $q->where('statut', 'terminer'))
                                 ->join('signalements', 'attributions.signalement_id', '=', 'signalements.id')
                                 ->whereNotNull('signalements.date_resolution')
-                                ->selectRaw('COALESCE(AVG(TIMESTAMPDIFF(HOUR, signalements.created_at, signalements.date_resolution)), 0) as avg_hours')
+                                ->selectRaw('COALESCE(AVG(EXTRACT(EPOCH FROM (signalements.date_resolution - signalements.created_at)) / 3600), 0) as avg_hours')
                                 ->value('avg_hours') ?? 0, 1
                         ))
                         ->badge()

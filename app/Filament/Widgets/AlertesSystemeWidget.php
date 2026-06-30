@@ -54,7 +54,7 @@ class AlertesSystemeWidget extends Widget
         }
 
         Zone::withCount(['signalements as actifs_count' => fn($q) => $q->whereIn('statut', ['enAttente', 'enCours'])])
-            ->having('actifs_count', '>', 5)
+            ->whereHas('signalements', fn($q) => $q->whereIn('statut', ['enAttente', 'enCours']), '>', 5)
             ->get()
             ->each(fn($z) => $alertes[] = [
                 'type' => 'warning',
