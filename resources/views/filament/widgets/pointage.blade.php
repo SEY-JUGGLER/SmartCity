@@ -85,6 +85,26 @@
 
         </div>
 
+        @if(!empty($d['pointageDetails']))
+        <div class="mt-4">
+            <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Pointages en cours</p>
+            <div class="space-y-1.5">
+                @foreach($d['pointageDetails'] as $pt)
+                <div class="flex items-center justify-between px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
+                        <span class="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">{{ $pt['nom'] }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+                        <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400">{{ $pt['heure'] }}</span>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">{{ $pt['depuis'] }}h</span>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         @if($d['inactifs'])
         <div class="mt-3 flex items-center gap-3 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800/60 bg-slate-50/60 dark:bg-slate-900/20">
             <div class="flex items-center justify-center rounded-xl bg-slate-500/10 flex-shrink-0" style="width:34px;height:34px">

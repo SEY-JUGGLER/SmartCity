@@ -21,10 +21,17 @@ class CarteAgents extends Page
     protected static ?int                  $navigationSort  = 6;
     protected string                       $view            = 'filament.pages.carte-agents';
 
-    public string $filtreStatut  = 'actifs';
+    public string $filtreStatut   = 'actifs';
     public string $rechercheAgent = '';
     public bool   $montrerAgents = true;
     public bool   $montrerSignalements = true;
+    public bool   $sidebarOuverte = true;
+
+    public function toggleSidebar(): void
+    {
+        $this->sidebarOuverte = !$this->sidebarOuverte;
+        $this->dispatch('sidebarToggled', ouverte: $this->sidebarOuverte);
+    }
 
     public function getAgentsPosition(): Collection
     {

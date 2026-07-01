@@ -22,9 +22,23 @@ class AgentStatsService
 
         $base = User::where('role', 'AGENT');
         $total = (clone $base)->count();
-        $disponibles = (clone $base)->where('actif', true)->where('disponible', true)->where('pointer', true)->count();
-        $occupes = (clone $base)->where('actif', true)->where('disponible', false)->count();
-        $absents = (clone $base)->where('actif', true)->where('pointer', false)->count();
+        $disponibles = (clone $base)
+            ->where('actif', true)
+            ->where('disponible', true)
+            ->where('pointer', true)
+            ->where('heurePointage', '>', now()->subHours(12))
+            ->count();
+        $occupes = (clone $base)
+            ->where('actif', true)
+            ->where('disponible', false)
+            ->count();
+        $absents = (clone $base)
+            ->where('actif', true)
+            ->where(function ($q) {
+                $q->where('pointer', false)
+                  ->orWhere('heurePointage', '<=', now()->subHours(12));
+            })
+            ->count();
         $inactifs = (clone $base)->where('actif', false)->count();
 
         $this->agentCache = compact('total', 'disponibles', 'occupes', 'absents', 'inactifs');

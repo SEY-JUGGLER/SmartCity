@@ -54,7 +54,24 @@ function zoneMap() {
                 });
             }
 
-            function placeMarker(lat, lng) {
+            function reverseGeocode(lat, lng) {
+                var url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + lat + '&lon=' + lng + '&accept-language=fr';
+                var ctrl = new AbortController();
+                setTimeout(function() { ctrl.abort(); }, 5000);
+                fetch(url, { signal: ctrl.signal })
+                    .then(function(r) { return r.json(); })
+                    .then(function(d) {
+                        if (d && d.display_name) {
+                            var name = d.address
+                                ? (d.address.suburb || d.address.village || d.address.town || d.address.city || d.address.municipality || d.display_name.split(',')[0])
+                                : d.display_name.split(',')[0];
+                            try { wire.set('data.nomZone', name.trim().substring(0, 255)); } catch(e) {}
+                        }
+                    })
+                    .catch(function() {});
+            }
+
+            function placeMarker(lat, lng, shouldReverseGeocode) {
                 if (self.marker) self.map.removeLayer(self.marker);
                 self.marker = L.marker([lat, lng], { draggable:true, icon: makeIcon() }).addTo(self.map);
                 self.coordsText = lat.toFixed(6) + ' , ' + lng.toFixed(6);
@@ -62,32 +79,31 @@ function zoneMap() {
                     var p = self.marker.getLatLng();
                     self.coordsText = p.lat.toFixed(6) + ' , ' + p.lng.toFixed(6);
                     wire.call('setCoordinates', p.lat.toFixed(6), p.lng.toFixed(6));
+                    reverseGeocode(p.lat, p.lng);
                 });
                 self.map.setView([lat, lng], 13, { animate:true });
+                if (shouldReverseGeocode !== false) reverseGeocode(lat, lng);
             }
 
-            // Clic sur carte → placer marqueur + appeler méthode Livewire
             self.map.on('click', function(e) {
                 var lat = parseFloat(e.latlng.lat.toFixed(6));
                 var lng = parseFloat(e.latlng.lng.toFixed(6));
-                placeMarker(lat, lng);
+                placeMarker(lat, lng, true);
                 wire.call('setCoordinates', lat.toFixed(6), lng.toFixed(6));
             });
 
-            // Écoute de l'événement émis par EditZone::afterFill()
             Livewire.on('zone-map-init', function(data) {
                 var d = Array.isArray(data) ? data[0] : data;
                 if (d && d.lat && d.lng) {
-                    placeMarker(parseFloat(d.lat), parseFloat(d.lng));
+                    placeMarker(parseFloat(d.lat), parseFloat(d.lng), false);
                 }
             });
 
-            // Pour CreateZone : coordonnées déjà saisies (rechargement Livewire)
             try {
                 var lat0 = wire.get('data.latitude');
                 var lng0 = wire.get('data.longitude');
                 if (lat0 && lng0 && parseFloat(lat0) !== 0) {
-                    placeMarker(parseFloat(lat0), parseFloat(lng0));
+                    placeMarker(parseFloat(lat0), parseFloat(lng0), false);
                 }
             } catch(e) {}
 

@@ -23,8 +23,15 @@ class Dashboard extends Component
     {
         $user = Auth::user();
         abort_unless($user && $user->isAgent(), 403);
-        $this->disponible = $user->disponible ?? true;
-        $this->pointe = $user->pointer ?? false;
+
+        if ($user->pointer && $user->heurePointage && $user->heurePointage->lte(now()->subHours(12))) {
+            $user->update(['pointer' => false, 'heurePointage' => null, 'disponible' => false]);
+            $this->pointe = false;
+            $this->disponible = false;
+        } else {
+            $this->disponible = $user->disponible ?? true;
+            $this->pointe = $user->pointer ?? false;
+        }
     }
 
     public function toggleDisponibilite(): void

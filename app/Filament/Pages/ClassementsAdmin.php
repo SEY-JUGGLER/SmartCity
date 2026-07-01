@@ -2,10 +2,10 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\Attribution;
 use App\Models\Evaluation;
 use App\Models\Signalement;
 use App\Models\User;
-use App\Models\Attribution;
 use App\Services\ClassificationService;
 use BackedEnum;
 use Filament\Pages\Page;
@@ -32,69 +32,73 @@ class ClassementsAdmin extends Page
         $agents = User::where('role', 'AGENT');
         $citoyens = User::where('role', 'CITOYEN');
 
+        $moyTaux = (float) Evaluation::whereHas('signalement.attribution', fn ($q) => $q->whereHas('signalement', fn ($q) => $q->whereNotNull('id')))
+            ->avg('note') ?? 0;
+
         return [
             'total_agents'   => (clone $agents)->count(),
             'actifs'         => (clone $agents)->where('actif', true)->count(),
             'disponibles'    => (clone $agents)->where('disponible', true)->count(),
             'total_citoyens' => (clone $citoyens)->count(),
-            'moy_taux'       => round(User::where('role', 'AGENT')->get()->map(fn ($a) => (float) Evaluation::whereHas('signalement.attribution', fn ($q) => $q->where('agent_id', $a->id))->avg('note') ?? 0)->avg(), 1),
+            'moy_taux'       => round($moyTaux, 1),
         ];
     }
 
     public function getAgentsRanking(): Collection
     {
-        return User::where('role', 'AGENT')
+        $agentIds = User::where('role', 'AGENT')
             ->when($this->recherche, fn ($q) => $q->where(function ($q) {
                 $q->where('name', 'like', "%{$this->recherche}%")
                   ->orWhere('prenom', 'like', "%{$this->recherche}%")
                   ->orWhere('email', 'like', "%{$this->recherche}%")
                   ->orWhereHas('zone', fn ($q) => $q->where('nomZone', 'like', "%{$this->recherche}%"));
             }))
+            ->pluck('id');
+
+        $reactionAvg = DB::table('attributions as a')
+            ->join('signalements as s', 's.id', '=', 'a.signalement_id')
+            ->where('s.statut', 'terminer')
+            ->whereNotNull('s.date_resolution')
+            ->selectRaw('a.agent_id, AVG(' . \App\Helpers\DatabaseHelper::diffInHoursSql('a.dateHeureAttribution', 's.date_resolution') . ') as avg_hours')
+            ->whereIn('a.agent_id', $agentIds)
+            ->groupBy('a.agent_id')
+            ->pluck('avg_hours', 'agent_id');
+
+        $noteAvg = Evaluation::whereHas('signalement.attribution', fn ($q) => $q->whereIn('agent_id', $agentIds))
+            ->selectRaw('signalement_id, note')
+            ->get()
+            ->groupBy(fn ($e) => optional(optional($e->signalement)->attribution)->agent_id)
+            ->map(fn ($evals) => round($evals->avg('note'), 1));
+
+        $classifications = $agentIds->mapWithKeys(fn ($id) => [$id => ClassificationService::classifierAgent($id)]);
+
+        return User::whereIn('id', $agentIds)
             ->withCount(['attributionsAgent as missions_terminees' => fn ($q) =>
                 $q->whereHas('signalement', fn ($q) => $q->where('statut', 'terminer'))
             ])
             ->withCount(['attributionsAgent as total_missions'])
+            ->with('zone')
             ->get()
-            ->map(function ($agent) {
-                $noteMoyenne = (float) (Evaluation::whereHas(
-                    'signalement.attribution',
-                    fn ($q) => $q->where('agent_id', $agent->id)
-                )->avg('note') ?? 0);
-
-                $avgReaction = 0;
-                try {
-                    $row = DB::table('attributions as a')
-                        ->join('signalements as s', 's.id', '=', 'a.signalement_id')
-                        ->where('a.agent_id', $agent->id)
-                        ->where('s.statut', 'terminer')
-                        ->whereNotNull('s.date_resolution')
-                        ->selectRaw('AVG(EXTRACT(EPOCH FROM (s."date_resolution" - a."dateHeureAttribution")) / 3600) as avg_hours')
-                        ->first();
-                    $avgReaction = round((float) ($row->avg_hours ?? 0), 1);
-                } catch (\Throwable) {}
-
-                $tauxCompletion = $agent->total_missions > 0
-                    ? round(($agent->missions_terminees / $agent->total_missions) * 100)
-                    : 0;
-
+            ->map(function ($agent) use ($reactionAvg, $noteAvg, $classifications) {
+                $totalMissions = (int) $agent->total_missions;
                 return (object) [
-                    'id'               => $agent->id,
-                    'nom'              => trim(($agent->prenom ?? '') . ' ' . ($agent->name ?? '')),
-                    'email'            => $agent->email,
-                    'photo'            => $agent->photoProfi,
-                    'zone'             => $agent->zone?->nomZone ?? '—',
-                    'missions_terminees'=> (int) $agent->missions_terminees,
-                    'total_missions'   => (int) $agent->total_missions,
-                    'note_moyenne'     => round($noteMoyenne, 1),
-                    'taux_completion'  => $tauxCompletion,
-                    'avg_reaction'     => $avgReaction,
-                    'classification'   => ClassificationService::classifierAgent($agent->id),
+                    'id'                => $agent->id,
+                    'nom'               => trim(($agent->prenom ?? '') . ' ' . ($agent->name ?? '')),
+                    'email'             => $agent->email,
+                    'photo'             => $agent->photoProfi,
+                    'zone'              => $agent->zone?->nomZone ?? '—',
+                    'missions_terminees' => (int) $agent->missions_terminees,
+                    'total_missions'    => $totalMissions,
+                    'note_moyenne'      => $noteAvg->get($agent->id, 0),
+                    'taux_completion'   => $totalMissions > 0 ? round(($agent->missions_terminees / $totalMissions) * 100) : 0,
+                    'avg_reaction'      => round((float) ($reactionAvg->get($agent->id) ?? 0), 1),
+                    'classification'    => $classifications[$agent->id] ?? ['label' => '—', 'color' => 'slate', 'emoji' => ''],
                 ];
             })
             ->sortByDesc(match ($this->triAgent) {
                 'note'       => fn ($a) => $a->note_moyenne,
                 'taux'       => fn ($a) => $a->taux_completion,
-                'reaction'   => fn ($a) => -$a->avg_reaction, // ascending (faster = better)
+                'reaction'   => fn ($a) => -$a->avg_reaction,
                 default      => fn ($a) => $a->missions_terminees,
             })
             ->values();
@@ -102,32 +106,49 @@ class ClassementsAdmin extends Page
 
     public function getCitoyensRanking(): Collection
     {
-        return User::where('role', 'CITOYEN')
+        $citoyenIds = User::where('role', 'CITOYEN')
             ->when($this->recherche, fn ($q) => $q->where(function ($q) {
                 $q->where('name', 'like', "%{$this->recherche}%")
                   ->orWhere('prenom', 'like', "%{$this->recherche}%")
                   ->orWhere('email', 'like', "%{$this->recherche}%");
             }))
+            ->pluck('id');
+
+        $signalementCounts = Signalement::whereIn('user_id', $citoyenIds)
+            ->selectRaw('user_id, COUNT(*) as total, SUM(CASE WHEN statut = ? THEN 1 ELSE 0 END) as termines, SUM(CASE WHEN statut = ? THEN 1 ELSE 0 END) as rejetes', ['terminer', 'rejeter'])
+            ->groupBy('user_id')
             ->get()
-            ->map(function ($user) {
-                $total      = Signalement::where('user_id', $user->id)->count();
-                $termines   = Signalement::where('user_id', $user->id)->where('statut', 'terminer')->count();
-                $rejetes    = Signalement::where('user_id', $user->id)->where('statut', 'rejeter')->count();
-                $evaluations= Evaluation::where('user_id', $user->id)->count();
-                $tauxVal    = $total > 0 ? round(($termines / $total) * 100) : 0;
+            ->keyBy('user_id');
+
+        $evaluationCounts = Evaluation::whereIn('user_id', $citoyenIds)
+            ->selectRaw('user_id, COUNT(*) as total')
+            ->groupBy('user_id')
+            ->pluck('total', 'user_id');
+
+        $classifications = $citoyenIds->mapWithKeys(fn ($id) => [$id => ClassificationService::classifierCitoyen($id)]);
+
+        $users = User::whereIn('id', $citoyenIds)->get();
+
+        return $users
+            ->map(function ($user) use ($signalementCounts, $evaluationCounts, $classifications) {
+                $sigStats = $signalementCounts->get($user->id);
+                $total    = (int) ($sigStats->total ?? 0);
+                $termines = (int) ($sigStats->termines ?? 0);
+                $rejetes  = (int) ($sigStats->rejetes ?? 0);
+                $evaluations = (int) ($evaluationCounts->get($user->id) ?? 0);
 
                 return (object) [
-                    'id'             => $user->id,
-                    'nom'            => trim(($user->prenom ?? '') . ' ' . ($user->name ?? '')),
-                    'email'          => $user->email,
-                    'photo'          => $user->photoProfi,
-                    'signalements'   => $total,
-                    'termines'       => $termines,
-                    'rejetes'        => $rejetes,
-                    'evaluations'    => $evaluations,
-                    'taux_validation'=> $tauxVal,
-                    'engagement'     => $total + $evaluations,
-                    'classification' => ClassificationService::classifierCitoyen($user->id),
+                    'id'              => $user->id,
+                    'nom'             => trim(($user->prenom ?? '') . ' ' . ($user->name ?? '')),
+                    'email'           => $user->email,
+                    'photo'           => $user->photoProfi,
+                    'signalements'    => $total,
+                    'termines'        => $termines,
+                    'rejetes'         => $rejetes,
+                    'evaluations'     => $evaluations,
+                    'taux_validation' => $total > 0 ? round(($termines / $total) * 100) : 0,
+                    'engagement'      => $total + $evaluations,
+                    'classification'  => $classifications[$user->id] ?? ['label' => '—', 'color' => 'slate', 'emoji' => ''],
                 ];
             })
             ->sortByDesc(match ($this->triCitoyen) {

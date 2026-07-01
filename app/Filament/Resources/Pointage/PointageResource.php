@@ -30,9 +30,11 @@ class PointageResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
+        $expiredAt = now()->subHours(12);
         return parent::getEloquentQuery()
             ->where('role', 'AGENT')
-            ->orderByDesc('heurePointage');
+            ->orderByDesc('heurePointage')
+            ->orderBy('name');
     }
 
     public static function form(Schema $schema): Schema
@@ -58,8 +60,16 @@ class PointageResource extends Resource
                 TextColumn::make('pointer')
                     ->label('Pointé')
                     ->badge()
-                    ->color(fn ($state) => $state ? 'success' : 'danger')
-                    ->formatStateUsing(fn ($state) => $state ? 'Pointé' : 'Absent'),
+                    ->color(function ($record) {
+                        if (!$record->pointer || !$record->heurePointage) return 'danger';
+                        if ($record->heurePointage->lte(now()->subHours(12))) return 'gray';
+                        return 'success';
+                    })
+                    ->formatStateUsing(function ($record) {
+                        if (!$record->pointer || !$record->heurePointage) return 'Absent';
+                        if ($record->heurePointage->lte(now()->subHours(12))) return 'Expiré';
+                        return 'Pointé';
+                    }),
                 TextColumn::make('disponible')
                     ->label('Disponible')
                     ->badge()
@@ -83,7 +93,26 @@ class PointageResource extends Resource
                     ->options([
                         '1' => 'Pointé',
                         '0' => 'Non pointé',
-                    ]),
+                        'expired' => 'Expiré',
+                    ])
+                    ->query(function ($query, $state) {
+                        $expiredAt = now()->subHours(12);
+                        if ($state === 'expired') {
+                            return $query->where('pointer', true)
+                                ->where('heurePointage', '<=', $expiredAt);
+                        }
+                        if ($state === '1') {
+                            return $query->where('pointer', true)
+                                ->where('heurePointage', '>', $expiredAt);
+                        }
+                        if ($state === '0') {
+                            return $query->where(function ($q) use ($expiredAt) {
+                                $q->where('pointer', false)
+                                  ->orWhere('heurePointage', '<=', $expiredAt);
+                            });
+                        }
+                        return $query;
+                    }),
                 SelectFilter::make('disponible')
                     ->label('Disponibilité')
                     ->options([
@@ -91,8 +120,9 @@ class PointageResource extends Resource
                         '0' => 'Indisponible',
                     ]),
                 Filter::make('pointe_aujourd_hui')
-                    ->label("Pointé aujourd'hui")
-                    ->query(fn ($query) => $query->whereDate('heurePointage', today())),
+                    ->label('Pointé (12h)')
+                    ->query(fn ($query) => $query->where('pointer', true)
+                        ->where('heurePointage', '>', now()->subHours(12))),
             ])
             ->recordActions([
                 PointageActions::make(),

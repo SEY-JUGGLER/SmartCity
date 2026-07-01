@@ -14,7 +14,12 @@ class Pointage extends Component
 
     public function mount(): void
     {
-        abort_unless(Auth::user()?->isAgent(), 403);
+        $user = Auth::user();
+        abort_unless($user?->isAgent(), 403);
+
+        if ($user->pointer && $user->heurePointage && $user->heurePointage->lte(now()->subHours(12))) {
+            $user->update(['pointer' => false, 'heurePointage' => null, 'disponible' => false]);
+        }
     }
 
     public function pointer(): void
