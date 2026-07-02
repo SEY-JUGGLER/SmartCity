@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartCity — Gestion intelligente des signalements urbains</title>
-    <meta name="description" content="SmartCity, la plateforme intelligente de gestion des signalements urbains, pensée pour les villes du Sénégal.">
+    <title>SmartCity — Pour une ville plus propre et connectée</title>
+    <meta name="description" content="SmartCity, le portail citoyen pour signaler, suivre et améliorer la gestion urbaine en temps réel dans les villes du Sénégal.">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=sora:600,700,800|inter:400,500,600,700" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -131,6 +131,7 @@
         .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -18px rgba(43,33,24,0.18); }
 
         .eyebrow { font-weight: 700; font-size: 0.78rem; letter-spacing: 0.06em; color: var(--green-deep); text-transform: uppercase; }
+        .eyebrow-light { font-weight: 700; font-size: 0.78rem; letter-spacing: 0.06em; color: var(--gold-soft); text-transform: uppercase; }
 
         .scroll-reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
         .scroll-reveal.revealed { opacity: 1; transform: translateY(0); }
@@ -167,9 +168,7 @@
 
                 <div class="hidden lg:flex items-center gap-8">
                     <a href="#accueil" class="nav-link active" data-nav>Accueil</a>
-                    <a href="#probleme" class="nav-link" data-nav>Le problème</a>
-                    <a href="#fonctionnalites" class="nav-link" data-nav>Fonctionnalités</a>
-                    <a href="#comment-ca-marche" class="nav-link" data-nav>Comment ça marche</a>
+                    <a href="#a-propos" class="nav-link" data-nav>À propos</a>
                 </div>
 
                 <div class="hidden lg:flex items-center gap-3">
@@ -194,9 +193,7 @@
         </div>
         <div class="flex flex-col gap-6">
             <a href="#accueil">Accueil</a>
-            <a href="#probleme">Le problème</a>
-            <a href="#fonctionnalites">Fonctionnalités</a>
-            <a href="#comment-ca-marche">Comment ça marche</a>
+            <a href="#a-propos">À propos</a>
         </div>
         <div class="mt-auto flex flex-col gap-3 pt-10">
             <a href="{{ route('login') }}" class="px-5 py-3 text-center text-[var(--ink)] border border-[var(--line)] rounded-xl">Connexion</a>
@@ -215,19 +212,19 @@
                 <div class="space-y-7">
                     <div class="status-chip"><span class="pulse-dot"></span> Plateforme municipale en temps réel</div>
                     <h1 class="font-display text-4xl sm:text-5xl lg:text-[3.3rem] font-extrabold leading-[1.1]">
-                        Signalez,<br><span class="text-[var(--green)]">on agit.</span>
+                        SmartCity<br><span class="text-[var(--green)]">Pour une ville plus propre et connectée.</span>
                     </h1>
                     <p class="text-lg leading-relaxed max-w-lg">
-                        Une rue abîmée, un lampadaire en panne, des déchets oubliés : un signal, une localisation, une équipe qui se déplace. SmartCity relie chaque citoyen de Dakar à Saint-Louis à l'agent le plus proche.
+                        Un portail citoyen pour signaler, suivre et améliorer la gestion urbaine en temps réel. SmartCity relie chaque citoyen de Dakar à Saint-Louis à l'agent le plus proche.
                     </p>
                     <p class="text-sm italic" style="color: var(--gold-deep);">« Dalal ak diam » — bienvenue, en toute confiance.</p>
                     <div class="flex flex-wrap gap-4">
                         <a href="{{ route('register') }}" class="btn-primary group px-7 py-3.5 rounded-2xl">
-                            Créer mon compte
+                            Commencer à signaler
                             <svg class="inline w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                         </a>
-                        <a href="#comment-ca-marche" class="px-7 py-3.5 text-[var(--ink)] font-semibold rounded-2xl border border-[var(--line)] bg-white hover:shadow-md transition-all">
-                            Voir comment ça marche
+                        <a href="#a-propos" class="px-7 py-3.5 text-[var(--ink)] font-semibold rounded-2xl border border-[var(--line)] bg-white hover:shadow-md transition-all">
+                            Découvrir SmartCity
                         </a>
                     </div>
                     <div class="flex items-center gap-4 pt-2">
@@ -302,129 +299,127 @@
         </div>
     </section>
 
-    {{-- Problem section --}}
-    <section id="probleme" class="relative py-20 lg:py-28">
+    {{-- À propos: regroupe le problème, les fonctionnalités et le fonctionnement --}}
+    <section id="a-propos" class="relative py-20 lg:py-28">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-2xl mb-16">
-                <span class="eyebrow">Le constat</span>
-                <h2 class="font-display text-3xl sm:text-4xl font-extrabold mt-2">Pourquoi les villes perdent le fil</h2>
-                <p class="mt-4 text-lg">Trois frictions reviennent dans toutes les municipalités, qu'elles aient 50 000 ou 2 millions d'habitants.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
-                <div class="rounded-3xl p-8 shadow-sm border border-[var(--line)] card-hover scroll-reveal" style="background: var(--terracotta-soft);">
-                    <div class="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center mb-5">
-                        <svg class="w-6 h-6 text-[var(--terracotta-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    </div>
-                    <h3 class="font-display text-lg font-bold mb-3">Le signal n'arrive jamais</h3>
-                    <p class="text-sm leading-relaxed">Un citoyen signale un nid-de-poule par téléphone ou en mairie. La demande circule, se perd dans un service, et personne ne sait où elle en est.</p>
-                </div>
-                <div class="rounded-3xl p-8 shadow-sm border border-[var(--line)] card-hover scroll-reveal" style="background: var(--gold-soft);">
-                    <div class="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center mb-5">
-                        <svg class="w-6 h-6 text-[var(--gold-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <h3 class="font-display text-lg font-bold mb-3">Le terrain attend</h3>
-                    <p class="text-sm leading-relaxed">Aucune coordination entre les équipes mobiles et les services municipaux : un agent peut passer à côté d'un problème sans le savoir.</p>
-                </div>
-                <div class="rounded-3xl p-8 shadow-sm border border-[var(--line)] card-hover scroll-reveal" style="background: var(--green-soft);">
-                    <div class="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center mb-5">
-                        <svg class="w-6 h-6 text-[var(--green-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    </div>
-                    <h3 class="font-display text-lg font-bold mb-3">Aucune visibilité</h3>
-                    <p class="text-sm leading-relaxed">Sans tableau de bord, impossible de savoir quelles zones concentrent les signalements ou si les délais s'améliorent.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    {{-- Features --}}
-    <section id="fonctionnalites" class="relative bg-[var(--bg-soft)] py-20 lg:py-28">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {{-- Intro --}}
             <div class="max-w-2xl mb-16">
-                <span class="eyebrow">La plateforme</span>
-                <h2 class="font-display text-3xl sm:text-4xl font-extrabold mt-2">Tout ce qu'il faut, rien de plus</h2>
-                <p class="mt-4 text-lg">De la prise de signalement au rapport mensuel, chaque étape est suivie.</p>
+                <span class="eyebrow">À propos</span>
+                <h2 class="font-display text-3xl sm:text-4xl font-extrabold mt-2">Pourquoi SmartCity existe</h2>
+                <p class="mt-4 text-lg leading-relaxed">
+                    Une ville se gère avec ses habitants, pas sans eux. En rendant chaque signalement visible et traçable, SmartCity apporte de la <strong class="text-[var(--ink)]">transparence</strong> dans le traitement des problèmes urbains, donne aux citoyens un rôle actif grâce à l'<strong class="text-[var(--ink)]">inclusion citoyenne</strong>, et fournit aux municipalités les données nécessaires pour une <strong class="text-[var(--ink)]">efficacité</strong> accrue sur le terrain.
+                </p>
             </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
-                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--green-soft);">
-                        <svg class="w-6 h-6 text-[var(--green-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3.5"/></svg>
-                    </div>
-                    <h3 class="font-display text-lg font-bold mb-2">Signalement en 30 secondes</h3>
-                    <p class="text-sm">Une photo, une position et une courte description suffisent. L'agent reçoit le dossier complet.</p>
-                </div>
-                <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
-                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--gold-soft);">
-                        <svg class="w-6 h-6 text-[var(--gold-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    </div>
-                    <h3 class="font-display text-lg font-bold mb-2">Carte en temps réel</h3>
-                    <p class="text-sm">Chaque signal apparaît instantanément sur la carte de la ville, avec son statut et sa zone.</p>
-                </div>
-                <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
-                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--terracotta-soft);">
-                        <svg class="w-6 h-6 text-[var(--terracotta-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                    </div>
-                    <h3 class="font-display text-lg font-bold mb-2">Répartition automatique</h3>
-                    <p class="text-sm">Chaque dossier est assigné à l'agent disponible le plus proche, selon sa zone de couverture.</p>
-                </div>
-                <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
-                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--green-soft);">
-                        <svg class="w-6 h-6 text-[var(--green-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                    </div>
-                    <h3 class="font-display text-lg font-bold mb-2">Tableaux de bord</h3>
-                    <p class="text-sm">Indicateurs de délai, de volume et de zone, mis à jour en continu pour piloter les équipes.</p>
-                </div>
-                <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
-                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--gold-soft);">
-                        <svg class="w-6 h-6 text-[var(--gold-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                    </div>
-                    <h3 class="font-display text-lg font-bold mb-2">Suivi en direct</h3>
-                    <p class="text-sm">Le citoyen est notifié à chaque changement de statut : déposé, assigné, résolu.</p>
-                </div>
-                <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
-                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--terracotta-soft);">
-                        <svg class="w-6 h-6 text-[var(--terracotta-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    </div>
-                    <h3 class="font-display text-lg font-bold mb-2">Rapports exportables</h3>
-                    <p class="text-sm">Génère un rapport d'activité en PDF en un clic, prêt pour une réunion municipale.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    {{-- How it works --}}
-    <section id="comment-ca-marche" class="relative py-20 lg:py-28">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-2xl mb-16">
-                <span class="eyebrow">Le parcours d'un signal</span>
-                <h2 class="font-display text-3xl sm:text-4xl font-extrabold mt-2">Du dépôt à la résolution</h2>
-                <p class="mt-4 text-lg">Chaque signalement suit le même parcours, sans étape cachée.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8 lg:gap-10">
-                <div class="scroll-reveal">
-                    <div class="photo-frame aspect-[4/3] mb-5">
-                        <span class="photo-tag">Étape 1</span>
-                        <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&q=80" alt="Un citoyen photographie un problème dans la rue avec son téléphone">
+            {{-- Sub-section: Le constat --}}
+            <div class="mb-24">
+                <h3 class="font-display text-2xl font-extrabold mb-8">Le constat</h3>
+                <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
+                    <div class="rounded-3xl p-8 shadow-sm border border-[var(--line)] card-hover scroll-reveal" style="background: var(--terracotta-soft);">
+                        <div class="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center mb-5">
+                            <svg class="w-6 h-6 text-[var(--terracotta-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-3">Le signal n'arrive jamais</h4>
+                        <p class="text-sm leading-relaxed">Un citoyen signale un nid-de-poule par téléphone ou en mairie. La demande circule, se perd dans un service, et personne ne sait où elle en est.</p>
                     </div>
-                    <h3 class="font-display text-lg font-bold mb-2">Un citoyen dépose un signal</h3>
-                    <p class="text-sm">Photo, position et description prises sur le mobile, transmises instantanément à la plateforme.</p>
-                </div>
-                <div class="scroll-reveal">
-                    <div class="photo-frame aspect-[4/3] mb-5">
-                        <span class="photo-tag">Étape 2</span>
-                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80" alt="Un agent municipal intervient sur le terrain">
+                    <div class="rounded-3xl p-8 shadow-sm border border-[var(--line)] card-hover scroll-reveal" style="background: var(--gold-soft);">
+                        <div class="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center mb-5">
+                            <svg class="w-6 h-6 text-[var(--gold-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-3">Le terrain attend</h4>
+                        <p class="text-sm leading-relaxed">Aucune coordination entre les équipes mobiles et les services municipaux : un agent peut passer à côté d'un problème sans le savoir.</p>
                     </div>
-                    <h3 class="font-display text-lg font-bold mb-2">Un agent est assigné</h3>
-                    <p class="text-sm">L'agent disponible le plus proche reçoit une notification avec toutes les informations nécessaires.</p>
-                </div>
-                <div class="scroll-reveal">
-                    <div class="photo-frame aspect-[4/3] mb-5">
-                        <span class="photo-tag">Étape 3</span>
-                        <img src="https://images.unsplash.com/photo-1611258490565-4a06c019e631?w=600&q=80" alt="Façade moderne bien entretenue en bord de mer à Dakar">
+                    <div class="rounded-3xl p-8 shadow-sm border border-[var(--line)] card-hover scroll-reveal" style="background: var(--green-soft);">
+                        <div class="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center mb-5">
+                            <svg class="w-6 h-6 text-[var(--green-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-3">Aucune visibilité</h4>
+                        <p class="text-sm leading-relaxed">Sans tableau de bord, impossible de savoir quelles zones concentrent les signalements ou si les délais s'améliorent.</p>
                     </div>
-                    <h3 class="font-display text-lg font-bold mb-2">Le signal est résolu</h3>
-                    <p class="text-sm">Le citoyen reçoit une confirmation, et la ville conserve une donnée exploitable pour la suite.</p>
                 </div>
             </div>
+
+            {{-- Sub-section: Fonctionnalités --}}
+            <div class="mb-24">
+                <h3 class="font-display text-2xl font-extrabold mb-8">Fonctionnalités</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                    <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--green-soft);">
+                            <svg class="w-6 h-6 text-[var(--green-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3.5"/></svg>
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-2">Signalement géolocalisé</h4>
+                        <p class="text-sm">Une photo, une position et une courte description suffisent. L'agent reçoit le dossier complet en 30 secondes.</p>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--gold-soft);">
+                            <svg class="w-6 h-6 text-[var(--gold-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-2">Suivi en temps réel</h4>
+                        <p class="text-sm">Chaque signal apparaît instantanément sur la carte de la ville, avec son statut et sa zone.</p>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--terracotta-soft);">
+                            <svg class="w-6 h-6 text-[var(--terracotta-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-2">Répartition automatique</h4>
+                        <p class="text-sm">Chaque dossier est assigné à l'agent disponible le plus proche, selon sa zone de couverture.</p>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--green-soft);">
+                            <svg class="w-6 h-6 text-[var(--green-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-2">Statistiques pour la municipalité</h4>
+                        <p class="text-sm">Indicateurs de délai, de volume et de zone, mis à jour en continu pour piloter les équipes.</p>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--gold-soft);">
+                            <svg class="w-6 h-6 text-[var(--gold-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-2">Notifications citoyennes</h4>
+                        <p class="text-sm">Le citoyen est notifié à chaque changement de statut : déposé, assigné, résolu.</p>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--terracotta-soft);">
+                            <svg class="w-6 h-6 text-[var(--terracotta-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-2">Rapports exportables</h4>
+                        <p class="text-sm">Génère un rapport d'activité en PDF en un clic, prêt pour une réunion municipale.</p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Sub-section: Comment ça marche --}}
+            <div>
+                <h3 class="font-display text-2xl font-extrabold mb-8">Comment ça marche</h3>
+                <div class="grid md:grid-cols-3 gap-8 lg:gap-10">
+                    <div class="scroll-reveal">
+                        <div class="photo-frame aspect-[4/3] mb-5">
+                            <span class="photo-tag">Étape 1</span>
+                            <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&q=80" alt="Un citoyen photographie un problème dans la rue avec son téléphone">
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-2">Un citoyen dépose un signal</h4>
+                        <p class="text-sm">Photo, position et description prises sur le mobile, transmises instantanément à la plateforme.</p>
+                    </div>
+                    <div class="scroll-reveal">
+                        <div class="photo-frame aspect-[4/3] mb-5">
+                            <span class="photo-tag">Étape 2</span>
+                            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80" alt="Un agent municipal intervient sur le terrain">
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-2">Un agent est assigné</h4>
+                        <p class="text-sm">L'agent disponible le plus proche reçoit une notification avec toutes les informations nécessaires.</p>
+                    </div>
+                    <div class="scroll-reveal">
+                        <div class="photo-frame aspect-[4/3] mb-5">
+                            <span class="photo-tag">Étape 3</span>
+                            <img src="https://images.unsplash.com/photo-1611258490565-4a06c019e631?w=600&q=80" alt="Façade moderne bien entretenue en bord de mer à Dakar">
+                        </div>
+                        <h4 class="font-display text-lg font-bold mb-2">Le signal est résolu</h4>
+                        <p class="text-sm">Le citoyen reçoit une confirmation, et la ville conserve une donnée exploitable pour la suite.</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -464,22 +459,26 @@
                 <div>
                     <h4 class="font-display font-bold text-[var(--ink)] mb-4 text-sm">Navigation</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#probleme" class="hover:text-[var(--green-deep)] transition-colors">Le problème</a></li>
-                        <li><a href="#fonctionnalites" class="hover:text-[var(--green-deep)] transition-colors">Fonctionnalités</a></li>
+                        <li><a href="#accueil" class="hover:text-[var(--green-deep)] transition-colors">Accueil</a></li>
+                        <li><a href="#a-propos" class="hover:text-[var(--green-deep)] transition-colors">À propos</a></li>
                         <li><a href="{{ route('login') }}" class="hover:text-[var(--green-deep)] transition-colors">Connexion</a></li>
                         <li><a href="{{ route('register') }}" class="hover:text-[var(--green-deep)] transition-colors">Inscription</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-display font-bold text-[var(--ink)] mb-4 text-sm">Contact</h4>
+                    <h4 class="font-display font-bold text-[var(--ink)] mb-4 text-sm">Coordonnées</h4>
                     <ul class="space-y-2 text-sm">
                         <li>contact@smartcity.com</li>
                         <li>Dakar, Sénégal</li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-[var(--line)] mt-8 pt-8 text-center text-sm">
-                &copy; {{ date('Y') }} SmartCity. Tous droits réservés.
+            <div class="border-t border-[var(--line)] mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
+                <p>&copy; {{ date('Y') }} SmartCity. Tous droits réservés.</p>
+                <div class="flex gap-5">
+                    <a href="#" class="hover:text-[var(--green-deep)] transition-colors">Mentions légales</a>
+                    <a href="#" class="hover:text-[var(--green-deep)] transition-colors">Politique de confidentialité</a>
+                </div>
             </div>
         </div>
     </footer>
@@ -506,7 +505,7 @@
         document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', closeMenu));
 
         const navLinks = document.querySelectorAll('[data-nav]');
-        const sections = ['accueil', 'probleme', 'fonctionnalites', 'comment-ca-marche']
+        const sections = ['accueil', 'a-propos']
             .map(id => document.getElementById(id))
             .filter(Boolean);
 
