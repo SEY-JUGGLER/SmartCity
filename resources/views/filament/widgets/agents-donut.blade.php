@@ -1,19 +1,19 @@
 <x-filament-widgets::widget>
     <x-filament::section>
         <x-slot name="heading">
-            <div class="flex items-center justify-between w-full gap-3">
-                <div class="flex items-center gap-3 min-w-0">
-                    <div class="flex items-center justify-center rounded-xl bg-emerald-500/10 flex-shrink-0" style="width:36px;height:36px">
-                        <x-heroicon-m-user-group style="width:18px;height:18px" class="text-emerald-500" />
+            <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:0.75rem">
+                <div style="display:flex;align-items:center;gap:0.75rem;min-width:0">
+                    <div style="display:flex;align-items:center;justify-content:center;border-radius:0.75rem;background:rgba(16,185,129,0.1);flex-shrink:0;width:36px;height:36px">
+                        <x-heroicon-m-user-group style="width:18px;height:18px;color:#10b981" />
                     </div>
-                    <div class="min-w-0">
-                        <p class="text-sm font-bold text-gray-900 dark:text-white leading-tight">Agents — Statut & Performances</p>
-                        <p class="text-xs text-gray-400 leading-tight">Vue globale en temps réel</p>
+                    <div style="min-width:0">
+                        <p style="font-size:0.875rem;font-weight:700;color:#111827;line-height:1.25">Agents — Statut & Performances</p>
+                        <p style="font-size:0.75rem;color:#9ca3af;line-height:1.25">Vue globale en temps réel</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex-shrink-0">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400">Temps réel</span>
+                <div style="display:flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;border-radius:9999px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);flex-shrink:0">
+                    <span style="width:0.5rem;height:0.5rem;border-radius:9999px;background:#10b981;animation:pulse 2s cubic-bezier(0.4,0,0.6,1) infinite"></span>
+                    <span style="font-size:0.75rem;font-weight:600;color:#059669">Temps réel</span>
                 </div>
             </div>
         </x-slot>
@@ -24,154 +24,109 @@
             $total = $stats['total'];
 
             $kpiCards = [
-                [
-                    'label'   => 'Disponibles',
-                    'value'   => $stats['disponibles'],
-                    'sub'     => 'Prêts à intervenir',
-                    'icon'    => 'heroicon-m-check-circle',
-                    'wrapCls' => 'border-emerald-100 dark:border-emerald-900/30 bg-white dark:bg-gray-900',
-                    'numCls'  => 'text-emerald-500',
-                    'iconCls' => 'bg-emerald-500/10',
-                    'iconCol' => 'text-emerald-500',
-                    'bar'     => 'bg-emerald-400/40',
-                ],
-                [
-                    'label'   => 'Occupés',
-                    'value'   => $stats['occupes'],
-                    'sub'     => 'En intervention',
-                    'icon'    => 'heroicon-m-briefcase',
-                    'wrapCls' => 'border-amber-100 dark:border-amber-900/30 bg-white dark:bg-gray-900',
-                    'numCls'  => 'text-amber-500',
-                    'iconCls' => 'bg-amber-500/10',
-                    'iconCol' => 'text-amber-500',
-                    'bar'     => 'bg-amber-400/40',
-                ],
-                [
-                    'label'   => 'Absents',
-                    'value'   => $stats['absents'],
-                    'sub'     => 'Non pointés ce jour',
-                    'icon'    => 'heroicon-m-x-circle',
-                    'wrapCls' => 'border-red-100 dark:border-red-900/30 bg-white dark:bg-gray-900',
-                    'numCls'  => 'text-red-500',
-                    'iconCls' => 'bg-red-500/10',
-                    'iconCol' => 'text-red-500',
-                    'bar'     => 'bg-red-400/40',
-                ],
-                [
-                    'label'   => 'Inactifs',
-                    'value'   => $stats['inactifs'],
-                    'sub'     => 'Comptes désactivés',
-                    'icon'    => 'heroicon-m-moon',
-                    'wrapCls' => 'border-slate-200 dark:border-slate-700/40 bg-white dark:bg-gray-900',
-                    'numCls'  => 'text-slate-500',
-                    'iconCls' => 'bg-slate-500/10',
-                    'iconCol' => 'text-slate-500',
-                    'bar'     => 'bg-slate-400/40',
-                ],
+                ['label' => 'Disponibles', 'value' => $stats['disponibles'], 'sub' => 'Prêts à intervenir', 'icon' => 'heroicon-m-check-circle', 'color' => '#10b981', 'bgColor' => 'rgba(16,185,129,0.1)', 'borderColor' => 'rgba(16,185,129,0.3)', 'barColor' => 'rgba(16,185,129,0.25)'],
+                ['label' => 'Occupés', 'value' => $stats['occupes'], 'sub' => 'En intervention', 'icon' => 'heroicon-m-briefcase', 'color' => '#f59e0b', 'bgColor' => 'rgba(245,158,11,0.1)', 'borderColor' => 'rgba(245,158,11,0.3)', 'barColor' => 'rgba(245,158,11,0.25)'],
+                ['label' => 'Absents', 'value' => $stats['absents'], 'sub' => 'Non pointés ce jour', 'icon' => 'heroicon-m-x-circle', 'color' => '#ef4444', 'bgColor' => 'rgba(239,68,68,0.1)', 'borderColor' => 'rgba(239,68,68,0.3)', 'barColor' => 'rgba(239,68,68,0.25)'],
+                ['label' => 'Inactifs', 'value' => $stats['inactifs'], 'sub' => 'Comptes désactivés', 'icon' => 'heroicon-m-moon', 'color' => '#64748b', 'bgColor' => 'rgba(100,116,139,0.1)', 'borderColor' => 'rgba(100,116,139,0.3)', 'barColor' => 'rgba(100,116,139,0.25)'],
             ];
         @endphp
 
-        {{-- KPI Cards --}}
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.25rem">
             @foreach($kpiCards as $card)
-            <div class="relative overflow-hidden rounded-2xl border {{ $card['wrapCls'] }} p-4 shadow-sm">
-                <div class="flex items-start justify-between gap-2">
+            <div style="flex:1 1 140px;min-width:120px;position:relative;overflow:hidden;border-radius:1rem;border:1px solid {{ $card['borderColor'] }};background:linear-gradient(135deg,#fff,#fafafa);padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem">
                     <div>
-                        <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ $card['label'] }}</p>
-                        <p class="text-3xl font-black {{ $card['numCls'] }} leading-none">{{ $card['value'] }}</p>
-                        <p class="text-[10px] text-gray-400 mt-1.5 leading-tight">{{ $card['sub'] }}</p>
+                        <p style="font-size:0.6875rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.25rem">{{ $card['label'] }}</p>
+                        <p style="font-size:1.75rem;font-weight:900;color:{{ $card['color'] }};line-height:1;margin:0">{{ $card['value'] }}</p>
+                        <p style="font-size:0.625rem;color:#9ca3af;margin-top:0.375rem;line-height:1.25">{{ $card['sub'] }}</p>
                     </div>
-                    <div class="flex items-center justify-center rounded-xl {{ $card['iconCls'] }} flex-shrink-0" style="width:36px;height:36px">
-                        <x-dynamic-component :component="$card['icon']" style="width:16px;height:16px" class="{{ $card['iconCol'] }}" />
+                    <div style="display:flex;align-items:center;justify-content:center;border-radius:0.75rem;background:{{ $card['bgColor'] }};width:36px;height:36px;flex-shrink:0">
+                        <x-dynamic-component :component="$card['icon']" style="width:16px;height:16px;color:{{ $card['color'] }}" />
                     </div>
                 </div>
-                <div class="absolute bottom-0 left-0 right-0 h-0.5 {{ $card['bar'] }}"></div>
+                <div style="position:absolute;bottom:0;left:0;right:0;height:0.125rem;background:{{ $card['barColor'] }}"></div>
             </div>
             @endforeach
         </div>
 
-        {{-- Charts --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div style="display:grid;grid-template-columns:1fr;gap:1rem" class="lg:grid-cols-2">
 
-            {{-- Donut --}}
-            <div class="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm">
-                <div class="flex items-center justify-between mb-4">
+            <div style="border-radius:1rem;border:1px solid #e5e7eb;background:#fff;padding:1.25rem;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
                     <div>
-                        <h3 class="text-sm font-bold text-gray-900 dark:text-white">Répartition des agents</h3>
-                        <p class="text-xs text-gray-400 mt-0.5">État actuel des équipes terrain</p>
+                        <h3 style="font-size:0.875rem;font-weight:700;color:#111827">Répartition des agents</h3>
+                        <p style="font-size:0.75rem;color:#9ca3af;margin-top:0.125rem">État actuel des équipes terrain</p>
                     </div>
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-bold text-gray-600 dark:text-gray-300">
+                    <span style="display:inline-flex;align-items:center;gap:0.375rem;padding:0.25rem 0.625rem;border-radius:9999px;background:#f3f4f6;font-size:0.75rem;font-weight:700;color:#4b5563">
                         {{ $total }} agents
                     </span>
                 </div>
 
-                <div wire:ignore class="relative mx-auto" style="height:300px;max-width:300px;">
+                <div wire:ignore style="position:relative;margin:0 auto;height:280px;max-width:280px">
                     <canvas id="chart-agents-donut-{{ $this->getId() }}"></canvas>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2 mt-4">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:1rem">
                     @foreach([
-                        ['Disponibles', $stats['disponibles'], 'bg-emerald-500', 'text-emerald-600 dark:text-emerald-400'],
-                        ['Occupés',     $stats['occupes'],     'bg-amber-500',   'text-amber-600 dark:text-amber-400'],
-                        ['Absents',     $stats['absents'],     'bg-red-500',     'text-red-600 dark:text-red-400'],
-                        ['Inactifs',    $stats['inactifs'],    'bg-slate-400',   'text-slate-500 dark:text-slate-400'],
-                    ] as [$lbl, $val, $dot, $valCls])
-                    <div class="flex items-center justify-between rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 px-3 py-2">
-                        <div class="flex items-center gap-2 min-w-0">
-                            <span class="w-2.5 h-2.5 rounded-full {{ $dot }} flex-shrink-0"></span>
-                            <span class="text-xs font-medium text-gray-600 dark:text-gray-300 truncate">{{ $lbl }}</span>
+                        ['Disponibles', $stats['disponibles'], '#10b981', '#059669'],
+                        ['Occupés', $stats['occupes'], '#f59e0b', '#d97706'],
+                        ['Absents', $stats['absents'], '#ef4444', '#dc2626'],
+                        ['Inactifs', $stats['inactifs'], '#94a3b8', '#64748b'],
+                    ] as [$lbl, $val, $dot, $valClr])
+                    <div style="display:flex;align-items:center;justify-content:space-between;border-radius:0.75rem;border:1px solid #f3f4f6;background:#f9fafb;padding:0.5rem 0.75rem">
+                        <div style="display:flex;align-items:center;gap:0.5rem;min-width:0">
+                            <span style="width:0.5rem;height:0.5rem;border-radius:9999px;background:{{ $dot }};flex-shrink:0"></span>
+                            <span style="font-size:0.75rem;font-weight:500;color:#4b5563;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $lbl }}</span>
                         </div>
-                        <span class="text-sm font-black {{ $valCls }} ml-2 flex-shrink-0">{{ $val }}</span>
+                        <span style="font-size:0.875rem;font-weight:900;color:{{ $valClr }};margin-left:0.5rem;flex-shrink:0">{{ $val }}</span>
                     </div>
                     @endforeach
                 </div>
             </div>
 
-            {{-- Top Agents --}}
-            <div class="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm">
-                <div class="flex items-center justify-between mb-4">
+            <div style="border-radius:1rem;border:1px solid #e5e7eb;background:#fff;padding:1.25rem;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
                     <div>
-                        <h3 class="text-sm font-bold text-gray-900 dark:text-white">Top agents du mois</h3>
-                        <p class="text-xs text-gray-400 mt-0.5">Classés par missions effectuées</p>
+                        <h3 style="font-size:0.875rem;font-weight:700;color:#111827">Top agents du mois</h3>
+                        <p style="font-size:0.75rem;color:#9ca3af;margin-top:0.125rem">Classés par missions effectuées</p>
                     </div>
-                    <div class="flex items-center justify-center rounded-xl bg-amber-500/10 flex-shrink-0" style="width:36px;height:36px">
-                        <x-heroicon-m-trophy style="width:16px;height:16px" class="text-amber-500" />
+                    <div style="display:flex;align-items:center;justify-content:center;border-radius:0.75rem;background:rgba(245,158,11,0.1);width:36px;height:36px;flex-shrink:0">
+                        <x-heroicon-m-trophy style="width:16px;height:16px;color:#f59e0b" />
                     </div>
                 </div>
 
                 @if(count($top))
-                <div wire:ignore class="relative" style="height:300px;">
+                <div wire:ignore style="position:relative;height:280px">
                     <canvas id="chart-agents-bar-{{ $this->getId() }}"></canvas>
                 </div>
 
-                <div class="space-y-2 mt-4">
+                <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem">
                     @foreach($top as $index => $agent)
                     @php
-                        $rankColors = ['#3b82f6','#10b981','#f59e0b','#8b5cf6','#06b6d4'];
-                        $rankColor  = $rankColors[$index] ?? '#6b7280';
+                        $rankGrads = ['linear-gradient(135deg,#f59e0b,#d97706)', 'linear-gradient(135deg,#94a3b8,#64748b)', 'linear-gradient(135deg,#f97316,#ea580c)', '#3b82f6', '#06b6d4'];
+                        $rankGrad = $rankGrads[$index] ?? '#6b7280';
                     @endphp
-                    <div class="flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50/70 dark:bg-gray-800/50 hover:bg-primary-50 dark:hover:bg-primary-500/10 transition-colors duration-150">
-                        <div class="flex items-center justify-center rounded-lg flex-shrink-0 text-white text-xs font-black"
-                             style="width:26px;height:26px;background:{{ $rankColor }}">
+                    <div style="display:flex;align-items:center;gap:0.75rem;padding:0.625rem 0.75rem;border-radius:0.75rem;border:1px solid #f3f4f6;background:rgba(249,250,251,0.7);transition:all 0.15s">
+                        <div style="display:flex;align-items:center;justify-content:center;border-radius:0.5rem;flex-shrink:0;color:#fff;font-size:0.75rem;font-weight:900;width:1.625rem;height:1.625rem;background:{{ $rankGrad }}">
                             {{ $index + 1 }}
                         </div>
-                        <div class="min-w-0 flex-1">
-                            <p class="text-xs font-semibold text-gray-900 dark:text-white truncate">{{ $agent['nom'] }}</p>
-                            <p class="text-[10px] text-gray-400">Agent terrain</p>
+                        <div style="min-width:0;flex:1">
+                            <p style="font-size:0.8125rem;font-weight:600;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $agent['nom'] }}</p>
+                            <p style="font-size:0.625rem;color:#9ca3af">Agent terrain</p>
                         </div>
-                        <div class="text-right flex-shrink-0">
-                            <p class="text-sm font-black text-primary-500 leading-none">{{ $agent['missions'] }}</p>
-                            <p class="text-[10px] text-gray-400">missions</p>
+                        <div style="text-align:right;flex-shrink:0">
+                            <p style="font-size:0.875rem;font-weight:900;color:#3b82f6;line-height:1">{{ $agent['missions'] }}</p>
+                            <p style="font-size:0.625rem;color:#9ca3af">missions</p>
                         </div>
                     </div>
                     @endforeach
                 </div>
                 @else
-                <div class="flex flex-col items-center justify-center gap-3 py-16">
-                    <div class="flex items-center justify-center rounded-2xl bg-gray-100 dark:bg-gray-800" style="width:56px;height:56px">
-                        <x-heroicon-o-inbox style="width:24px;height:24px" class="text-gray-300 dark:text-gray-600" />
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.75rem;padding:4rem 0">
+                    <div style="display:flex;align-items:center;justify-content:center;border-radius:1rem;background:#f3f4f6;width:56px;height:56px">
+                        <x-heroicon-o-inbox style="width:24px;height:24px;color:#9ca3af" />
                     </div>
-                    <p class="text-sm text-gray-400 font-medium">Aucune mission ce mois</p>
+                    <p style="font-size:0.875rem;color:#9ca3af;font-weight:500">Aucune mission ce mois</p>
                 </div>
                 @endif
             </div>
@@ -222,13 +177,13 @@
                                         ],
                                         borderWidth: 3,
                                         borderColor: cardBg,
-                                        hoverOffset: 10,
+                                        hoverOffset: 12,
                                     }]
                                 },
                                 options: {
                                     responsive: true,
                                     maintainAspectRatio: false,
-                                    cutout: '75%',
+                                    cutout: '72%',
                                     plugins: {
                                         legend: { display: false },
                                         tooltip: tip
@@ -243,7 +198,7 @@
                                         var cx = chart.width / 2, cy = chart.height / 2;
                                         ctx.textAlign = 'center';
                                         ctx.textBaseline = 'middle';
-                                        ctx.font = '900 42px Inter, sans-serif';
+                                        ctx.font = '900 40px Inter, sans-serif';
                                         ctx.fillStyle = dark ? '#f9fafb' : '#0f172a';
                                         ctx.fillText('{{ $total }}', cx, cy - 12);
                                         ctx.font = '500 12px Inter, sans-serif';
@@ -266,15 +221,15 @@
                                         label: 'Missions',
                                         data: top.map(function(a) { return a.missions; }),
                                         backgroundColor: [
-                                            'rgba(59,130,246,0.85)',
-                                            'rgba(16,185,129,0.85)',
                                             'rgba(245,158,11,0.85)',
-                                            'rgba(139,92,246,0.85)',
+                                            'rgba(148,163,184,0.85)',
+                                            'rgba(249,115,22,0.85)',
+                                            'rgba(59,130,246,0.85)',
                                             'rgba(6,182,212,0.85)'
                                         ],
-                                        borderRadius: 10,
+                                        borderRadius: 8,
                                         borderSkipped: false,
-                                        barThickness: 22,
+                                        barThickness: 20,
                                     }]
                                 },
                                 options: {

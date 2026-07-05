@@ -2,8 +2,6 @@
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-    .ca-row:hover { background:rgba(0,0,0,.025); }
-    .dark .ca-row:hover { background:rgba(255,255,255,.04); }
     .ca-scroll { scrollbar-width:thin; scrollbar-color:#d1d5db transparent; }
     .ca-scroll::-webkit-scrollbar { width:3px; }
     .ca-scroll::-webkit-scrollbar-thumb { background:#d1d5db; border-radius:4px; }
@@ -14,174 +12,162 @@
     .leaflet-popup-content { margin:10px 14px !important; font-size:12px !important; }
     .dark .leaflet-popup-content-wrapper { background:#1f2937 !important; color:#e5e7eb !important; }
     .dark .leaflet-popup-content { color:#e5e7eb !important; }
-    .ca-filt-btn { padding:4px 10px; border-radius:6px; font-size:11px; font-weight:600; transition:all .15s; cursor:pointer; border:none; }
     .sidebar-enter { transition:all .3s cubic-bezier(.4,0,.2,1); }
     .sidebar-enter.sidebar-closed { max-width:0 !important; overflow:hidden; padding:0 !important; margin:0 !important; opacity:0; }
 </style>
 
 @php $s = $this->getStats(); @endphp
 
-{{-- Stats cards --}}
-<div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-4">
+<div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.25rem">
     @php
-        $statItems = [
-            ['label'=>'Disponibles', 'val'=>$s['agentsActifs'], 'icon'=>'heroicon-m-check-circle', 'color'=>'emerald'],
-            ['label'=>'Occupés',     'val'=>$s['agentsOccupes'], 'icon'=>'heroicon-m-briefcase',   'color'=>'red'],
-            ['label'=>'Sur la carte','val'=>$s['agentsLocalises'], 'icon'=>'heroicon-m-map-pin',  'color'=>'indigo'],
-            ['label'=>'En attente',  'val'=>$s['sigEnAttente'], 'icon'=>'heroicon-m-clock',       'color'=>'amber'],
-            ['label'=>'En cours',    'val'=>$s['sigEnCours'],   'icon'=>'heroicon-m-arrow-path',  'color'=>'cyan'],
-        ];
-        $colors = [
-            'emerald' => ['bg'=>'bg-emerald-50 dark:bg-emerald-900/20','dot'=>'bg-emerald-500','text'=>'text-emerald-600 dark:text-emerald-400','border'=>'border-emerald-200 dark:border-emerald-800','num'=>'text-emerald-600 dark:text-emerald-300'],
-            'red'     => ['bg'=>'bg-red-50 dark:bg-red-900/20','dot'=>'bg-red-500','text'=>'text-red-600 dark:text-red-400','border'=>'border-red-200 dark:border-red-800','num'=>'text-red-600 dark:text-red-300'],
-            'indigo'  => ['bg'=>'bg-indigo-50 dark:bg-indigo-900/20','dot'=>'bg-indigo-500','text'=>'text-indigo-600 dark:text-indigo-400','border'=>'border-indigo-200 dark:border-indigo-800','num'=>'text-indigo-600 dark:text-indigo-300'],
-            'amber'   => ['bg'=>'bg-amber-50 dark:bg-amber-900/20','dot'=>'bg-amber-500','text'=>'text-amber-600 dark:text-amber-400','border'=>'border-amber-200 dark:border-amber-800','num'=>'text-amber-600 dark:text-amber-300'],
-            'cyan'    => ['bg'=>'bg-cyan-50 dark:bg-cyan-900/20','dot'=>'bg-cyan-500','text'=>'text-cyan-600 dark:text-cyan-400','border'=>'border-cyan-200 dark:border-cyan-800','num'=>'text-cyan-600 dark:text-cyan-300'],
+        $cards = [
+            ['label'=>'Disponibles', 'val'=>$s['agentsActifs'], 'icon'=>'heroicon-m-check-circle', 'color'=>'#10b981', 'bg'=>'rgba(16,185,129,0.1)', 'border'=>'rgba(16,185,129,0.3)', 'bar'=>'rgba(16,185,129,0.25)'],
+            ['label'=>'Occupés', 'val'=>$s['agentsOccupes'], 'icon'=>'heroicon-m-briefcase', 'color'=>'#ef4444', 'bg'=>'rgba(239,68,68,0.1)', 'border'=>'rgba(239,68,68,0.3)', 'bar'=>'rgba(239,68,68,0.25)'],
+            ['label'=>'Sur la carte', 'val'=>$s['agentsLocalises'], 'icon'=>'heroicon-m-map-pin', 'color'=>'#6366f1', 'bg'=>'rgba(99,102,241,0.1)', 'border'=>'rgba(99,102,241,0.3)', 'bar'=>'rgba(99,102,241,0.25)'],
+            ['label'=>'En attente', 'val'=>$s['sigEnAttente'], 'icon'=>'heroicon-m-clock', 'color'=>'#f59e0b', 'bg'=>'rgba(245,158,11,0.1)', 'border'=>'rgba(245,158,11,0.3)', 'bar'=>'rgba(245,158,11,0.25)'],
+            ['label'=>'En cours', 'val'=>$s['sigEnCours'], 'icon'=>'heroicon-m-arrow-path', 'color'=>'#06b6d4', 'bg'=>'rgba(6,182,212,0.1)', 'border'=>'rgba(6,182,212,0.3)', 'bar'=>'rgba(6,182,212,0.25)'],
         ];
     @endphp
-    @foreach($statItems as $st)
-        @php $c = $colors[$st['color']]; @endphp
-        <div class="rounded-xl border {{ $c['border'] }} {{ $c['bg'] }} p-3.5 transition-shadow hover:shadow-md">
-            <div class="flex items-center justify-between mb-1.5">
-                <span class="text-[11px] font-semibold uppercase tracking-wider {{ $c['text'] }}">{{ $st['label'] }}</span>
-                <span class="w-2 h-2 rounded-full {{ $c['dot'] }} flex-shrink-0"></span>
+    @foreach($cards as $card)
+    <div style="flex:1 1 130px;min-width:110px;position:relative;overflow:hidden;border-radius:1rem;border:1px solid {{ $card['border'] }};background:#fff;padding:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;margin-bottom:0.375rem">
+            <span style="font-size:0.6875rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em">{{ $card['label'] }}</span>
+            <div style="display:flex;align-items:center;justify-content:center;border-radius:0.5rem;background:{{ $card['bg'] }};width:28px;height:28px;flex-shrink:0">
+                <x-dynamic-component :component="$card['icon']" style="width:14px;height:14px;color:{{ $card['color'] }}" />
             </div>
-            <p class="text-2xl font-black {{ $c['num'] }} leading-none">{{ $st['val'] }}</p>
         </div>
+        <p style="font-size:1.625rem;font-weight:900;color:{{ $card['color'] }};line-height:1;margin:0">{{ $card['val'] }}</p>
+        <div style="position:absolute;bottom:0;left:0;right:0;height:0.125rem;background:{{ $card['bar'] }}"></div>
+    </div>
     @endforeach
 </div>
 
-{{-- Map + Sidebar --}}
-<div class="flex gap-4">
-    {{-- Map container --}}
-    <div class="flex-1 min-w-0 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-hidden shadow-sm">
-        <div class="px-3 py-2 border-b border-gray-100 dark:border-gray-800 flex flex-wrap items-center justify-between gap-2">
-            <div class="flex items-center gap-1.5 flex-wrap">
-                <span class="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Signalements :</span>
+<div style="display:flex;gap:1rem">
+    <div style="flex:1;min-width:0;border-radius:1rem;border:1px solid #e5e7eb;background:#fff;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+        <div style="padding:0.625rem 0.875rem;border-bottom:1px solid #f3f4f6;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0.5rem">
+            <div style="display:flex;align-items:center;gap:0.375rem;flex-wrap:wrap">
+                <span style="font-size:0.6875rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em">Signalements :</span>
                 @foreach(['actifs'=>'Actifs','attente'=>'Attente','cours'=>'En cours','tous'=>'Tous'] as $val=>$label)
                     <button wire:click="setFiltreStatut('{{ $val }}')"
-                        class="ca-filt-btn {{ $filtreStatut===$val ? 'text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700' }}"
-                        style="{{ $filtreStatut===$val ? 'background:#6366f1;color:#fff' : '' }}">{{ $label }}</button>
+                        style="padding:0.25rem 0.625rem;border-radius:0.375rem;font-size:0.6875rem;font-weight:600;border:none;cursor:pointer;transition:all 0.15s;{{ $filtreStatut===$val ? 'background:#6366f1;color:#fff;box-shadow:0 1px 3px rgba(99,102,241,0.3)' : 'background:#f3f4f6;color:#4b5563' }}">{{ $label }}</button>
                 @endforeach
             </div>
-            <div class="flex items-center gap-2">
+            <div style="display:flex;align-items:center;gap:0.5rem">
                 <button wire:click="toggleSidebar"
-                    class="flex items-center justify-center w-7 h-7 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    style="display:flex;align-items:center;justify-content:center;width:1.75rem;height:1.75rem;border-radius:0.5rem;background:#f3f4f6;border:none;cursor:pointer;transition:background 0.15s"
                     title="Afficher/Masquer le panneau">
-                    <svg style="width:14px;height:14px;color:#6b7280" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg style="width:0.75rem;height:0.75rem;color:#6b7280" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $sidebarOuverte ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7' }}"/>
                     </svg>
                 </button>
-                <div class="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-gray-400" wire:poll.10s="refreshMapData">
-                    <span class="relative flex w-2 h-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full w-2 h-2 bg-emerald-500"></span>
+                <div style="display:flex;align-items:center;gap:0.375rem;font-size:0.6875rem;color:#6b7280" wire:poll.10s="refreshMapData">
+                    <span style="position:relative;display:flex;width:0.5rem;height:0.5rem">
+                        <span style="position:absolute;display:inline-flex;height:100%;width:100%;border-radius:9999px;background:#10b981;opacity:0.75;animation:ping 1s cubic-bezier(0,0,0.2,1) infinite"></span>
+                        <span style="position:relative;display:inline-flex;border-radius:9999px;width:0.5rem;height:0.5rem;background:#10b981"></span>
                     </span>
                     Temps réel
                 </div>
             </div>
         </div>
         <div wire:ignore id="ca-map"></div>
-        <div class="px-3 py-1.5 border-t border-gray-100 dark:border-gray-800 flex flex-wrap gap-x-4 gap-y-0.5">
-            <span class="text-[10px] font-semibold text-gray-400 dark:text-gray-500 mr-1 uppercase">Légende :</span>
-            <span class="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400"><span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>Dispo</span>
-            <span class="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400"><span class="w-2 h-2 rounded-full bg-red-500 inline-block"></span>Occupé</span>
-            <span class="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-amber-600 inline-block"></span>Attente</span>
-            <span class="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500 border-2 border-cyan-600 inline-block"></span>En cours</span>
-            <span class="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-emerald-600 inline-block"></span>Terminé</span>
-            <span class="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400"><span class="w-2.5 h-2.5 rounded-full bg-white border-2 border-red-500 inline-block"></span>Critique</span>
+        <div style="padding:0.375rem 0.875rem;border-top:1px solid #f3f4f6;display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center">
+            <span style="font-size:0.625rem;font-weight:600;color:#9ca3af;text-transform:uppercase">Légende :</span>
+            <span style="display:flex;align-items:center;gap:0.25rem;font-size:0.625rem;color:#6b7280"><span style="width:0.5rem;height:0.5rem;border-radius:9999px;background:#10b981;display:inline-block"></span>Dispo</span>
+            <span style="display:flex;align-items:center;gap:0.25rem;font-size:0.625rem;color:#6b7280"><span style="width:0.5rem;height:0.5rem;border-radius:9999px;background:#ef4444;display:inline-block"></span>Occupé</span>
+            <span style="display:flex;align-items:center;gap:0.25rem;font-size:0.625rem;color:#6b7280"><span style="width:0.625rem;height:0.625rem;border-radius:9999px;background:#f59e0b;border:2px solid #d97706;display:inline-block"></span>Attente</span>
+            <span style="display:flex;align-items:center;gap:0.25rem;font-size:0.625rem;color:#6b7280"><span style="width:0.625rem;height:0.625rem;border-radius:9999px;background:#06b6d4;border:2px solid #0891b2;display:inline-block"></span>En cours</span>
+            <span style="display:flex;align-items:center;gap:0.25rem;font-size:0.625rem;color:#6b7280"><span style="width:0.625rem;height:0.625rem;border-radius:9999px;background:#10b981;border:2px solid #059669;display:inline-block"></span>Terminé</span>
+            <span style="display:flex;align-items:center;gap:0.25rem;font-size:0.625rem;color:#6b7280"><span style="width:0.625rem;height:0.625rem;border-radius:9999px;background:#fff;border:2px solid #ef4444;display:inline-block"></span>Critique</span>
         </div>
     </div>
 
-    {{-- Sidebar --}}
-    <div class="sidebar-enter {{ $sidebarOuverte ? 'w-72' : 'sidebar-closed w-0' }} flex-shrink-0">
-        <div class="flex flex-col gap-3 w-72">
-            {{-- Agents --}}
-            <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-hidden shadow-sm">
-                <div class="px-3 py-2.5 border-b border-gray-100 dark:border-gray-800">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                            <x-heroicon-m-user-group style="width:14px;height:14px" class="text-indigo-500" />
+    <div class="sidebar-enter {{ $sidebarOuverte ? '' : 'sidebar-closed' }}" style="flex-shrink:0;{{ $sidebarOuverte ? 'width:18rem' : 'width:0' }}">
+        <div style="display:flex;flex-direction:column;gap:0.75rem;width:18rem">
+            <div style="border-radius:1rem;border:1px solid #e5e7eb;background:#fff;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+                <div style="padding:0.625rem 0.75rem;border-bottom:1px solid #f3f4f6">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
+                        <span style="font-size:0.75rem;font-weight:700;color:#111827;display:flex;align-items:center;gap:0.375rem">
+                            <x-heroicon-m-user-group style="width:14px;height:14px;color:#6366f1" />
                             Agents
                         </span>
-                        <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300">{{ $s['agentsLocalises'] }}</span>
+                        <span style="font-size:0.75rem;font-weight:700;padding:0.125rem 0.5rem;border-radius:9999px;background:rgba(99,102,241,0.1);color:#6366f1">{{ $s['agentsLocalises'] }}</span>
                     </div>
-                    <div class="relative">
+                    <div style="position:relative">
                         <input wire:model.live.debounce.300ms="rechercheAgent" type="text" placeholder="Rechercher..."
-                            class="w-full pl-7 pr-2 py-1.5 text-xs rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all">
-                        <svg style="width:12px;height:12px;position:absolute;left:7px;top:50%;transform:translateY(-50%);color:#9ca3af" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            style="width:100%;padding:0.375rem 0.5rem 0.375rem 1.75rem;font-size:0.75rem;border-radius:0.5rem;border:1px solid #e5e7eb;background:#f9fafb;color:#111827;outline:none;transition:all 0.15s">
+                        <svg style="width:0.75rem;height:0.75rem;position:absolute;left:0.5rem;top:50%;transform:translateY(-50%);color:#9ca3af" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
                 </div>
-                <div class="ca-scroll max-h-64 overflow-y-auto divide-y divide-gray-50 dark:divide-gray-800">
+                <div class="ca-scroll" style="max-height:16rem;overflow-y:auto">
                     @php $agents = $this->getAgentsPosition(); @endphp
                     @forelse($agents as $a)
-                        <div class="ca-row px-3 py-2 flex items-center gap-2.5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-colors"
+                        @php $isDispo = $a['disponible']; @endphp
+                        <div style="display:flex;align-items:center;gap:0.625rem;padding:0.5rem 0.75rem;cursor:pointer;transition:background 0.15s;border-bottom:1px solid #f9fafb"
                              onclick="caFocusAgent({{ $a['lat'] }},{{ $a['lng'] }})">
-                            <div class="relative flex-shrink-0">
-                                <div class="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold"
-                                     style="background:{{ $a['disponible']?'#10b981':'#ef4444' }}">
+                            <div style="position:relative;flex-shrink:0">
+                                <div style="width:1.75rem;height:1.75rem;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.625rem;font-weight:700;background:{{ $isDispo ? '#10b981' : '#ef4444' }}">
                                     {{ strtoupper(substr($a['prenom']??'A',0,1)) }}
                                 </div>
-                                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-white dark:border-gray-900"
-                                      style="background:{{ $a['disponible']?'#10b981':'#ef4444' }}"></span>
+                                <span style="position:absolute;bottom:-0.125rem;right:-0.125rem;width:0.625rem;height:0.625rem;border-radius:9999px;border:2px solid #fff;background:{{ $isDispo ? '#10b981' : '#ef4444' }}"></span>
                             </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-xs font-semibold text-gray-900 dark:text-white truncate leading-tight">{{ $a['prenom'] }} {{ $a['nom'] }}</p>
-                                <p class="text-[10px] text-gray-400 truncate leading-tight">{{ $a['zone'] }}</p>
+                            <div style="flex:1;min-width:0">
+                                <p style="font-size:0.75rem;font-weight:600;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.25">{{ $a['prenom'] }} {{ $a['nom'] }}</p>
+                                <p style="font-size:0.625rem;color:#9ca3af;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.25">{{ $a['zone'] }}</p>
                                 <select x-on:change="$wire.affecterZone({{ $a['id'] }}, $el.value)" onclick="event.stopPropagation()"
-                                    class="mt-0.5 w-full text-[10px] rounded border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 py-0.5 px-1 focus:outline-none focus:border-indigo-400 cursor-pointer">
+                                    style="margin-top:0.125rem;width:100%;font-size:0.625rem;border-radius:0.25rem;border:1px solid #e5e7eb;background:#fff;color:#4b5563;padding:0.125rem 0.25rem;outline:none;cursor:pointer">
                                     <option value="">— Zone —</option>
                                     @foreach($this->getZones() as $z)
                                         <option value="{{ $z->id }}" @selected($a['zone_id']===$z->id)>{{ $z->nomZone }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <span class="text-[10px] font-medium px-1.5 py-0.5 rounded {{ $a['disponible'] ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' }}">
-                                {{ $a['disponible'] ? 'Dispo' : 'Occ' }}
+                            <span style="font-size:0.625rem;font-weight:500;padding:0.125rem 0.375rem;border-radius:0.25rem;white-space:nowrap;{{ $isDispo ? 'background:rgba(16,185,129,0.1);color:#059669' : 'background:rgba(239,68,68,0.1);color:#dc2626' }}">
+                                {{ $isDispo ? 'Dispo' : 'Occ' }}
                             </span>
                         </div>
                     @empty
-                        <div class="py-10 text-center text-xs text-gray-400 dark:text-gray-500">Aucun agent localisé</div>
+                        <div style="padding:2.5rem 0;text-align:center;font-size:0.75rem;color:#9ca3af">Aucun agent localisé</div>
                     @endforelse
                 </div>
             </div>
 
-            {{-- Signalements --}}
-            <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-hidden shadow-sm">
-                <div class="px-3 py-2.5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
-                    <span class="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                        <x-heroicon-m-flag style="width:14px;height:14px" class="text-amber-500" />
+            <div style="border-radius:1rem;border:1px solid #e5e7eb;background:#fff;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+                <div style="padding:0.625rem 0.75rem;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between">
+                    <span style="font-size:0.75rem;font-weight:700;color:#111827;display:flex;align-items:center;gap:0.375rem">
+                        <x-heroicon-m-flag style="width:14px;height:14px;color:#f59e0b" />
                         Signalements
                     </span>
-                    <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300">{{ $this->getSignalementsPosition()->count() }}</span>
+                    <span style="font-size:0.75rem;font-weight:700;padding:0.125rem 0.5rem;border-radius:9999px;background:rgba(245,158,11,0.1);color:#d97706">{{ $this->getSignalementsPosition()->count() }}</span>
                 </div>
-                <div class="ca-scroll max-h-64 overflow-y-auto divide-y divide-gray-50 dark:divide-gray-800">
+                <div class="ca-scroll" style="max-height:16rem;overflow-y:auto">
                     @php $sigs = $this->getSignalementsPosition(); @endphp
                     @forelse($sigs as $sig)
-                        <div class="ca-row px-3 py-2.5 flex items-start gap-2.5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-colors"
+                        @php
+                            $st = $sig['statut'];
+                            $dotClr = $st === 'enAttente' ? '#f59e0b' : ($st === 'enCours' ? '#06b6d4' : '#10b981');
+                            $badgeBg = $st === 'enAttente' ? '#fef3c7' : ($st === 'enCours' ? '#cffafe' : '#d1fae5');
+                            $badgeTxt = $st === 'enAttente' ? '#92400e' : ($st === 'enCours' ? '#0e7490' : '#065f46');
+                            $badgeLbl = $st === 'enAttente' ? 'Attente' : ($st === 'enCours' ? 'En cours' : 'Terminé');
+                        @endphp
+                        <div style="display:flex;align-items:flex-start;gap:0.625rem;padding:0.625rem 0.75rem;cursor:pointer;transition:background 0.15s;border-bottom:1px solid #f9fafb"
                              onclick="caFocusSig({{ $sig['lat'] }},{{ $sig['lng'] }},{{ $sig['id'] }})">
-                            <div class="mt-0.5 flex-shrink-0 w-2.5 h-2.5 rounded-full"
-                                 style="background:{{ $sig['statut']==='enAttente'?'#f59e0b':($sig['statut']==='enCours'?'#06b6d4':'#10b981') }};{{ $sig['priorite']==='critique' ? 'box-shadow:0 0 0 2px #dc2626' : '' }}">
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-xs font-semibold text-gray-900 dark:text-white truncate leading-tight">{{ $sig['position'] }}</p>
-                                <p class="text-[10px] text-gray-500 truncate leading-tight">{{ $sig['categorie'] }}</p>
-                                <div class="flex items-center gap-2 mt-0.5">
+                            <div style="margin-top:0.25rem;flex-shrink:0;width:0.625rem;height:0.625rem;border-radius:9999px;background:{{ $dotClr }};{{ $sig['priorite']==='critique' ? 'box-shadow:0 0 0 2px #dc2626' : '' }}"></div>
+                            <div style="flex:1;min-width:0">
+                                <p style="font-size:0.75rem;font-weight:600;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.25">{{ $sig['position'] }}</p>
+                                <p style="font-size:0.625rem;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.25">{{ $sig['categorie'] }}</p>
+                                <div style="display:flex;align-items:center;gap:0.375rem;margin-top:0.125rem">
                                     @if($sig['priorite']==='critique')
-                                        <span class="text-[9px] font-bold px-1 py-0.5 rounded bg-red-500 text-white">CRITIQUE</span>
+                                        <span style="font-size:0.5625rem;font-weight:700;padding:0.125rem 0.375rem;border-radius:0.25rem;background:#ef4444;color:#fff">CRITIQUE</span>
                                     @endif
-                                    <span class="text-[9px] font-medium px-1.5 py-0.5 rounded-full"
-                                          style="background:{{ $sig['statut']==='enAttente'?'#fef3c7':($sig['statut']==='enCours'?'#cffafe':'#d1fae5') }};color:{{ $sig['statut']==='enAttente'?'#92400e':($sig['statut']==='enCours'?'#0e7490':'#065f46') }}">
-                                        {{ match($sig['statut']) { 'enAttente'=>'Attente', 'enCours'=>'En cours', 'terminer'=>'Terminé', default=>$sig['statut'] } }}
-                                    </span>
+                                    <span style="font-size:0.5625rem;font-weight:500;padding:0.125rem 0.375rem;border-radius:9999px;background:{{ $badgeBg }};color:{{ $badgeTxt }}">{{ $badgeLbl }}</span>
                                 </div>
                                 @if($sig['agent'])
-                                    <p class="text-[10px] font-medium text-cyan-600 dark:text-cyan-400 mt-0.5 truncate">{{ $sig['agent'] }}</p>
+                                    <p style="font-size:0.625rem;font-weight:500;color:#0891b2;margin-top:0.125rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $sig['agent'] }}</p>
                                 @endif
                             </div>
                         </div>
                     @empty
-                        <div class="py-10 text-center text-xs text-gray-400 dark:text-gray-500">Aucun signalement</div>
+                        <div style="padding:2.5rem 0;text-align:center;font-size:0.75rem;color:#9ca3af">Aucun signalement</div>
                     @endforelse
                 </div>
             </div>
