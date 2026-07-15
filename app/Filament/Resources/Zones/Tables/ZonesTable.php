@@ -15,6 +15,13 @@ class ZonesTable
     {
         return $table
             ->columns([
+                TextColumn::make('commune.nom')
+                    ->label('Commune')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('primary')
+                    ->placeholder('—'),
                 TextColumn::make('nomZone')
                     ->label('Zone')
                     ->searchable()

@@ -15,7 +15,7 @@ class DetailSignalement extends Component
     use HandlesFlashMessages;
 
     public Signalement $record;
-    public ?int $note = null;
+    public ?string $note = null;
     public string $commentaire = '';
     public bool $probleme_resolu = true;
     public bool $showEvalModal = false;
@@ -52,7 +52,7 @@ class DetailSignalement extends Component
 
     public function evaluer(): void
     {
-        $this->validate(['note' => 'required|integer|min:1|max:5']);
+        $this->validate(['note' => 'required|string|in:' . implode(',', array_keys(Evaluation::NOTE_SCORES))]);
         Evaluation::create([
             'signalement_id' => $this->record->id,
             'user_id' => Auth::id(),
@@ -67,7 +67,7 @@ class DetailSignalement extends Component
 
     public function modifierEvaluation(): void
     {
-        $this->validate(['note' => 'required|integer|min:1|max:5']);
+        $this->validate(['note' => 'required|string|in:' . implode(',', array_keys(Evaluation::NOTE_SCORES))]);
         $this->record->evaluation->update([
             'note' => $this->note,
             'commentaire' => $this->commentaire ?: null,
@@ -83,7 +83,7 @@ class DetailSignalement extends Component
         Evaluation::create([
             'signalement_id' => $this->record->id,
             'user_id' => Auth::id(),
-            'note' => 1,
+            'note' => 'non satisfait',
             'commentaire' => 'Le problème n\'est pas résolu',
             'probleme_resolu' => false,
         ]);

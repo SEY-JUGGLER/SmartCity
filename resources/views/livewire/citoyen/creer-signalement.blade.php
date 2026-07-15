@@ -91,12 +91,20 @@
         el._map = mapPicker;
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(mapPicker);
         mapPicker.on('click', function (e) {
+            var lat = e.latlng.lat, lng = e.latlng.lng;
             if (mapMarker) mapMarker.setLatLng(e.latlng);
             else mapMarker = L.marker(e.latlng).addTo(mapPicker);
-            document.getElementById('lat-display').textContent = e.latlng.lat.toFixed(6);
-            document.getElementById('lng-display').textContent = e.latlng.lng.toFixed(6);
-            @this.set('latitude', e.latlng.lat);
-            @this.set('longitude', e.latlng.lng);
+            document.getElementById('lat-display').textContent = lat.toFixed(6);
+            document.getElementById('lng-display').textContent = lng.toFixed(6);
+            @this.set('latitude', lat);
+            @this.set('longitude', lng);
+            fetch(
+                'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng + '&accept-language=fr',
+                { headers: { 'Accept': 'application/json' } }
+            )
+            .then(function (r) { return r.json(); })
+            .then(function (d) { if (d.display_name) @this.set('position', d.display_name); })
+            .catch(function () {});
         });
         setTimeout(function () { mapPicker.invalidateSize(); }, 100);
     }
@@ -123,26 +131,49 @@
                     if (mapMarker) mapMarker.setLatLng([lat, lng]);
                     else mapMarker = L.marker([lat, lng]).addTo(mapPicker);
                     mapPicker.setView([lat, lng], 16);
+                } else {
+                    initMapPicker();
+                    setTimeout(function () {
+                        if (mapPicker) {
+                            if (mapMarker) mapMarker.setLatLng([lat, lng]);
+                            else mapMarker = L.marker([lat, lng]).addTo(mapPicker);
+                            mapPicker.setView([lat, lng], 16);
+                        }
+                    }, 500);
                 }
 
                 document.getElementById('lat-display').textContent = lat.toFixed(6);
                 document.getElementById('lng-display').textContent = lng.toFixed(6);
 
-                btn.disabled      = false;
-                label.textContent = 'Ma position';
+                var adresse = lat.toFixed(6) + ', ' + lng.toFixed(6);
+                @this.set('position', adresse);
 
                 fetch(
                     'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng + '&accept-language=fr',
-                    { headers: { 'Accept': 'application/json' } }
+                    { headers: { 'Accept': 'application/json', 'User-Agent': 'WasteMove/1.0' } }
                 )
                 .then(function (r) { return r.json(); })
-                .then(function (d) { if (d.display_name) @this.set('position', d.display_name); })
-                .catch(function () {});
+                .then(function (d) {
+                    if (d && d.display_name) {
+                        @this.set('position', d.display_name);
+                    }
+                })
+                .catch(function (e) {
+                    console.warn('Nominatim indisponible, adresse approximative utilisée.');
+                })
+                .finally(function () {
+                    btn.disabled      = false;
+                    label.textContent = 'Ma position';
+                });
             },
-            function () {
+            function (err) {
                 btn.disabled      = false;
                 label.textContent = 'Ma position';
-                alert('Position non disponible. Veuillez cliquer sur la carte pour indiquer votre emplacement.');
+                var msg = 'Position non disponible. Veuillez cliquer sur la carte pour indiquer votre emplacement.';
+                if (err.code === 1) msg = 'Autorisation de géolocalisation refusée. Activez-la dans votre navigateur.';
+                else if (err.code === 2) msg = 'Position indisponible. Vérifiez votre connexion GPS.';
+                else if (err.code === 3) msg = 'Délai de géolocalisation dépassé. Réessayez.';
+                alert(msg);
             },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
         );

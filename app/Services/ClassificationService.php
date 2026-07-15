@@ -34,10 +34,13 @@ class ClassificationService
         $missionsTerminees = Attribution::where('agent_id', $agentId)
             ->whereHas('signalement', fn ($q) => $q->where('statut', 'terminer'))
             ->count();
-        $noteMoyenne = (float) (Evaluation::whereHas(
+        $evals = Evaluation::whereHas(
             'signalement.attribution',
             fn ($q) => $q->where('agent_id', $agentId)
-        )->avg('note') ?? 0);
+        )->get();
+        $noteMoyenne = $evals->count() > 0
+            ? (float) $evals->avg(fn ($e) => Evaluation::NOTE_SCORES[$e->note] ?? 0)
+            : 0;
 
         $tauxCompletion = $totalMissions > 0 ? $missionsTerminees / $totalMissions : 0;
 

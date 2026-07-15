@@ -20,10 +20,11 @@ use App\Livewire\Citoyen\Historique;
 use App\Livewire\Citoyen\MesSignalements;
 use App\Livewire\Citoyen\Notifications as CitoyenNotifications;
 use App\Livewire\Citoyen\Profil as CitoyenProfil;
+use App\Services\StatsPresentationService;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function (StatsPresentationService $stats) {
+    return view('welcome', $stats->getStats());
 })->name('home');
 
 Route::get('/dashboard', function () {

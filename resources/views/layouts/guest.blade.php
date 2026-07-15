@@ -18,7 +18,7 @@
             <div class="mb-6">
                 <a href="/" class="flex items-center gap-2.5">
                     <x-application-logo class="w-10 h-10" />
-                    <span class="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">SmartCity</span>
+                    <span class="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">WasteMove</span>
                 </a>
             </div>
 

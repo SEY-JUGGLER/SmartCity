@@ -29,10 +29,13 @@ class ClassementPerformance extends Component
             ->withCount(['attributionsAgent as total_missions'])
             ->get()
             ->map(function ($agent) {
-                $avgNote = Evaluation::whereHas(
+                $evals = Evaluation::whereHas(
                     'signalement.attribution',
                     fn ($q) => $q->where('agent_id', $agent->id)
-                )->avg('note') ?? 0;
+                )->get();
+                $avgNote = $evals->count() > 0
+                    ? $evals->avg(fn ($e) => Evaluation::NOTE_SCORES[$e->note] ?? 0)
+                    : 0;
 
                 $classification = ClassificationService::classifierAgent($agent->id);
 

@@ -12,9 +12,9 @@
                             </svg>
                         </div>
                         <div class="flex items-center gap-2">
-                            <img src="{{ asset('images/logo.png') }}" alt="SmartCity" class="h-8 w-auto">
+                            <img src="{{ asset('images/logo.png') }}" alt="WasteMove" class="h-8 w-auto">
                             <div>
-                                <h1 class="text-lg font-bold text-slate-900 dark:text-white">SmartCity</h1>
+                                <h1 class="text-lg font-bold text-slate-900 dark:text-white">WasteMove</h1>
                                 <p class="text-xs text-slate-500 dark:text-slate-400">Espace Agent</p>
                             </div>
                         </div>

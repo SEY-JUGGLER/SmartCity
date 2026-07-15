@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription — SmartCity</title>
+    <title>Inscription — WasteMove</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -17,13 +17,13 @@
             {{-- Logo --}}
             <div class="mb-10">
                 <a href="/" class="flex items-center gap-2.5">
-                    <img src="{{ asset('images/logo.png') }}" alt="SmartCity" class="h-9 w-auto">
-                    <span class="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">SmartCity</span>
+                    <img src="{{ asset('images/logo.png') }}" alt="WasteMove" class="h-9 w-auto">
+                    <span class="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">WasteMove</span>
                 </a>
             </div>
 
             <h1 class="text-2xl font-bold text-gray-900 mb-1">Créez votre compte</h1>
-            <p class="text-gray-500 mb-8">Rejoignez SmartCity et contribuez à améliorer votre ville</p>
+            <p class="text-gray-500 mb-8">Rejoignez WasteMove et contribuez à la gestion des déchets à Dakar</p>
 
             @if ($errors->any())
             <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-sm flex items-center gap-3">
@@ -122,7 +122,7 @@
         </div>
         <div class="relative text-center px-12">
             <div class="w-24 h-24 mx-auto bg-white/15 backdrop-blur-xl rounded-3xl flex items-center justify-center mb-8">
-                <img src="{{ asset('images/logo.png') }}" alt="SmartCity" class="h-14 w-auto brightness-0 invert">
+                <img src="{{ asset('images/logo.png') }}" alt="WasteMove" class="h-14 w-auto brightness-0 invert">
             </div>
             <h2 class="text-3xl font-bold text-white mb-4">Rejoignez l'aventure</h2>
             <p class="text-emerald-100 text-lg max-w-md mx-auto">Créez votre compte en quelques secondes et commencez à contribuer à l'amélioration de votre ville.</p>

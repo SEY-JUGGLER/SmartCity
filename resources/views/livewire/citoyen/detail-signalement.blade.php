@@ -46,10 +46,11 @@
                         @endif
                     </p>
                     <div class="flex items-center gap-1 mb-1">
+                        @php $noteScore = $record->evaluation->note_score; @endphp
                         @for($i = 1; $i <= 5; $i++)
-                            <span class="text-lg {{ $i <= $record->evaluation->note ? 'text-yellow-500' : 'text-slate-300 dark:text-slate-600' }}">★</span>
+                            <span class="text-lg {{ $i <= $noteScore ? 'text-yellow-500' : 'text-slate-300 dark:text-slate-600' }}">★</span>
                         @endfor
-                        <span class="ml-2 text-sm font-semibold text-slate-900 dark:text-white">{{ $record->evaluation->note }}/5</span>
+                        <span class="ml-2 text-sm font-semibold text-slate-900 dark:text-white">{{ ucfirst($record->evaluation->note) }}</span>
                     </div>
                     @if($record->evaluation->commentaire)
                         <p class="text-sm text-slate-600 dark:text-slate-400 italic">"{{ $record->evaluation->commentaire }}"</p>
@@ -82,8 +83,10 @@
                 </div>
             @endif
             <select wire:model="note" class="w-full rounded-xl border-slate-300 dark:border-gray-600 dark:bg-gray-800">
-                <option value="">Note (1-5)</option>
-                @for($i = 1; $i <= 5; $i++)<option value="{{ $i }}">{{ $i }} étoile(s)</option>@endfor
+                <option value="">Choisir une note</option>
+                @foreach(\App\Models\Evaluation::NOTE_LABELS as $score => $label)
+                    <option value="{{ $label }}">{{ $score }} - {{ ucfirst($label) }}</option>
+                @endforeach
             </select>
             <textarea wire:model="commentaire" rows="3" class="w-full rounded-xl border-slate-300 dark:border-gray-600 dark:bg-gray-800" placeholder="Commentaire sur l'intervention de l'agent"></textarea>
             <label class="flex items-center gap-2 text-sm"><input type="checkbox" wire:model="probleme_resolu"> Problème résolu</label>

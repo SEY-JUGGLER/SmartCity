@@ -7,6 +7,8 @@ use App\Models\Categorie;
 use App\Models\Signalement;
 use App\Models\SignalementPhoto;
 use App\Models\Zone;
+use App\Services\ActivityLoggerService;
+use App\Services\NotificationService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -63,6 +65,9 @@ class CreerSignalement extends Component
                 'type' => 'citoyen',
             ]);
         }
+
+        app(NotificationService::class)->notifySignalementCreated($signalement);
+        app(ActivityLoggerService::class)->logSignalementCreated($signalement);
 
         $this->flashSuccess('Signalement #' . $signalement->id . ' créé avec succès.');
         $this->redirect(route('citoyen.signalements.index'));

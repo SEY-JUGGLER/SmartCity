@@ -16,8 +16,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 gap-4">
             <a href="{{ route('agent.dashboard') }}" class="flex items-center gap-2 shrink-0">
-                <img src="{{ asset('images/logo.png') }}" alt="SmartCity" class="h-8 w-auto">
-                <span class="text-lg font-bold text-slate-900 dark:text-white hidden sm:inline">SmartCity Agent</span>
+                <img src="{{ asset('images/logo.png') }}" alt="WasteMove" class="h-8 w-auto">
+                <span class="text-lg font-bold text-slate-900 dark:text-white hidden sm:inline">WasteMove Agent</span>
             </a>
             <div class="flex items-center gap-1 overflow-x-auto text-xs sm:text-sm">
                 @foreach ($links as $link)

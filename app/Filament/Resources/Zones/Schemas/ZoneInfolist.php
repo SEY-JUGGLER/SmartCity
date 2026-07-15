@@ -14,6 +14,9 @@ class ZoneInfolist
         return $schema->components([
             Section::make('Informations de la zone')
                 ->schema([
+                    TextEntry::make('commune.nom')
+                        ->label('Commune')
+                        ->placeholder('—'),
                     TextEntry::make('nomZone')
                         ->label('Nom de la zone'),
                     TextEntry::make('superficie')

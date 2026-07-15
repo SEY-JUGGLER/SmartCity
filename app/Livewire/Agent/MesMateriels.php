@@ -23,9 +23,7 @@ class MesMateriels extends Component
     public function render()
     {
         $materiels = Materiel::query()
-            ->where(function ($q) {
-                $q->where('agent_id', Auth::id())->orWhere('statut', 'disponible');
-            })
+            ->where('agent_id', Auth::id())
             ->when($this->statutFilter, fn ($q) => $q->where('statut', $this->statutFilter))
             ->orderByDesc('created_at')
             ->paginate(15);

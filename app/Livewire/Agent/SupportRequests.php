@@ -3,6 +3,7 @@
 namespace App\Livewire\Agent;
 
 use App\Livewire\Concerns\HandlesFlashMessages;
+use App\Models\Materiel;
 use App\Models\SupportRequest;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -18,6 +19,7 @@ class SupportRequests extends Component
     public bool $showForm = false;
     public string $type = '';
     public string $description = '';
+    public ?int $materiel_id = null;
 
     public function mount(): void
     {
@@ -26,19 +28,31 @@ class SupportRequests extends Component
 
     public function create(): void
     {
-        $this->validate([
+        $rules = [
             'type' => 'required|in:renfort,materiel,panne_vehicule,assistance_urgente',
             'description' => 'required|string|min:5',
-        ]);
+        ];
 
-        SupportRequest::create([
+        if ($this->type === 'materiel') {
+            $rules['materiel_id'] = 'required|exists:materiels,id';
+        }
+
+        $this->validate($rules);
+
+        $data = [
             'agent_id' => Auth::id(),
             'type' => $this->type,
             'description' => $this->description,
             'statut' => 'en_attente',
-        ]);
+        ];
 
-        $this->reset(['type', 'description', 'showForm']);
+        if ($this->type === 'materiel') {
+            $data['description'] = 'Matériel #' . $this->materiel_id . ' : ' . $this->description;
+        }
+
+        SupportRequest::create($data);
+
+        $this->reset(['type', 'description', 'materiel_id', 'showForm']);
         $this->flashSuccess('Demande envoyée.');
     }
 
@@ -51,7 +65,11 @@ class SupportRequests extends Component
     public function render()
     {
         $requests = SupportRequest::where('agent_id', Auth::id())->latest()->paginate(10);
+        $materielsDisponibles = Materiel::where('statut', 'disponible')
+            ->orWhere('agent_id', Auth::id())
+            ->orderBy('nom')
+            ->get();
 
-        return view('livewire.agent.support-requests', compact('requests'));
+        return view('livewire.agent.support-requests', compact('requests', 'materielsDisponibles'));
     }
 }

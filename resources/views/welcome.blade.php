@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartCity — Pour une ville plus propre et connectée</title>
-    <meta name="description" content="SmartCity, le portail citoyen pour signaler, suivre et améliorer la gestion urbaine en temps réel dans les villes du Sénégal.">
+    <title>WasteMove — Gestion des déchets dans les communes de Dakar</title>
+    <meta name="description" content="WasteMove, la plateforme citoyenne pour signaler, suivre et améliorer la gestion des déchets dans les 19 communes de Dakar.">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=sora:600,700,800|inter:400,500,600,700" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -162,17 +162,17 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="/" class="flex items-center gap-2.5">
-                    <img src="{{ asset('images/logo.png') }}" alt="SmartCity" class="h-7 w-auto">
-                    <span class="font-display text-lg font-extrabold text-[var(--ink)]">SmartCity</span>
+                    <img src="{{ asset('images/logo.png') }}" alt="WasteMove" class="h-7 w-auto">
+                    <span class="font-display text-lg font-extrabold text-[var(--ink)]">WasteMove</span>
                 </a>
 
-                <div class="hidden lg:flex items-center gap-8">
-                    <a href="#accueil" class="nav-link active" data-nav>Accueil</a>
-                    <a href="#a-propos" class="nav-link" data-nav>À propos</a>
+                <div class="hidden lg:flex items-center gap-24">
+                    <a href="#accueil" class="nav-link active font-bold text-2xl tracking-wide" data-nav>Accueil</a>
+                    <a href="#a-propos" class="nav-link font-bold text-2xl tracking-wide" data-nav>À propos</a>
                 </div>
 
                 <div class="hidden lg:flex items-center gap-3">
-                    <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-[var(--ink-soft)] hover:text-[var(--ink)] transition-colors">Connexion</a>
+                    <a href="{{ route('login') }}" class="px-5 py-2.5 text-sm font-semibold text-[var(--ink-soft)] hover:text-[var(--green-deep)] transition-colors border border-[var(--line)] rounded-xl hover:border-[var(--green)]">Connexion</a>
                     <a href="{{ route('register') }}" class="btn-primary px-5 py-2.5 text-sm rounded-xl">Créer un compte</a>
                 </div>
 
@@ -186,14 +186,14 @@
     {{-- Mobile menu --}}
     <div id="mobile-menu">
         <div class="flex items-center justify-between mb-10">
-            <span class="font-display text-lg font-extrabold text-[var(--ink)]">SmartCity</span>
+            <span class="font-display text-lg font-extrabold text-[var(--ink)]">WasteMove</span>
             <button id="menu-close" aria-label="Fermer le menu" class="text-[var(--ink)] p-2">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
-        <div class="flex flex-col gap-6">
-            <a href="#accueil">Accueil</a>
-            <a href="#a-propos">À propos</a>
+        <div class="flex flex-col gap-3">
+            <a href="#accueil" class="text-2xl">Accueil</a>&nbsp;    
+            <a href="#a-propos" class="text-2xl">À propos</a>
         </div>
         <div class="mt-auto flex flex-col gap-3 pt-10">
             <a href="{{ route('login') }}" class="px-5 py-3 text-center text-[var(--ink)] border border-[var(--line)] rounded-xl">Connexion</a>
@@ -210,21 +210,21 @@
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 w-full">
             <div class="grid lg:grid-cols-2 gap-14 lg:gap-16 items-center">
                 <div class="space-y-7">
-                    <div class="status-chip"><span class="pulse-dot"></span> Plateforme municipale en temps réel</div>
+                    <div class="status-chip"><span class="pulse-dot"></span> Plateforme de gestion des déchets à Dakar</div>
                     <h1 class="font-display text-4xl sm:text-5xl lg:text-[3.3rem] font-extrabold leading-[1.1]">
-                        SmartCity<br><span class="text-[var(--green)]">Pour une ville plus propre et connectée.</span>
+                        WasteMove<br><span class="text-[var(--green)]">Pour un Dakar plus propre.</span>
                     </h1>
                     <p class="text-lg leading-relaxed max-w-lg">
-                        Un portail citoyen pour signaler, suivre et améliorer la gestion urbaine en temps réel. SmartCity relie chaque citoyen de Dakar à Saint-Louis à l'agent le plus proche.
+                        Signalez, suivez et participez à la gestion des déchets dans les <strong class="text-[var(--ink)]">19 communes</strong> de Dakar. WasteMove connecte chaque citoyen à l'agent le plus proche pour une intervention rapide et efficace.
                     </p>
-                    <p class="text-sm italic" style="color: var(--gold-deep);">« Dalal ak diam » — bienvenue, en toute confiance.</p>
+                    <p class="text-sm italic" style="color: var(--gold-deep);">« Dalal ak diam » — la propreté, c'est l'affaire de tous.</p>
                     <div class="flex flex-wrap gap-4">
                         <a href="{{ route('register') }}" class="btn-primary group px-7 py-3.5 rounded-2xl">
-                            Commencer à signaler
+                            Signaler un dépôt
                             <svg class="inline w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                         </a>
                         <a href="#a-propos" class="px-7 py-3.5 text-[var(--ink)] font-semibold rounded-2xl border border-[var(--line)] bg-white hover:shadow-md transition-all">
-                            Découvrir SmartCity
+                            Découvrir WasteMove
                         </a>
                     </div>
                     <div class="flex items-center gap-4 pt-2">
@@ -233,7 +233,7 @@
                             <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--gold)] to-[var(--gold-deep)] border-2 border-white flex items-center justify-center text-white text-xs font-bold">B</div>
                             <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--terracotta)] to-[var(--terracotta-deep)] border-2 border-white flex items-center justify-center text-white text-xs font-bold">C</div>
                         </div>
-                        <p class="text-sm"><span class="font-bold text-[var(--ink)]">+500</span> agents déjà équipés</p>
+                        <p class="text-sm"><span class="font-bold text-[var(--ink)]">+{{ $agents_display }}</span> agents mobilisés dans les 19 communes</p>
                     </div>
                 </div>
 
@@ -242,12 +242,12 @@
                         <img src="https://images.unsplash.com/photo-1690323223790-4df744a1a033?w=900&q=80" alt="Vue panoramique de la ville de Dakar, Sénégal">
                     </div>
                     <div class="absolute -bottom-7 -left-4 sm:-left-7 glass-card rounded-2xl p-4 max-w-[210px]">
-                        <p class="text-xs font-semibold text-[var(--ink-soft)] mb-1">Résolution moyenne</p>
-                        <p class="font-display text-xl font-extrabold text-[var(--ink)]">2,4 jours</p>
+                        <p class="text-xs font-semibold text-[var(--ink-soft)] mb-1">Taux de résolution</p>
+                        <p class="font-display text-xl font-extrabold text-[var(--ink)]">{{ $taux_resolution }}%</p>
                     </div>
                     <div class="absolute -top-6 -right-3 sm:-right-6 glass-card delay rounded-2xl p-4">
                         <p class="text-xs font-semibold text-[var(--ink-soft)] mb-1">Satisfaction</p>
-                        <p class="font-display text-xl font-extrabold text-[var(--green)]">98%</p>
+                        <p class="font-display text-xl font-extrabold text-[var(--green)]">{{ $satisfaction }}%</p>
                     </div>
                 </div>
             </div>
@@ -280,19 +280,19 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
                 <div class="rounded-2xl p-5 text-center" style="background: var(--green-soft);">
-                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-[var(--green-deep)]"><span data-count="15482">0</span>+</p>
+                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-[var(--green-deep)]"><span data-count="{{ $signalements }}">0</span>+</p>
                     <p class="text-xs sm:text-sm text-[var(--ink-soft)] mt-1">Signalements traités</p>
                 </div>
                 <div class="rounded-2xl p-5 text-center" style="background: var(--gold-soft);">
-                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-[var(--gold-deep)]"><span data-count="512">0</span>+</p>
+                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-[var(--gold-deep)]"><span data-count="{{ $agents }}">0</span>+</p>
                     <p class="text-xs sm:text-sm text-[var(--ink-soft)] mt-1">Agents mobilisés</p>
                 </div>
                 <div class="rounded-2xl p-5 text-center" style="background: var(--terracotta-soft);">
-                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-[var(--terracotta-deep)]"><span data-count="50">0</span></p>
+                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-[var(--terracotta-deep)]"><span data-count="{{ $zones }}">0</span></p>
                     <p class="text-xs sm:text-sm text-[var(--ink-soft)] mt-1">Zones couvertes</p>
                 </div>
                 <div class="rounded-2xl p-5 text-center" style="background: var(--green-soft);">
-                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-[var(--green-deep)]"><span data-count="98">0</span>%</p>
+                    <p class="font-display text-2xl sm:text-3xl font-extrabold text-[var(--green-deep)]"><span data-count="{{ $taux_resolution }}">0</span>%</p>
                     <p class="text-xs sm:text-sm text-[var(--ink-soft)] mt-1">Taux de résolution</p>
                 </div>
             </div>
@@ -306,42 +306,42 @@
             {{-- Intro --}}
             <div class="max-w-2xl mb-16">
                 <span class="eyebrow">À propos</span>
-                <h2 class="font-display text-3xl sm:text-4xl font-extrabold mt-2">Pourquoi SmartCity existe</h2>
+                <h2 class="font-display text-3xl sm:text-4xl font-extrabold mt-2">Pourquoi WasteMove existe</h2>
                 <p class="mt-4 text-lg leading-relaxed">
-                    Une ville se gère avec ses habitants, pas sans eux. En rendant chaque signalement visible et traçable, SmartCity apporte de la <strong class="text-[var(--ink)]">transparence</strong> dans le traitement des problèmes urbains, donne aux citoyens un rôle actif grâce à l'<strong class="text-[var(--ink)]">inclusion citoyenne</strong>, et fournit aux municipalités les données nécessaires pour une <strong class="text-[var(--ink)]">efficacité</strong> accrue sur le terrain.
+                    À Dakar, la gestion des déchets est un défi quotidien pour les <strong class="text-[var(--ink)]">19 communes</strong>. WasteMove rend chaque signalement visible et traçable, apporte de la <strong class="text-[var(--ink)]">transparence</strong> dans le traitement des dépôts sauvages, donne aux citoyens un rôle actif grâce à l'<strong class="text-[var(--ink)]">inclusion citoyenne</strong>, et fournit aux municipalités les données nécessaires pour une <strong class="text-[var(--ink)]">efficacité</strong> accrue sur le terrain.
                 </p>
             </div>
 
             {{-- Sub-section: Le constat --}}
-            <div class="mb-24">
+            <div class="mb-24" id="le-constat">
                 <h3 class="font-display text-2xl font-extrabold mb-8">Le constat</h3>
                 <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
                     <div class="rounded-3xl p-8 shadow-sm border border-[var(--line)] card-hover scroll-reveal" style="background: var(--terracotta-soft);">
                         <div class="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center mb-5">
                             <svg class="w-6 h-6 text-[var(--terracotta-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                         </div>
-                        <h4 class="font-display text-lg font-bold mb-3">Le signal n'arrive jamais</h4>
-                        <p class="text-sm leading-relaxed">Un citoyen signale un nid-de-poule par téléphone ou en mairie. La demande circule, se perd dans un service, et personne ne sait où elle en est.</p>
+                        <h4 class="font-display text-lg font-bold mb-3">Dépôts sauvages non signalés</h4>
+                        <p class="text-sm leading-relaxed">Un citoyen voit un dépôt sauvage mais ne sait pas à qui le signaler. L'information circule mal, les déchets s'accumulent.</p>
                     </div>
                     <div class="rounded-3xl p-8 shadow-sm border border-[var(--line)] card-hover scroll-reveal" style="background: var(--gold-soft);">
                         <div class="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center mb-5">
                             <svg class="w-6 h-6 text-[var(--gold-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
-                        <h4 class="font-display text-lg font-bold mb-3">Le terrain attend</h4>
-                        <p class="text-sm leading-relaxed">Aucune coordination entre les équipes mobiles et les services municipaux : un agent peut passer à côté d'un problème sans le savoir.</p>
+                        <h4 class="font-display text-lg font-bold mb-3">Collecte inefficace</h4>
+                        <p class="text-sm leading-relaxed">Aucune coordination entre les équipes de collecte et les besoins réels : des zones sont oubliées, d'autres sur-servies.</p>
                     </div>
                     <div class="rounded-3xl p-8 shadow-sm border border-[var(--line)] card-hover scroll-reveal" style="background: var(--green-soft);">
                         <div class="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center mb-5">
                             <svg class="w-6 h-6 text-[var(--green-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         </div>
-                        <h4 class="font-display text-lg font-bold mb-3">Aucune visibilité</h4>
-                        <p class="text-sm leading-relaxed">Sans tableau de bord, impossible de savoir quelles zones concentrent les signalements ou si les délais s'améliorent.</p>
+                        <h4 class="font-display text-lg font-bold mb-3">Aucune donnée exploitable</h4>
+                        <p class="text-sm leading-relaxed">Sans tableau de bord, impossible de savoir quelles communes concentrent les dépôts ou si le service s'améliore.</p>
                     </div>
                 </div>
             </div>
 
             {{-- Sub-section: Fonctionnalités --}}
-            <div class="mb-24">
+            <div class="mb-24" id="fonctionnalites">
                 <h3 class="font-display text-2xl font-extrabold mb-8">Fonctionnalités</h3>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                     <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
@@ -349,73 +349,73 @@
                             <svg class="w-6 h-6 text-[var(--green-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3.5"/></svg>
                         </div>
                         <h4 class="font-display text-lg font-bold mb-2">Signalement géolocalisé</h4>
-                        <p class="text-sm">Une photo, une position et une courte description suffisent. L'agent reçoit le dossier complet en 30 secondes.</p>
+                        <p class="text-sm">Une photo du dépôt, votre position et une courte description. L'agent reçoit le dossier complet en 30 secondes.</p>
                     </div>
                     <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--gold-soft);">
                             <svg class="w-6 h-6 text-[var(--gold-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         </div>
                         <h4 class="font-display text-lg font-bold mb-2">Suivi en temps réel</h4>
-                        <p class="text-sm">Chaque signal apparaît instantanément sur la carte de la ville, avec son statut et sa zone.</p>
+                        <p class="text-sm">Chaque signalement apparaît sur la carte de Dakar avec son statut, sa commune et sa zone d'intervention.</p>
                     </div>
                     <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--terracotta-soft);">
                             <svg class="w-6 h-6 text-[var(--terracotta-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
                         </div>
-                        <h4 class="font-display text-lg font-bold mb-2">Répartition automatique</h4>
-                        <p class="text-sm">Chaque dossier est assigné à l'agent disponible le plus proche, selon sa zone de couverture.</p>
+                        <h4 class="font-display text-lg font-bold mb-2">Assignation automatique</h4>
+                        <p class="text-sm">Chaque dépôt signalé est assigné à l'agent disponible le plus proche, selon sa commune de couverture.</p>
                     </div>
                     <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--green-soft);">
                             <svg class="w-6 h-6 text-[var(--green-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                         </div>
-                        <h4 class="font-display text-lg font-bold mb-2">Statistiques pour la municipalité</h4>
-                        <p class="text-sm">Indicateurs de délai, de volume et de zone, mis à jour en continu pour piloter les équipes.</p>
+                        <h4 class="font-display text-lg font-bold mb-2">Statistiques par commune</h4>
+                        <p class="text-sm">Indicateurs de collecte, volume de déchets et performance, mis à jour en continu pour piloter les équipes.</p>
                     </div>
                     <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--gold-soft);">
                             <svg class="w-6 h-6 text-[var(--gold-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                         </div>
-                        <h4 class="font-display text-lg font-bold mb-2">Notifications citoyennes</h4>
-                        <p class="text-sm">Le citoyen est notifié à chaque changement de statut : déposé, assigné, résolu.</p>
+                        <h4 class="font-display text-lg font-bold mb-2">Notifications en temps réel</h4>
+                        <p class="text-sm">Le citoyen est notifié à chaque étape : dépôt signalé, agent en route, déchets collectés.</p>
                     </div>
                     <div class="bg-white rounded-3xl p-8 shadow-sm card-hover scroll-reveal">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background: var(--terracotta-soft);">
                             <svg class="w-6 h-6 text-[var(--terracotta-deep)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         </div>
                         <h4 class="font-display text-lg font-bold mb-2">Rapports exportables</h4>
-                        <p class="text-sm">Génère un rapport d'activité en PDF en un clic, prêt pour une réunion municipale.</p>
+                        <p class="text-sm">Générez un rapport d'activité PDF par commune en un clic, prêt pour les réunions municipales.</p>
                     </div>
                 </div>
             </div>
 
             {{-- Sub-section: Comment ça marche --}}
-            <div>
+            <div id="comment-ca-marche">
                 <h3 class="font-display text-2xl font-extrabold mb-8">Comment ça marche</h3>
                 <div class="grid md:grid-cols-3 gap-8 lg:gap-10">
                     <div class="scroll-reveal">
                         <div class="photo-frame aspect-[4/3] mb-5">
                             <span class="photo-tag">Étape 1</span>
-                            <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&q=80" alt="Un citoyen photographie un problème dans la rue avec son téléphone">
+                            <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&q=80" alt="Un citoyen photographie un dépôt sauvage dans la rue avec son téléphone">
                         </div>
-                        <h4 class="font-display text-lg font-bold mb-2">Un citoyen dépose un signal</h4>
-                        <p class="text-sm">Photo, position et description prises sur le mobile, transmises instantanément à la plateforme.</p>
+                        <h4 class="font-display text-lg font-bold mb-2">Un citoyen signale un dépôt</h4>
+                        <p class="text-sm">Photo, position et description du dépôt sauvage, transmises instantanément à WasteMove.</p>
                     </div>
                     <div class="scroll-reveal">
                         <div class="photo-frame aspect-[4/3] mb-5">
                             <span class="photo-tag">Étape 2</span>
-                            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80" alt="Un agent municipal intervient sur le terrain">
+                            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80" alt="Un agent municipal intervient pour collecter les déchets">
                         </div>
-                        <h4 class="font-display text-lg font-bold mb-2">Un agent est assigné</h4>
-                        <p class="text-sm">L'agent disponible le plus proche reçoit une notification avec toutes les informations nécessaires.</p>
+                        <h4 class="font-display text-lg font-bold mb-2">Un agent est envoyé</h4>
+                        <p class="text-sm">L'agent de collecte disponible le plus proche reçoit une notification avec la localisation exacte du dépôt.</p>
                     </div>
                     <div class="scroll-reveal">
                         <div class="photo-frame aspect-[4/3] mb-5">
                             <span class="photo-tag">Étape 3</span>
-                            <img src="https://images.unsplash.com/photo-1611258490565-4a06c019e631?w=600&q=80" alt="Façade moderne bien entretenue en bord de mer à Dakar">
+                            <img src="https://images.unsplash.com/photo-1611258490565-4a06c019e631?w=600&q=80" alt="Quartier propre après la collecte des déchets">
                         </div>
-                        <h4 class="font-display text-lg font-bold mb-2">Le signal est résolu</h4>
-                        <p class="text-sm">Le citoyen reçoit une confirmation, et la ville conserve une donnée exploitable pour la suite.</p>
+                        <h4 class="font-display text-lg font-bold mb-2">Les déchets sont collectés</h4>
+                        <p class="text-sm">Le citoyen reçoit une confirmation de collecte, et la commune conserve une donnée exploitable.</p>
                     </div>
                 </div>
             </div>
@@ -451,10 +451,10 @@
             <div class="grid md:grid-cols-4 gap-8">
                 <div class="md:col-span-2">
                     <div class="flex items-center gap-2.5 mb-4">
-                        <img src="{{ asset('images/logo.png') }}" alt="SmartCity" class="h-7 w-auto">
-                        <span class="font-display text-base font-extrabold text-[var(--ink)]">SmartCity</span>
+                        <img src="{{ asset('images/logo.png') }}" alt="WasteMove" class="h-7 w-auto">
+                        <span class="font-display text-base font-extrabold text-[var(--ink)]">WasteMove</span>
                     </div>
-                    <p class="text-sm max-w-md">Plateforme intelligente de gestion des signalements urbains. Faite avec teranga, pour des villes sénégalaises plus propres et plus réactives.</p>
+                    <p class="text-sm max-w-md">Plateforme intelligente de gestion des déchets urbains. Faite avec teranga, pour un Dakar plus propre et plus réactif.</p>
                 </div>
                 <div>
                     <h4 class="font-display font-bold text-[var(--ink)] mb-4 text-sm">Navigation</h4>
@@ -468,13 +468,13 @@
                 <div>
                     <h4 class="font-display font-bold text-[var(--ink)] mb-4 text-sm">Coordonnées</h4>
                     <ul class="space-y-2 text-sm">
-                        <li>contact@smartcity.com</li>
+                        <li>contact@wastemove.sn</li>
                         <li>Dakar, Sénégal</li>
                     </ul>
                 </div>
             </div>
             <div class="border-t border-[var(--line)] mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
-                <p>&copy; {{ date('Y') }} SmartCity. Tous droits réservés.</p>
+                <p>&copy; {{ date('Y') }} WasteMove. Tous droits réservés.</p>
                 <div class="flex gap-5">
                     <a href="#" class="hover:text-[var(--green-deep)] transition-colors">Mentions légales</a>
                     <a href="#" class="hover:text-[var(--green-deep)] transition-colors">Politique de confidentialité</a>

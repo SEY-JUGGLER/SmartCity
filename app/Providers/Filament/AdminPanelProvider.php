@@ -34,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
                 'danger'  => Color::Rose,
             ])
-            ->brandName('SmartCity')
+            ->brandName('WasteMove')
             ->brandLogo(asset('images/logo.png'))
             ->brandLogoHeight('2.5rem')
             ->darkMode(true)

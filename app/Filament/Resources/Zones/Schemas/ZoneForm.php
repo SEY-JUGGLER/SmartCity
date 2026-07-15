@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Zones\Schemas;
 
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
@@ -14,6 +15,12 @@ class ZoneForm
         return $schema->schema([
             Section::make('Informations de la zone')
                 ->schema([
+                    Select::make('commune_id')
+                        ->label('Commune')
+                        ->relationship('commune', 'nom')
+                        ->searchable()
+                        ->preload()
+                        ->placeholder('—'),
                     TextInput::make('nomZone')
                         ->label('Nom de la zone')
                         ->required()

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Agent\Pages;
 
 use App\Filament\Resources\Agent\AgentResource;
 use App\Models\Attribution;
+use App\Models\Evaluation;
 use Filament\Actions\EditAction;
 use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -120,11 +121,16 @@ class ViewAgent extends ViewRecord
                     TextEntry::make('note_moyenne')
                         ->label('Note moyenne')
                         ->state(fn ($record) => round(
-                            $record->attributionsAgent()
-                                ->whereHas('signalement.evaluation')
-                                ->join('signalements', 'attributions.signalement_id', '=', 'signalements.id')
-                                ->join('evaluations', 'signalements.id', '=', 'evaluations.signalement_id')
-                                ->avg('evaluations.note') ?? 0, 1
+                            (function () use ($record) {
+                                $evals = Evaluation::whereHas(
+                                    'signalement.attribution',
+                                    fn ($q) => $q->where('agent_id', $record->id)
+                                )->get();
+                                return $evals->count() > 0
+                                    ? $evals->avg(fn ($e) => Evaluation::NOTE_SCORES[$e->note] ?? 0)
+                                    : 0;
+                            })(),
+                            1
                         ))
                         ->badge()
                         ->color(fn ($state) => $state >= 4 ? 'success' : ($state >= 2 ? 'warning' : 'danger')),

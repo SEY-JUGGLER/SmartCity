@@ -6,6 +6,8 @@
             <option value="">Tous</option>
             <option value="disponible">Disponible</option>
             <option value="attribue">Attribué</option>
+            <option value="en_maintenance">En maintenance</option>
+            <option value="hors_service">Hors service</option>
         </select>
         <div class="grid gap-4 sm:grid-cols-2">
             @forelse($materiels as $m)

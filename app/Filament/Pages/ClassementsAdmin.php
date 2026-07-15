@@ -32,8 +32,11 @@ class ClassementsAdmin extends Page
         $agents = User::where('role', 'AGENT');
         $citoyens = User::where('role', 'CITOYEN');
 
-        $moyTaux = (float) Evaluation::whereHas('signalement.attribution', fn ($q) => $q->whereHas('signalement', fn ($q) => $q->whereNotNull('id')))
-            ->avg('note') ?? 0;
+        $allEvals = Evaluation::whereHas('signalement.attribution', fn ($q) => $q->whereHas('signalement', fn ($q) => $q->whereNotNull('id')))
+            ->get();
+        $moyTaux = $allEvals->count() > 0
+            ? $allEvals->avg(fn ($e) => Evaluation::NOTE_SCORES[$e->note] ?? 0)
+            : 0;
 
         return [
             'total_agents'   => (clone $agents)->count(),
@@ -68,7 +71,10 @@ class ClassementsAdmin extends Page
             ->selectRaw('signalement_id, note')
             ->get()
             ->groupBy(fn ($e) => optional(optional($e->signalement)->attribution)->agent_id)
-            ->map(fn ($evals) => round($evals->avg('note'), 1));
+            ->map(function ($evals) {
+                $scores = $evals->map(fn ($e) => Evaluation::NOTE_SCORES[$e->note] ?? 0);
+                return round($scores->avg(), 1);
+            });
 
         $classifications = $agentIds->mapWithKeys(fn ($id) => [$id => ClassificationService::classifierAgent($id)]);
 

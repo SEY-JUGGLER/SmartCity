@@ -8,8 +8,9 @@
         <div class="space-y-2">
             @forelse($notifications as $n)
                 <div class="p-4 rounded-xl border {{ $n->read_at ? 'bg-slate-50 dark:bg-gray-800/50' : 'bg-white dark:bg-gray-900 border-emerald-200' }}">
-                    <p class="text-sm">{{ $n->data['title'] ?? class_basename($n->type) }}</p>
-                    <p class="text-xs text-slate-500 mt-1">{{ $n->created_at->diffForHumans() }}</p>
+                    <p class="text-sm font-medium">{{ $n->data['title'] ?? class_basename($n->type) }}</p>
+                    <p class="text-xs text-slate-500 mt-0.5">{{ $n->data['body'] ?? '' }}</p>
+                    <p class="text-xs text-slate-400 mt-1">{{ $n->created_at->diffForHumans() }}</p>
                     @unless($n->read_at)
                         <button wire:click="marquerLue('{{ $n->id }}')" class="text-xs text-emerald-600 mt-2">Marquer comme lu</button>
                     @endunless

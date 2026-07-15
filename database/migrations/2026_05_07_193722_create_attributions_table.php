@@ -16,7 +16,7 @@ return new class extends Migration
     $table->dateTime('dateHeureAttribution')->useCurrent();
     $table->foreignId('signalement_id')->constrained()->cascadeOnDelete();
     $table->foreignId('agent_id')->constrained('users')->cascadeOnDelete();
-    $table->foreignId('admin_id')->constrained('users')->cascadeOnDelete();
+    $table->foreignId('admin_id')->nullable()->constrained('users')->cascadeOnDelete();
     $table->timestamps();
 });
     }

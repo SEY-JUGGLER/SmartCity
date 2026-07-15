@@ -33,7 +33,7 @@ class CitoyenPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
                 'danger'  => Color::Rose,
             ])
-            ->brandName('SmartCity Citoyen')
+            ->brandName('WasteMove Citoyen')
             ->brandLogo(asset('images/logo.png'))
             ->brandLogoHeight('2.5rem')
             ->darkMode(true)

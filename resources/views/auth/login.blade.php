@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion — SmartCity</title>
+    <title>Connexion — WasteMove</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -17,13 +17,13 @@
             {{-- Logo --}}
             <div class="mb-10">
                 <a href="/" class="flex items-center gap-2.5">
-                    <img src="{{ asset('images/logo.png') }}" alt="SmartCity" class="h-9 w-auto">
-                    <span class="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">SmartCity</span>
+                    <img src="{{ asset('images/logo.png') }}" alt="WasteMove" class="h-9 w-auto">
+                    <span class="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">WasteMove</span>
                 </a>
             </div>
 
             <h1 class="text-2xl font-bold text-gray-900 mb-1">Content de vous revoir</h1>
-            <p class="text-gray-500 mb-8">Connectez-vous à votre espace SmartCity</p>
+            <p class="text-gray-500 mb-8">Connectez-vous à votre espace WasteMove</p>
 
             @if ($errors->any())
             <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-sm flex items-center gap-3">
@@ -90,23 +90,23 @@
         </div>
         <div class="relative text-center px-12">
             <div class="w-24 h-24 mx-auto bg-white/15 backdrop-blur-xl rounded-3xl flex items-center justify-center mb-8">
-                <img src="{{ asset('images/logo.png') }}" alt="SmartCity" class="h-14 w-auto brightness-0 invert">
+                <img src="{{ asset('images/logo.png') }}" alt="WasteMove" class="h-14 w-auto brightness-0 invert">
             </div>
-            <h2 class="text-3xl font-bold text-white mb-4">Bienvenue sur SmartCity</h2>
-            <p class="text-emerald-100 text-lg max-w-md mx-auto">La plateforme qui connecte citoyens et services municipaux pour une ville plus propre et plus réactive.</p>
+<h2 class="text-3xl font-bold text-white mb-4">Bienvenue sur WasteMove</h2>
+                            <p class="text-emerald-100 text-lg max-w-md mx-auto">La plateforme de gestion des déchets qui connecte citoyens et services municipaux pour un Dakar plus propre.</p>
             <div class="mt-12 flex justify-center gap-8">
                 <div class="text-center">
-                    <p class="text-3xl font-bold text-white">15k+</p>
+                    <p class="text-3xl font-bold text-white">{{ number_format($signalements, 0, ',', ' ') }}+</p>
                     <p class="text-sm text-emerald-200 mt-1">Signalements</p>
                 </div>
                 <div class="w-px bg-emerald-500/30"></div>
                 <div class="text-center">
-                    <p class="text-3xl font-bold text-white">500+</p>
+                    <p class="text-3xl font-bold text-white">{{ $agents }}+</p>
                     <p class="text-sm text-emerald-200 mt-1">Agents</p>
                 </div>
                 <div class="w-px bg-emerald-500/30"></div>
                 <div class="text-center">
-                    <p class="text-3xl font-bold text-white">98%</p>
+                    <p class="text-3xl font-bold text-white">{{ $satisfaction }}%</p>
                     <p class="text-sm text-emerald-200 mt-1">Satisfaction</p>
                 </div>
             </div>

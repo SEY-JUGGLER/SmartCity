@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Rapports\Pages;
 
 use App\Filament\Resources\Rapports\RapportResource;
 use App\Models\Rapport;
+use App\Services\ActivityLoggerService;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Notifications\Notification;
@@ -36,6 +37,8 @@ class ListRapports extends ListRecords
                         'date_fin'       => today(),
                         'user_id'        => auth()->id(),
                     ]));
+
+                    app(ActivityLoggerService::class)->logRapportGenerated($rapport);
 
                     Notification::make()
                         ->title('Rapport #' . $rapport->id . ' généré avec succès')

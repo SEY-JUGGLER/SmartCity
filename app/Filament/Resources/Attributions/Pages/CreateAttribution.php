@@ -8,4 +8,10 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAttribution extends CreateRecord
 {
     protected static string $resource = AttributionResource::class;
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['admin_id'] = auth()->id();
+        return $data;
+    }
 }

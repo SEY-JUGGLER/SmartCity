@@ -33,7 +33,7 @@ class AgentPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
                 'danger'  => Color::Rose,
             ])
-            ->brandName('SmartCity Agent')
+            ->brandName('WasteMove Agent')
             ->brandLogo(asset('images/logo.png'))
             ->brandLogoHeight('2.5rem')
             ->darkMode(true)

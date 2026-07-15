@@ -33,7 +33,17 @@
                             <td class="px-4 py-3">{{ $s->id }}</td>
                             <td class="px-4 py-3">{{ $s->categorie?->nom }}</td>
                             <td class="px-4 py-3">{{ Str::limit($s->position, 35) }}</td>
-                            <td class="px-4 py-3">{{ $s->statut }}</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium {{ match($s->statut) {
+                                    'enAttente' => 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
+                                    'enCours' => 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300',
+                                    'terminer' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300',
+                                    'rejeter' => 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+                                    default => 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
+                                } }}">
+                                    {{ match($s->statut) { 'enAttente'=>'En attente', 'enCours'=>'En cours', 'terminer'=>'Résolu', 'rejeter'=>'Rejeté', default=>$s->statut } }}
+                                </span>
+                            </td>
                             <td class="px-4 py-3">{{ $s->attribution?->agent ? $s->attribution->agent->prenom . ' ' . $s->attribution->agent->name : '—' }}</td>
                             <td class="px-4 py-3"><a href="{{ route('citoyen.signalements.show', $s->id) }}" class="text-emerald-600 font-medium">Voir</a></td>
                         </tr>

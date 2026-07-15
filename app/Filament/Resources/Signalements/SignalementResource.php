@@ -2,16 +2,15 @@
 
 namespace App\Filament\Resources\Signalements;
 
-use App\Filament\Resources\Signalements\Pages\CreateSignalement;
-use App\Filament\Resources\Signalements\Pages\EditSignalement;
 use App\Filament\Resources\Signalements\Pages\ListSignalements;
 use App\Filament\Resources\Signalements\Pages\ViewSignalement;
 use App\Filament\Resources\Signalements\Schemas\SignalementInfolist;
 
 use App\Models\Signalement;
-use App\Models\User;
 use App\Models\Attribution;
+use App\Services\ActivityLoggerService;
 use App\Services\AttributionService;
+use App\Services\NotificationService;
 
 use BackedEnum;
 use UnitEnum;
@@ -35,7 +34,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
 
-use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteBulkAction;
@@ -175,6 +173,13 @@ class SignalementResource extends Resource
                     ->color('info')
                     ->placeholder('—'),
 
+                TextColumn::make('zone.commune.nom')
+                    ->label('Commune')
+                    ->badge()
+                    ->color('success')
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('citoyen.prenom')
                     ->label('Citoyen')
                     ->formatStateUsing(fn ($state, $record) => $record->citoyen?->prenom . ' ' . $record->citoyen?->name)
@@ -226,6 +231,12 @@ class SignalementResource extends Resource
                     ->searchable()
                     ->preload(),
 
+                SelectFilter::make('commune_id')
+                    ->label('Commune')
+                    ->relationship('zone.commune', 'nom')
+                    ->searchable()
+                    ->preload(),
+
                 Filter::make('date_range')
                     ->label('Période')
                     ->schema([
@@ -245,7 +256,6 @@ class SignalementResource extends Resource
 
             ->recordActions([
                 ViewAction::make(),
-                EditAction::make(),
 
                 Action::make('attribuer')
                     ->label('Attribuer')
@@ -278,6 +288,9 @@ class SignalementResource extends Resource
                             'admin_id'             => auth()->id(),
                             'dateHeureAttribution' => now(),
                         ]);
+
+                        app(NotificationService::class)->notifySignalementAttributed($record);
+                        app(ActivityLoggerService::class)->logSignalementAttributed($record);
 
                         Notification::make()
                             ->title('Signalement attribué avec succès')
@@ -316,6 +329,9 @@ class SignalementResource extends Resource
                             'dateHeureAttribution' => now(),
                         ]);
 
+                        app(NotificationService::class)->notifySignalementAttributed($record);
+                        app(ActivityLoggerService::class)->logSignalementAttributed($record);
+
                         Notification::make()
                             ->title('Signalement réattribué')
                             ->success()
@@ -338,7 +354,10 @@ class SignalementResource extends Resource
                             ->required(),
                     ])
                     ->action(function (Signalement $record, array $data) {
+                        $oldStatus = $record->statut;
                         $record->update(['statut' => $data['statut']]);
+                        app(NotificationService::class)->notifyStatusChanged($record);
+                        app(ActivityLoggerService::class)->logSignalementStatusChanged($record, $oldStatus, $data['statut']);
                         Notification::make()
                             ->title('Statut mis à jour')
                             ->success()
@@ -356,10 +375,8 @@ class SignalementResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => ListSignalements::route('/'),
-            'create' => CreateSignalement::route('/create'),
-            'view'   => ViewSignalement::route('/{record}'),
-            'edit'   => EditSignalement::route('/{record}/edit'),
+            'index' => ListSignalements::route('/'),
+            'view'  => ViewSignalement::route('/{record}'),
         ];
     }
 }

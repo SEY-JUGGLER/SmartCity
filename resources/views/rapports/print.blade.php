@@ -347,10 +347,10 @@
         <!-- ===== Header ===== -->
         <div class="header">
             <div class="header-left">
-                <img src="{{ public_path('images/logo.png') }}" alt="SmartCity" class="header-logo">
+                <img src="{{ public_path('images/logo.png') }}" alt="WasteMove" class="header-logo">
                 <div class="header-brand">
-                    SmartCity
-                    <small>Rapport d'activité — Ville intelligente</small>
+                    WasteMove
+                    <small>Rapport d'activité — Gestion des déchets</small>
                 </div>
             </div>
             <div class="header-right">
@@ -607,7 +607,7 @@
 
         <!-- ===== Footer ===== -->
         <div class="footer">
-            <span>SmartCity — Système de gestion des signalements urbains</span>
+            <span>WasteMove — Système de gestion des déchets urbains</span>
             <span>Rapport #{{ $rapport->id }} — {{ optional($rapport->dateGeneration)->format('d/m/Y') }}</span>
         </div>
 

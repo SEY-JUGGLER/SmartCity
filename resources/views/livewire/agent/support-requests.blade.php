@@ -7,13 +7,21 @@
         </div>
         @if($showForm)
         <form wire:submit="create" class="mb-6 p-4 bg-white dark:bg-gray-900 rounded-2xl border space-y-3">
-            <select wire:model="type" class="w-full rounded-xl border-slate-300 dark:border-gray-600 dark:bg-gray-800">
+            <select wire:model.live="type" class="w-full rounded-xl border-slate-300 dark:border-gray-600 dark:bg-gray-800">
                 <option value="">Type</option>
                 <option value="renfort">Renfort</option>
                 <option value="materiel">Matériel</option>
                 <option value="panne_vehicule">Panne véhicule</option>
                 <option value="assistance_urgente">Assistance urgente</option>
             </select>
+            @if($type === 'materiel')
+            <select wire:model="materiel_id" class="w-full rounded-xl border-slate-300 dark:border-gray-600 dark:bg-gray-800">
+                <option value="">Sélectionner un matériel</option>
+                @foreach($materielsDisponibles as $m)
+                    <option value="{{ $m->id }}">{{ $m->nom }} ({{ $m->categorie }} — {{ $m->statut }})</option>
+                @endforeach
+            </select>
+            @endif
             <textarea wire:model="description" rows="3" class="w-full rounded-xl border-slate-300 dark:border-gray-600 dark:bg-gray-800" placeholder="Description"></textarea>
             <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-500 text-white text-sm">Envoyer</button>
         </form>
@@ -29,9 +37,9 @@
                     @forelse($requests as $r)
                         <tr>
                             <td class="px-4 py-3">{{ $r->id }}</td>
-                            <td class="px-4 py-3">{{ $r->type }}</td>
+                            <td class="px-4 py-3">{{ match($r->type) { 'renfort' => 'Renfort', 'materiel' => 'Matériel', 'panne_vehicule' => 'Panne véhicule', 'assistance_urgente' => 'Assistance urgente', default => $r->type } }}</td>
                             <td class="px-4 py-3">{{ Str::limit($r->description, 50) }}</td>
-                            <td class="px-4 py-3">{{ $r->statut }}</td>
+                            <td class="px-4 py-3">{{ match($r->statut) { 'en_attente' => 'En attente', 'valide' => 'Validé', 'refusé' => 'Refusé', default => $r->statut } }}</td>
                             <td class="px-4 py-3">@if($r->statut === 'en_attente')<button wire:click="cancel({{ $r->id }})" class="text-red-600 text-xs">Annuler</button>@endif</td>
                         </tr>
                     @empty

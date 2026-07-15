@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Support;
 
 use App\Models\SupportRequest;
+use App\Services\ActivityLoggerService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
@@ -123,6 +124,7 @@ class SupportResource extends Resource
                             'date_traitement' => now(),
                             'traite_par'      => auth()->id(),
                         ]);
+                        app(ActivityLoggerService::class)->logSupportValidated($record);
                         Notification::make()->title('Demande validée')->success()->send();
                     }),
 
@@ -144,6 +146,7 @@ class SupportResource extends Resource
                             'date_traitement' => now(),
                             'traite_par'      => auth()->id(),
                         ]);
+                        app(ActivityLoggerService::class)->logSupportRefused($record);
                         Notification::make()->title('Demande refusée')->warning()->send();
                     }),
             ])
