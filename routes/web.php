@@ -9,7 +9,7 @@ use App\Livewire\Agent\MesMateriels;
 use App\Livewire\Agent\MesMissions;
 use App\Livewire\Agent\NavigationCarte;
 use App\Livewire\Agent\Notifications as AgentNotifications;
-use App\Livewire\Agent\Pointage;
+use App\Livewire\Agent\Pointage as AgentPointage;
 use App\Livewire\Agent\ProfilAgent;
 use App\Livewire\Agent\SupportRequests;
 use App\Livewire\Citoyen\ClassementEngagement;
@@ -72,7 +72,7 @@ Route::middleware(['auth', 'role:AGENT'])->prefix('agent')->name('agent.')->grou
     Route::get('/mes-missions', MesMissions::class)->name('missions.index');
     Route::get('/missions/{signalement}', DetailMission::class)->name('missions.show');
     Route::get('/historique', HistoriqueInterventions::class)->name('historique');
-    Route::get('/pointage', Pointage::class)->name('pointage');
+    Route::get('/pointage', AgentPointage::class)->name('pointage');
     Route::get('/support', SupportRequests::class)->name('support');
     Route::get('/materiels', MesMateriels::class)->name('materiels');
     Route::get('/carte', NavigationCarte::class)->name('carte');

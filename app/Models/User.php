@@ -49,6 +49,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function signalements()      { return $this->hasMany(Signalement::class, 'user_id'); }
     public function localisations()     { return $this->hasMany(Localisation::class); }
     public function evaluations()       { return $this->hasMany(Evaluation::class); }
+    public function pointages()         { return $this->hasMany(PointageHistorique::class); }
     public function supportRequests()   { return $this->hasMany(SupportRequest::class, 'agent_id'); }
     public function notificationPreferences()
     {

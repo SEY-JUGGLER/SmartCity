@@ -3,6 +3,7 @@
 namespace App\Livewire\Agent;
 
 use App\Models\Attribution;
+use App\Models\PointageHistorique;
 use App\Models\Signalement;
 use App\Models\SupportRequest;
 use App\Models\Materiel;
@@ -39,6 +40,13 @@ class Dashboard extends Component
         $user = Auth::user();
         $this->disponible = !$this->disponible;
         $user->update(['disponible' => $this->disponible]);
+        PointageHistorique::create([
+            'user_id' => $user->id,
+            'action' => $this->disponible ? 'activer_disponibilite' : 'desactiver_disponibilite',
+            'pointer' => $user->pointer,
+            'disponible' => $this->disponible,
+            'heure_action' => now(),
+        ]);
     }
 
     public function pointer(): void
@@ -47,6 +55,13 @@ class Dashboard extends Component
         $user->update(['pointer' => true, 'heurePointage' => now(), 'disponible' => true]);
         $this->pointe = true;
         $this->disponible = true;
+        PointageHistorique::create([
+            'user_id' => $user->id,
+            'action' => 'pointer',
+            'pointer' => true,
+            'disponible' => true,
+            'heure_action' => now(),
+        ]);
     }
 
     public function logout(): void
