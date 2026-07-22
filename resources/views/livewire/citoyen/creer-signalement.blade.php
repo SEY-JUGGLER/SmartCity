@@ -79,10 +79,11 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
     var mapPicker = null, mapMarker = null;
+    var GEOCODE_URL = "{{ route('geocode.reverse') }}";
 
     function initMapPicker() {
-        if (typeof L === 'undefined') { 
-            setTimeout(initMapPicker, 200); 
+        if (typeof L === 'undefined') {
+            setTimeout(initMapPicker, 200);
             return;
          }
         var el = document.getElementById('map-picker');
@@ -98,10 +99,7 @@
             document.getElementById('lng-display').textContent = lng.toFixed(6);
             @this.set('latitude', lat);
             @this.set('longitude', lng);
-            fetch(
-                'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng + '&accept-language=fr',
-                { headers: { 'Accept': 'application/json' } }
-            )
+            fetch(GEOCODE_URL + '?lat=' + lat + '&lon=' + lng)
             .then(function (r) { return r.json(); })
             .then(function (d) { if (d.display_name) @this.set('position', d.display_name); })
             .catch(function () {});
@@ -145,21 +143,17 @@
                 document.getElementById('lat-display').textContent = lat.toFixed(6);
                 document.getElementById('lng-display').textContent = lng.toFixed(6);
 
-                var adresse = lat.toFixed(6) + ', ' + lng.toFixed(6);
-                @this.set('position', adresse);
+                @this.set('position', lat.toFixed(6) + ', ' + lng.toFixed(6));
 
-                fetch(
-                    'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng + '&accept-language=fr',
-                    { headers: { 'Accept': 'application/json', 'User-Agent': 'WasteMove/1.0' } }
-                )
+                fetch(GEOCODE_URL + '?lat=' + lat + '&lon=' + lng)
                 .then(function (r) { return r.json(); })
                 .then(function (d) {
                     if (d && d.display_name) {
                         @this.set('position', d.display_name);
                     }
                 })
-                .catch(function (e) {
-                    console.warn('Nominatim indisponible, adresse approximative utilisée.');
+                .catch(function () {
+                    console.warn('Géocodage indisponible, coordonnées utilisées.');
                 })
                 .finally(function () {
                     btn.disabled      = false;

@@ -71,7 +71,7 @@
         }
 
         .nav-shell { background: rgba(251, 246, 236, 0.82); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
-        .nav-link { position: relative; color: var(--ink-soft); font-size: 0.92rem; font-weight: 500; padding: 0.4rem 0.1rem; transition: color 0.2s ease; }
+        .nav-link { position: relative; color: var(--ink-soft); padding: 0.4rem 0.1rem; transition: color 0.2s ease; }
         .nav-link::after { content: ''; position: absolute; left: 0; bottom: -2px; height: 2px; width: 0; background: var(--green); transition: width 0.25s ease; border-radius: 2px; }
         .nav-link:hover { color: var(--ink); }
         .nav-link.active { color: var(--ink); }
@@ -166,9 +166,9 @@
                     <span class="font-display text-lg font-extrabold text-[var(--ink)]">WasteMove</span>
                 </a>
 
-                <div class="hidden lg:flex items-center gap-24">
-                    <a href="#accueil" class="nav-link active font-bold text-2xl tracking-wide" data-nav>Accueil</a>
-                    <a href="#a-propos" class="nav-link font-bold text-2xl tracking-wide" data-nav>À propos</a>
+                <div class="hidden lg:flex items-center gap-28">
+                    <a href="#accueil" class="nav-link active font-bold text-3xl tracking-wide" data-nav>Accueil</a>
+                    <a href="#a-propos" class="nav-link font-bold text-3xl tracking-wide" data-nav>À propos</a>
                 </div>
 
                 <div class="hidden lg:flex items-center gap-3">
@@ -191,9 +191,9 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
-        <div class="flex flex-col gap-3">
-            <a href="#accueil" class="text-2xl">Accueil</a>&nbsp;    
-            <a href="#a-propos" class="text-2xl">À propos</a>
+        <div class="flex flex-col gap-6">
+            <a href="#accueil" class="text-3xl font-bold">Accueil</a>
+            <a href="#a-propos" class="text-3xl font-bold">À propos</a>
         </div>
         <div class="mt-auto flex flex-col gap-3 pt-10">
             <a href="{{ route('login') }}" class="px-5 py-3 text-center text-[var(--ink)] border border-[var(--line)] rounded-xl">Connexion</a>

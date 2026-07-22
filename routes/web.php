@@ -42,6 +42,29 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/rapports/{rapport}/print', [\App\Http\Controllers\RapportController::class, 'print'])
         ->name('rapport.print');
+
+    Route::get('/api/geocode/reverse', function () {
+        $data = request()->validate([
+            'lat' => 'required|numeric|between:-90,90',
+            'lon' => 'required|numeric|between:-180,180',
+        ]);
+        $lat = $data['lat'];
+        $lon = $data['lon'];
+
+        $url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={$lat}&lon={$lon}&accept-language=fr";
+
+        $context = stream_context_create([
+            'http' => ['header' => "User-Agent: WasteMove/1.0\r\n"],
+        ]);
+
+        $response = @file_get_contents($url, false, $context);
+
+        if ($response === false) {
+            return response()->json(['error' => 'Service de géocodage indisponible'], 502);
+        }
+
+        return response($response)->header('Content-Type', 'application/json');
+    })->name('geocode.reverse');
 });
 
 Route::middleware(['auth', 'role:AGENT'])->prefix('agent')->name('agent.')->group(function () {

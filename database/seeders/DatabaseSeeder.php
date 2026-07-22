@@ -109,6 +109,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Ba', 'prenom' => 'Fatou', 'email' => 'agent4@smc.sn', 'zone' => 3, 'tel' => '77 444 44 44', 'age' => 30],
             ['name' => 'Diop', 'prenom' => 'Mamadou', 'email' => 'agent5@smc.sn', 'zone' => 4, 'tel' => '77 555 55 55', 'age' => 27],
             ['name' => 'Niang', 'prenom' => 'Aissatou', 'email' => 'agent6@smc.sn', 'zone' => 0, 'tel' => '77 666 66 66', 'age' => 33],
+            ['name' => 'Murid', 'prenom' => 'Baay', 'email' => 'agent@smc.sn', 'zone' => 5, 'tel' => '77 999 99 99', 'age' => 30],
         ];
         foreach ($agentData as $i => $a) {
             $agents[] = User::firstOrCreate(['email' => $a['email']], [
@@ -134,6 +135,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Fall', 'prenom' => 'Boubacar', 'email' => 'citoyen6@smc.sn', 'zone' => 0, 'tel' => '78 666 66 66'],
             ['name' => 'Cissé', 'prenom' => 'Rokhaya', 'email' => 'citoyen7@smc.sn', 'zone' => 1, 'tel' => '78 777 77 77'],
             ['name' => 'Ndour', 'prenom' => 'Cheikh', 'email' => 'citoyen8@smc.sn', 'zone' => 2, 'tel' => '78 888 88 88'],
+            ['name' => 'Sow', 'prenom' => 'Imam Malick', 'email' => 'citoyen@smc.sn', 'zone' => 5, 'tel' => '78 999 99 99'],
         ];
         foreach ($citoyenData as $c) {
             $citoyens[] = User::firstOrCreate(['email' => $c['email']], [
@@ -256,6 +258,78 @@ class DatabaseSeeder extends Seeder
             $signalements[] = $sig;
         }
 
+        // ========== 10 SIGNALEMENTS POUR citoyen@smc.sn ==========
+        $newCitIndex = count($citoyens) - 1;
+        $citoyenSituations = [
+            [$newCitIndex, 5, 0, 'enAttente', 'moyenne', 0, 'Dépôt d\'ordures ménagères devant le portail à Pikine'],
+            [$newCitIndex, 6, 1, 'enCours', 'faible', 1, 'Bac de recyclage débordant à Guediawaye'],
+            [$newCitIndex, 0, 6, 'enAttente', 'moyenne', 2, 'Ordures non ramassées depuis 4 jours à Dakar-Plateau'],
+            [$newCitIndex, 3, 3, 'terminer', 'critique', 5, 'Produits chimiques abandonnés près de la faculté'],
+            [$newCitIndex, 4, 5, 'enCours', 'faible', 1, 'Vieux meubles entassés sur le trottoir à Grand Yoff'],
+            [$newCitIndex, 7, 4, 'enAttente', 'moyenne', 0, 'Réfrigérateur hors d\'usage déposé sur la voie publique'],
+            [$newCitIndex, 2, 2, 'terminer', 'faible', 8, 'Vêtements usagés éparpillés après la collecte'],
+            [$newCitIndex, 1, 0, 'enCours', 'critique', 1, 'Biodéchets en décomposition, forte odeur à Médina'],
+            [$newCitIndex, 8, 6, 'enAttente', 'moyenne', 0, 'Dépôt sauvage de déchets ménagers à Thiaroye'],
+            [$newCitIndex, 9, 3, 'enCours', 'critique', 3, 'Fûts de peinture abandonnés dans la rue à Yeumbeul'],
+        ];
+        foreach ($citoyenSituations as $s) {
+            $cit = $citoyens[$s[0]];
+            $zone = $zones[$s[1]];
+            $cat = $categories[$s[2]];
+            $sig = Signalement::create([
+                'position' => $cit->localite . ', zone ' . $zone->nomZone,
+                'latitude' => $dakarCoords[$s[1] % count($dakarCoords)][0] + (rand(-20, 20) / 1000),
+                'longitude' => $dakarCoords[$s[1] % count($dakarCoords)][1] + (rand(-20, 20) / 1000),
+                'description' => $s[6],
+                'statut' => $s[3],
+                'priorite' => $s[4],
+                'dateSignalement' => now()->subDays($s[5]),
+                'date_resolution' => in_array($s[3], ['terminer']) ? now()->subDays(max(0, $s[5] - 3)) : null,
+                'commentaire_agent' => $s[3] === 'terminer' ? 'Intervention terminée avec succès.' : null,
+                'commentaire_admin' => null,
+                'user_id' => $cit->id,
+                'zone_id' => $zone->id,
+                'categorie_id' => $cat->id,
+            ]);
+            $signalements[] = $sig;
+        }
+
+        // ========== 10 SIGNALEMENTS POUR agent@smc.sn ==========
+        $newAgtIndex = count($agents) - 1;
+        $agentSituations = [
+            [0, 5, 1, 'terminer', 'faible', 5, 'Bac jaune de recyclage plein à Pikine - collecte effectuée'],
+            [1, 6, 6, 'terminer', 'moyenne', 3, 'Ordures ménagères déversées sur la chaussée à Guediawaye'],
+            [2, 0, 0, 'enCours', 'moyenne', 2, 'Restes alimentaires non collectés depuis 2 jours'],
+            [3, 4, 3, 'terminer', 'critique', 7, 'Déchets toxiques évacués du marché Grand Yoff'],
+            [4, 7, 5, 'enCours', 'faible', 1, 'Encombrants obstruant le passage piéton à Rufisque'],
+            [5, 3, 4, 'terminer', 'moyenne', 4, 'Appareils électroniques jetés devant le lycée - collectés'],
+            [6, 2, 2, 'enCours', 'faible', 3, 'Textiles et chiffons abandonnés à Gueule Tapée'],
+            [7, 8, 6, 'terminer', 'moyenne', 6, 'Dépôt d\'ordures nettoyé près du marché à Thiaroye'],
+            [4, 1, 0, 'terminer', 'moyenne', 6, 'Biodéchets collectés après signalement à Médina'],
+            [3, 9, 1, 'terminer', 'faible', 10, 'Collecte de recyclables effectuée à Yeumbeul'],
+        ];
+        foreach ($agentSituations as $s) {
+            $cit = $citoyens[$s[0]];
+            $zone = $zones[$s[1]];
+            $cat = $categories[$s[2]];
+            $sig = Signalement::create([
+                'position' => $cit->localite . ', zone ' . $zone->nomZone,
+                'latitude' => $dakarCoords[$s[1] % count($dakarCoords)][0] + (rand(-20, 20) / 1000),
+                'longitude' => $dakarCoords[$s[1] % count($dakarCoords)][1] + (rand(-20, 20) / 1000),
+                'description' => $s[6],
+                'statut' => $s[3],
+                'priorite' => $s[4],
+                'dateSignalement' => now()->subDays($s[5]),
+                'date_resolution' => in_array($s[3], ['terminer']) ? now()->subDays(max(0, $s[5] - 3)) : null,
+                'commentaire_agent' => $s[3] === 'terminer' ? 'Intervention terminée avec succès.' : null,
+                'commentaire_admin' => null,
+                'user_id' => $cit->id,
+                'zone_id' => $zone->id,
+                'categorie_id' => $cat->id,
+            ]);
+            $signalements[] = $sig;
+        }
+
         // ========== ATTRIBUTIONS ==========
         $attributionCount = 0;
         foreach ($signalements as $i => $sig) {
@@ -269,6 +343,20 @@ class DatabaseSeeder extends Seeder
                 ]);
                 $attributionCount++;
             }
+        }
+
+        // Force attribution des 10 derniers signalements à agent@smc.sn
+        $newAgt = $agents[count($agents) - 1];
+        $agentSigs = array_slice($signalements, -10);
+        foreach ($agentSigs as $sig) {
+            Attribution::updateOrCreate(
+                ['signalement_id' => $sig->id],
+                [
+                    'agent_id' => $newAgt->id,
+                    'admin_id' => $admin->id,
+                    'dateHeureAttribution' => $sig->created_at->addHours(rand(1, 24)),
+                ]
+            );
         }
 
         // ========== ÉVALUATIONS ==========
@@ -465,6 +553,44 @@ class DatabaseSeeder extends Seeder
                 'statut' => $m['statut'],
                 'agent_id' => $agentId,
                 'date_attribution' => $dateAttribution,
+            ]);
+        }
+
+        // ========== MATÉRIELS POUR agent@smc.sn ==========
+        $newAgtMateriel = [
+            ['nom' => 'Camion benne A-004', 'description' => 'Camion benne pour collecte', 'categorie' => 'vehicule'],
+            ['nom' => 'Tablette Pro X-01', 'description' => 'Tablette pour suivi des missions', 'categorie' => 'informatique'],
+            ['nom' => 'Kit protection complet', 'description' => 'Gants, masque et gilet haute visibilité', 'categorie' => 'equipement'],
+        ];
+        $agtForMateriel = $agents[count($agents) - 1];
+        foreach ($newAgtMateriel as $m) {
+            Materiel::firstOrCreate(
+                ['nom' => $m['nom']],
+                [
+                    'description' => $m['description'],
+                    'categorie' => $m['categorie'],
+                    'statut' => 'attribue',
+                    'agent_id' => $agtForMateriel->id,
+                    'date_attribution' => now()->subDays(rand(5, 30)),
+                ]
+            );
+        }
+
+        // ========== SUPPORT REQUESTS POUR agent@smc.sn ==========
+        $agtForSupport = $agents[count($agents) - 1];
+        $agentSupportDefs = [
+            ['type' => 'renfort', 'desc' => 'Besoin de renfort pour une collecte massive à Pikine', 'statut' => 'valide', 'traite' => true],
+            ['type' => 'materiel', 'desc' => 'Requête de gants et sacs poubelle supplémentaires', 'statut' => 'en_attente', 'traite' => false],
+            ['type' => 'panne_vehicule', 'desc' => 'Camion en panne après une mission à Thiaroye', 'statut' => 'en_attente', 'traite' => false],
+        ];
+        foreach ($agentSupportDefs as $sd) {
+            SupportRequest::create([
+                'agent_id' => $agtForSupport->id,
+                'type' => $sd['type'],
+                'description' => $sd['desc'],
+                'statut' => $sd['statut'],
+                'traite_par' => $sd['traite'] ? $admin->id : null,
+                'date_traitement' => $sd['traite'] ? now()->subHours(rand(2, 48)) : null,
             ]);
         }
 
