@@ -9,8 +9,8 @@
             <div class="lg:col-span-2 space-y-4 bg-white dark:bg-gray-900 rounded-2xl p-6 border border-slate-200 dark:border-gray-800">
                 <div>
                     <label class="text-sm font-medium">Adresse *</label>
-                    <div class="flex gap-2 mt-1">
-                        <input wire:model="position" id="position-input"
+                    <div wire:ignore class="flex gap-2 mt-1">
+                        <input id="position-input" readonly
                             class="flex-1 rounded-xl border-slate-300 dark:border-gray-600 dark:bg-gray-800"
                             placeholder="Ex: Rue de la République, Dakar">
                         <button type="button" id="btn-geolocate" onclick="localiserPosition()"
@@ -99,9 +99,16 @@
             document.getElementById('lng-display').textContent = lng.toFixed(6);
             @this.set('latitude', lat);
             @this.set('longitude', lng);
+            var posInput = document.getElementById('position-input');
+            if (posInput) posInput.value = lat.toFixed(6) + ', ' + lng.toFixed(6);
             fetch(GEOCODE_URL + '?lat=' + lat + '&lon=' + lng)
             .then(function (r) { return r.json(); })
-            .then(function (d) { if (d.display_name) @this.set('position', d.display_name); })
+            .then(function (d) {
+                if (d && d.display_name) {
+                    if (posInput) posInput.value = d.display_name;
+                    @this.set('position', d.display_name);
+                }
+            })
             .catch(function () {});
         });
         setTimeout(function () { mapPicker.invalidateSize(); }, 100);
@@ -143,12 +150,15 @@
                 document.getElementById('lat-display').textContent = lat.toFixed(6);
                 document.getElementById('lng-display').textContent = lng.toFixed(6);
 
-                @this.set('position', lat.toFixed(6) + ', ' + lng.toFixed(6));
+                var posInput = document.getElementById('position-input');
+                posInput.value = lat.toFixed(6) + ', ' + lng.toFixed(6);
+                @this.set('position', posInput.value);
 
                 fetch(GEOCODE_URL + '?lat=' + lat + '&lon=' + lng)
                 .then(function (r) { return r.json(); })
                 .then(function (d) {
                     if (d && d.display_name) {
+                        posInput.value = d.display_name;
                         @this.set('position', d.display_name);
                     }
                 })
